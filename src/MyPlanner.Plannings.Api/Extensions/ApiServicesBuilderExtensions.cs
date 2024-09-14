@@ -28,16 +28,11 @@ namespace MyPlanner.Plannings.Api.Extensions
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
-                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            });
+            var assembly = typeof(Program).Assembly;
+
+            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
 
             builder.Services.AddCarter();
-
-
-            var assembly = typeof(Program).Assembly;
 
             builder.Services.AddAutoMapper(assembly);
 

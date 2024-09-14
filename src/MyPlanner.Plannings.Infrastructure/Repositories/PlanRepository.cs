@@ -12,7 +12,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         private readonly PlanningDbContext context;
         private readonly IMapper mapper;
 
-        public PlanRepository(IMapper mapper)
+        public PlanRepository(IMapper mapper, PlanningDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

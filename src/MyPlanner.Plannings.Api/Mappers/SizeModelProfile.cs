@@ -34,8 +34,8 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.SizeModelItems, opt => opt.MapFrom(src => src.SizeModelItems));
 
             CreateMap<CreateSizeModelItemRequest, SizeModelItemProps>()
-                .ForMember(dest => dest.Profile.GetValue().ProfileName, opt => opt.MapFrom(src => src.ProfileName))
-                .ForMember(dest => dest.Profile.GetValue().ProfileAvgRate, opt => opt.MapFrom(src => src.ProfileAvgRateAmount))
+                //.ForMember(dest => dest.Profile.GetValue().ProfileName, opt => opt.MapFrom(src => src.ProfileName))
+                //.ForMember(dest => dest.Profile.GetValue().ProfileAvgRate, opt => opt.MapFrom(src => src.ProfileAvgRateAmount))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.ProfileQuantity))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost))
                 .ForMember(dest => dest.SizeModelTypeFactor, opt => opt.MapFrom(src => src.SizeModelTypeFactorCode));
@@ -57,8 +57,8 @@ namespace MyPlanner.Plannings.Api.Mappers
 
 
             CreateMap<SizeModelItemTable, SizeModelItemProps>()
-                .ForMember(dest => dest.Profile.GetValue().ProfileName, opt => opt.MapFrom(src => src.ProfileName))
-                .ForMember(dest => dest.Profile.GetValue().ProfileAvgRate, opt => opt.MapFrom(src => src.ProfileAvgRateAmount))
+                //.ForMember(dest => dest.Profile.GetValue().ProfileName, opt => opt.MapFrom(src => src.ProfileName))
+                //.ForMember(dest => dest.Profile.GetValue().ProfileAvgRate, opt => opt.MapFrom(src => src.ProfileAvgRateAmount))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost));
         }
     }

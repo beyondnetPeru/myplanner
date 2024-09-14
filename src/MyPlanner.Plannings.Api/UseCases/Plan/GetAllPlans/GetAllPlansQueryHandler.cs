@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿
 using MyPlanner.Plannings.Api.Dtos.Plan;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 
