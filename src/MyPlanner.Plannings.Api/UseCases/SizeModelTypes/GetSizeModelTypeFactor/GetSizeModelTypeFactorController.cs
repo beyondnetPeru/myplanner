@@ -1,6 +1,6 @@
 ﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.GetSizeModelTypeFactor
 {
-    public class GetSizeModelTypeFactorController(IMediator mediator) : ICarterModule
+    public class GetSizeModelTypeFactorController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -8,7 +8,7 @@
             {
                 var query = new GetSizeModelTypeFactorQuery(sizeModelTypeId, sizeModelTypeFactorId);
 
-                var result = await mediator.Send(query);
+                var result = await service.Mediator.Send(query);
 
                 return result != null ? Results.Ok(result) : Results.NotFound();
 

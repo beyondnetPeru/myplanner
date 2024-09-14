@@ -5,7 +5,7 @@ using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.ChangeSizeModelName
 {
-    public class ChangeSizeModelNameController(IMediator mediator) : ICarterModule
+    public class ChangeSizeModelNameController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -13,7 +13,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.ChangeSizeModelName
             {
                 var request = new ChangeSizeModelNameRequest(changeSizeModelNameDto.SizeModelId, changeSizeModelNameDto.Name, changeSizeModelNameDto.UserId);
 
-                var result = await mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
                 if (!result)
                 {

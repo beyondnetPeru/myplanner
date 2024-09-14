@@ -3,15 +3,15 @@ using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.CreatePlan
 {
-    public class CreatePlanController(IMediator mediator, IMapper mapper) : ICarterModule
+    public class CreatePlanController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] PlanServices planService, [FromBody] CreatePlanDto createPlanDto) =>
+            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] PlanServices service, [FromBody] CreatePlanDto createPlanDto) =>
             {
-                var request = mapper.Map<CreatePlanRequest>(createPlanDto);
+                var request = service.Mapper.Map<CreatePlanRequest>(createPlanDto);
 
-                var result = await mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
                 return result ? Results.Ok() : Results.BadRequest();
 

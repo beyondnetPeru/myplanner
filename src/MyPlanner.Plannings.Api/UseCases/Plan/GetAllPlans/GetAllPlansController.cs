@@ -6,7 +6,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.GetAllPlans
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans", async ([AsParameters] PlanServices planServices, int page = 1, int recordsPerPage = 10) =>
+            app.MapGet("/plans", async ([AsParameters] PlanServices service, int page = 1, int recordsPerPage = 10) =>
             {
                 var pagination = new PaginationDto()
                 {
@@ -16,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.GetAllPlans
 
                 var query = new GetAllPlansQuery(pagination);
 
-                var result = await planServices.Mediator.Send(query);
+                var result = await service.Mediator.Send(query);
 
                 return result != null ? Results.Ok(result) : Results.NotFound();
 

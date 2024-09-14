@@ -5,7 +5,7 @@ using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.CreateSizeModel
 {
-    public class CreateSizeModelController(IMediator mediator) : ICarterModule
+    public class CreateSizeModelController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -19,7 +19,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.CreateSizeModel
                                                        createSizeModelDto.UserId,
                                                        createSizeModelDto.SizeModelItems);
 
-                var result = await mediator.Send(createSizeModelRequest);
+                var result = await service.Mediator.Send(createSizeModelRequest);
 
                 return result ? Results.Created() : Results.BadRequest();
 

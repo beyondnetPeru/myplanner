@@ -3,7 +3,7 @@ using System.Net;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModels
 {
-    public class GetAllSizeModelsController(IMediator mediator) : ICarterModule
+    public class GetAllSizeModelsController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -17,7 +17,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModels
 
                 var query = new GetAllSizeModelsQuery(pagination);
 
-                var request = await mediator.Send(query);
+                var request = await service.Mediator.Send(query);
 
 
                 return request is null

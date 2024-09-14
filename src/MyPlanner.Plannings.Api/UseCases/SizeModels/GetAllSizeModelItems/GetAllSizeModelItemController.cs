@@ -2,7 +2,7 @@
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModelItems
 {
-    public class GetAllSizeModelItemController(IMediator mediator) : ICarterModule
+    public class GetAllSizeModelItemController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -10,7 +10,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModelItems
             {
                 var query = new GetAllSizeModelItemQuery(sizeModelId);
 
-                var request = await mediator.Send(query);
+                var request = await service.Mediator.Send(query);
 
                 return request is null
                         ? Results.NotFound()

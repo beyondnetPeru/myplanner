@@ -3,17 +3,17 @@ using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.ChangeNameSizeModelType
 {
-    public class ChangeNameSizeModelTypeController(IMediator mediator) : ICarterModule
+    public class ChangeNameSizeModelTypeController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapPut("/sizemodeltypes/{sizeModelTypeId}/changename", async ([FromHeader(Name = "x-requestid")] Guid requestId,
-                                                                            [AsParameters] SizeModelTypeService service,
-                                                                           [FromBody] ChangeNameSizeModelTypeDto changeNameSizeModelTypeDto) =>
+                                                                              [AsParameters] SizeModelTypeService service,
+                                                                              [FromBody] ChangeNameSizeModelTypeDto changeNameSizeModelTypeDto) =>
             {
                 var request = new ChangeNameSizeModelTypeRequest(changeNameSizeModelTypeDto.SizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
 
-                var result = await mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
                 {
                     Results.BadRequest();

@@ -3,7 +3,7 @@ using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.ChangeCodeSizeModelType
 {
-    public class ChangeCodeSizeModelTypeController(IMediator mediator) : ICarterModule
+    public class ChangeCodeSizeModelTypeController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -13,7 +13,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.ChangeCodeSizeModelTyp
             {
                 var request = new ChangeCodeSizeModelTypeRequest(changeCodeSizeModelTypeDto.SizeModelTypeId, changeCodeSizeModelTypeDto.Code, changeCodeSizeModelTypeDto.UserId);
 
-                var result = await mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
                 {
                     Results.BadRequest();

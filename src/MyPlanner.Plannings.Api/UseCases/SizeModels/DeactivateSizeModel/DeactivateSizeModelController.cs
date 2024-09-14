@@ -1,11 +1,9 @@
-﻿using Carter;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.DeactivateSizeModel
 {
-    public class DeactivateSizeModelController(IMediator mediator) : ICarterModule
+    public class DeactivateSizeModelController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -13,7 +11,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.DeactivateSizeModel
             {
                 var request = new DeactivateSizeModelRequest(activateSizeModelDto.SizeModelId, activateSizeModelDto.UserId);
 
-                var result = await mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
                 if (!result)
                 {

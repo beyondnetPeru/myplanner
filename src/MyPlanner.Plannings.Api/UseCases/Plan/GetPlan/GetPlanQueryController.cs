@@ -1,6 +1,6 @@
 ﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.GetPlan
 {
-    public class GetPlanQueryController(IMediator mediator) : ICarterModule
+    public class GetPlanQueryController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -8,7 +8,7 @@
             {
                 var query = new GetPlanQuery(planId);
 
-                var result = await mediator.Send(query);
+                var result = await services.Mediator.Send(query);
 
                 return Results.Ok(result);
 

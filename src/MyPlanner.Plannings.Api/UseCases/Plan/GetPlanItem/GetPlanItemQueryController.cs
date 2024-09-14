@@ -1,17 +1,14 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Api.UseCases;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.GetPlanItem
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.GetPlanItem
 {
-    public class GetPlanItemQueryController(IMediator mediator) : ICarterModule
+    public class GetPlanItemQueryController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans/{planId}/items/{planItemId}", async ([AsParameters] PlanServices planServices, string planId, string planItemId) =>
+            app.MapGet("/plans/{planId}/items/{planItemId}", async ([AsParameters] PlanServices service, string planId, string planItemId) =>
             {
                 var query = new GetPlanItemQuery(planId, planItemId);
 
-                var result = await mediator.Send(query);
+                var result = await service.Mediator.Send(query);
 
                 return Results.Ok(result);
 
