@@ -1,13 +1,10 @@
-﻿using Carter;
-using MediatR;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.GetAllPlanItems
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.GetAllPlanItems
 {
     public class GetAllPlanItemsController(IMediator mediator) : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans/{planId}/items", async (string planId) =>
+            app.MapGet("/plans/{planId}/items", async ([AsParameters] PlanItemServices planItemServices, string planId) =>
             {
                 var query = new GetAllPlanItemsQuery(planId);
 

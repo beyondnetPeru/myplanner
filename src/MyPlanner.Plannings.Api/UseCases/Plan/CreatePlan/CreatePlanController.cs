@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using Carter;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.CreatePlan
@@ -10,7 +7,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.CreatePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, [FromBody] CreatePlanDto createPlanDto) =>
+            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] PlanServices planService, [FromBody] CreatePlanDto createPlanDto) =>
             {
                 var request = mapper.Map<CreatePlanRequest>(createPlanDto);
 
