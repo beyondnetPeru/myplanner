@@ -1,4 +1,5 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
@@ -37,16 +38,14 @@ namespace MyPlanner.Plannings.Api.Mappers
               .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
 
-
-
-            //--
-
-            //CreateMap<SizeModelTypeTable, SizeModelType>()
-            //    .ConstructUsing(src => SizeModelType.Create(
-            //            IdValueObject.Create(src.Id),
-            //            SizeModelTypeCode.Create(src.Code),
-            //            Name.Create(src.Name)
-            //        ));
+            CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeRequest>();
+                     
+            CreateMap<SizeModelTypeTable, SizeModelType>()
+                .ConstructUsing(src => SizeModelType.Create(
+                        IdValueObject.Create(src.Id),
+                        SizeModelTypeCode.Create(src.Code),
+                        Name.Create(src.Name)
+                    ));
 
 
             //CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
