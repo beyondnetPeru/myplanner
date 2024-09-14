@@ -26,4 +26,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyPlanner.Plannings.IntegrationEventLogEF\MyPlanner.Plannings.IntegrationEventLogEF.csproj" />
+  </ItemGroup>
+
 </Project>
