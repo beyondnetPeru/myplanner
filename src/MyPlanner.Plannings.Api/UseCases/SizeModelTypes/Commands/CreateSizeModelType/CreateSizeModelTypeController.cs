@@ -11,13 +11,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
                                                    [AsParameters] SizeModelTypeService service,
                                                    [FromBody] CreateSizeModelTypeDto createSizeModelTypeDto) =>
             {
-                var request = new CreateSizeModelTypeRequest(createSizeModelTypeDto.Code,
-                                                                createSizeModelTypeDto.Name,
-                                                                createSizeModelTypeDto.Description,
-                                                                createSizeModelTypeDto.UserId);
+                var request = service.Mapper.Map<CreateSizeModelTypeRequest>(createSizeModelTypeDto);
 
                 var result = await service.Mediator.Send(request);
 
+                if (!result)
                 {
                     Results.BadRequest();
                 }

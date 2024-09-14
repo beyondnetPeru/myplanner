@@ -10,6 +10,7 @@
     <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.12.0" />
+    <PackageReference Include="BeyondNet.Ddd.AutoMapper" Version="1.0.0" />
     <PackageReference Include="Carter" Version="7.1.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
