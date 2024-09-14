@@ -6,6 +6,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
     {
         public string Id { get; set; }
         public string SizeModelId { get; set; }
+        public string Name { get; set; }
         public SizeModelTable SizeModel { get; set; }
         public string SizeModelTypeFactorId { get; set; }
         public string SizeModelTypeFactorCode { get; set; }
@@ -15,5 +16,6 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public int Quantity { get; set; }
         public double TotalCost { get; set; }
         public AuditTable Audit { get; set; }
+        public int Status { get; set; }
     }
 }

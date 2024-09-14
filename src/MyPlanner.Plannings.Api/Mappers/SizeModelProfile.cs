@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BeyondNet.Ddd.AutoMapper.Impl;
 using MyPlanner.Plannings.Api.Dtos.SizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.CreateSizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.CreateSizeModelItem;
+using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
+using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModelItem;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 

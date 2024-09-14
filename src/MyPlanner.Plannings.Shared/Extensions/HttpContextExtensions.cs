@@ -4,7 +4,7 @@ namespace MyPlanner.Plannings.Shared.Extensions
 {
     public static class HttpContextExtensions
     {
-        public async static Task AddPaginationInHeader<T>(this HttpContext httpContext, IQueryable<T> queryable, int page = 1, int recordsPerPage = 10)
+        public async static Task AddPaginationInHeader<T>(this HttpContext httpContext, IQueryable<T> queryable, int page = 0, int recordsPerPage = 10)
         {
             if (httpContext == null)
             {

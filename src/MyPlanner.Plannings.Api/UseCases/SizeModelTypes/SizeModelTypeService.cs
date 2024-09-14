@@ -1,17 +1,19 @@
 ﻿using MyPlanner.Plannings.Api.Endpoints;
-using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
+
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes
 {
     public class SizeModelTypeService(
       IMediator mediator,
       ISizeModelTypeRepository sizeModelTypeRepository,
-      ISizeModelTypeFactorRepository sizeModelTypeFactorRepository,
+      ISizeModelTypeQueryRepository sizeModelTypeQueryRepository,
+
       IMapper mapper)
     {
         public IMediator Mediator { get; } = mediator;
         public ISizeModelTypeRepository SizeModelTypeRepository { get; } = sizeModelTypeRepository;
-        public ISizeModelTypeFactorRepository SizeModelTypeFactorRepository { get; } = sizeModelTypeFactorRepository;
+        public ISizeModelTypeQueryRepository SizeModelTypeQueryRepository { get; } = sizeModelTypeQueryRepository;
         public IMapper Mapper { get; } = mapper;
     }
 }

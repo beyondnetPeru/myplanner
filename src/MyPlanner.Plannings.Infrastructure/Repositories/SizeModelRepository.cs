@@ -1,81 +1,123 @@
-﻿using BeyondNet.Ddd.Interfaces;
+﻿using AutoMapper;
+using BeyondNet.Ddd.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Shared.Application.Dtos;
+using MyPlanner.Plannings.Infrastructure.Database;
+using MyPlanner.Plannings.Infrastructure.Database.Tables;
 
 namespace MyPlanner.Plannings.Infrastructure.Repositories
 {
     public class SizeModelRepository : ISizeModelRepository
     {
-        public IUnitOfWork UnitOfWork => throw new NotImplementedException();
+        private readonly PlanningDbContext context;
+        private readonly IMapper mapper;
 
-        public Task Activate(string id)
+        public SizeModelRepository(PlanningDbContext context, IMapper mapper)
         {
-            throw new NotImplementedException();
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
+            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task ActiveItem(string sizeModelItemId)
+        public IUnitOfWork UnitOfWork => context;
+
+
+        private async Task<SizeModelTable> GetSizeModel(string sizeModelId)
         {
-            throw new NotImplementedException();
+            return await context.SizeModels.FirstAsync(x => x.Id == sizeModelId);
         }
 
-        public Task Add(SizeModel sizeModel)
+        private async Task<SizeModelItemTable> GetSizeItemModel(string sizeModelItemId)
         {
-            throw new NotImplementedException();
+            return await context.SizeModelItems.FirstAsync(x => x.Id == sizeModelItemId);
         }
 
-        public Task AddItem(SizeModelItem sizeModelItem)
+
+        public async Task Activate(string id)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeModel(id);
+
+            table.Status = 1;
         }
 
-        public Task ChangeItemName(string sizeModelItemId, string name)
+        public async Task ActiveItem(string sizeModelItemId)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeItemModel(sizeModelItemId);
+
+            table.Status = 2;
         }
 
-        public Task ChangeName(string id, string name)
+        public async Task Add(SizeModel sizeModel)
         {
-            throw new NotImplementedException();
+            var table = mapper.Map<SizeModelTable>(sizeModel);
+
+            await context.SizeModels.AddAsync(table);
         }
 
-        public Task Deactivate(string id)
+        public async Task AddItem(SizeModelItem sizeModelItem)
         {
-            throw new NotImplementedException();
+            var table = mapper.Map<SizeModelItemTable>(sizeModelItem);
+
+            await context.SizeModelItems.AddAsync(table);
         }
 
-        public Task DeactiveItem(string sizeModelItemId)
+        public async Task ChangeItemName(string sizeModelItemId, string name)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeItemModel(sizeModelItemId);
+
+            table.Name = name;
         }
 
-        public Task Delete(string id)
+        public async Task ChangeName(string sizeModelId, string name)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeModel(sizeModelId);
+
+            table.Name = name;
         }
 
-        public Task DeleteItem(string idsizeModelItemId)
+        public async Task Deactivate(string sizeModelId)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeModel(sizeModelId);
+
+            table.Status = 1;
         }
 
-        public Task<SizeModel> Get(string id)
+        public async Task DeactiveItem(string sizeModelItemId)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeItemModel(sizeModelItemId);
+
+            table.Status = 2;
         }
 
-        public Task<IEnumerable<SizeModel>> GetAll(PaginationDto pagination)
+        public async Task Delete(string sizeModelId)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeModel(sizeModelId);
+
+            context.SizeModels.Remove(table);
         }
 
-        public Task<SizeModelItem> GetItem(string sizeModelId, string sizeModelItemId)
+        public async Task DeleteItem(string sizeModelItemId)
         {
-            throw new NotImplementedException();
+            var table = await GetSizeItemModel(sizeModelItemId);
+
+            context.SizeModelItems.Remove(table);
         }
 
-        public Task<IEnumerable<SizeModelItem>> GetItems(string sizeModelId)
+        public async Task<SizeModel> Get(string sizeModelId)
         {
-            throw new NotImplementedException();
+            var data = await context.SizeModels.FindAsync(sizeModelId);
+
+            var dto = mapper.Map<SizeModel>(data);
+
+            return dto;
+        }
+
+        public async Task<SizeModelItem> GetItem(string sizeModelItemId)
+        {
+            var data = await context.SizeModelItems.FindAsync(sizeModelItemId);
+
+            var dto = mapper.Map<SizeModelItem>(data);
+
+            return dto;
         }
     }
 }

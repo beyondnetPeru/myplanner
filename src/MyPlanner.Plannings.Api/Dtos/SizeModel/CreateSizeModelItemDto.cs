@@ -1,13 +1,11 @@
-﻿using Azure.Core;
-
-namespace MyPlanner.Plannings.Api.Dtos.SizeModel
+﻿namespace MyPlanner.Plannings.Api.Dtos.SizeModel
 {
     public class CreateSizeModelItemDto
     {
         public string SizeModelId { get; set; }
         public string ProfileName { get; set; }
         public double ProfileAvgRateAmount { get; set; }
-        public string SizeModelFactorTypeCode { get; set; }
+        public string SizeModelFactorTypeId { get; set; }
         public string ProfileValueSelected { get; set; }
         public int ProfileCountValue { get; set; }
         public double TotalCost { get; set; }
@@ -16,7 +14,7 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
         public CreateSizeModelItemDto(string sizeModelId,
                                       string profileName,
                                       double profileAvgRateAmount,
-                                      string sizeModelFactorTypeCode,
+                                      string sizeModelFactorTypeId,
                                       string profileValueSelected,
                                       int profileCountValue,
                                       double totalCost,
@@ -25,11 +23,12 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
             SizeModelId = sizeModelId;
             ProfileName = profileName;
             ProfileAvgRateAmount = profileAvgRateAmount;
-            SizeModelFactorTypeCode = sizeModelFactorTypeCode;
+            SizeModelFactorTypeId = sizeModelFactorTypeId;
             ProfileValueSelected = profileValueSelected;
             ProfileCountValue = profileCountValue;
             TotalCost = totalCost;
             UserId = userId;
+
         }
     }
 }

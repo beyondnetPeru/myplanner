@@ -23,37 +23,6 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MyPlanner.IntegrationEventLogEF.IntegrationEventLogEntry", b =>
-                {
-                    b.Property<Guid>("EventId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EventTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TimesSent")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("EventId");
-
-                    b.ToTable("IntegrationEventLog", "myplanner-plannings");
-                });
-
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.ErrorTable", b =>
                 {
                     b.Property<Guid>("Id")
@@ -271,7 +240,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.ToTable("sizemodeltypes", "myplanner-plannings");
                 });
 
-            modelBuilder.Entity("MyPlanner.Shared.Infrastructure.Idempotency.ClientRequest", b =>
+            modelBuilder.Entity("MyPlanner.Plannings.Shared.Infrastructure.Idempotency.ClientRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -297,7 +266,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("PlanItemTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -339,7 +308,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.PlanTable", b =>
                 {
-                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("PlanTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -385,7 +354,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelItemTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -433,7 +402,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -476,7 +445,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeFactorTable", b =>
                 {
                     b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
-                        .WithMany("SizeModelTypeFactors")
+                        .WithMany("Factors")
                         .HasForeignKey("SizeModelTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -496,7 +465,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", b =>
                 {
-                    b.Navigation("SizeModelTypeFactors");
+                    b.Navigation("Factors");
                 });
 #pragma warning restore 612, 618
         }
