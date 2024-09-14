@@ -44,7 +44,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return mapper.Map<Plan>(table);
         }
 
-        public async Task AddAsync(Plan plan)
+        public async Task Create(Plan plan)
         {
             var table = mapper.Map<PlanTable>(plan);
 
@@ -65,7 +65,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Owner = owner;
         }
 
-        public async Task DeleteAsync(Plan plan)
+        public async Task Delete(Plan plan)
         {
             var table = mapper.Map<PlanTable>(plan);
 
@@ -183,5 +183,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
             table.Status = 3;
         }
+
     }
 }

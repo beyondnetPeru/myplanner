@@ -29,7 +29,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                 return false;
             }
 
-            await planRepository.AddAsync(plan);
+            await planRepository.Create(plan);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 

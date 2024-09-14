@@ -150,6 +150,11 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Closed.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
+
+        public void Delete(string PlanId)
+        {
+
+        }
     }
 }
 

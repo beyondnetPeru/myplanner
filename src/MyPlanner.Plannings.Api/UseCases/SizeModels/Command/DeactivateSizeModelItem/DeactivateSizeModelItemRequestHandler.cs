@@ -16,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeMode
 
         public async Task<bool> Handle(DeactivateSizeModelItemRequest request, CancellationToken cancellationToken)
         {
-            var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelId, request.SizeModelItemId);
+            var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelItemId);
 
             sizeModelItem.Deactivate(UserId.Create(request.UserId));
 

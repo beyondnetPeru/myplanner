@@ -16,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetPlanItem
 
         public async Task<PlanDto> Handle(GetPlanItemQuery request, CancellationToken cancellationToken)
         {
-            var query = await planRepository.GetItemById(request.PlanId, request.PlanItemId);
+            var query = await planRepository.GetItemById(request.PlanItemId);
 
             var dto = mapper.Map<PlanDto>(query);
 

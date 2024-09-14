@@ -30,15 +30,15 @@ namespace MyPlanner.Plannings.Api.Mappers
                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
 
             CreateMap<CreateSizeModelRequest, SizeModelProps>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.SizeModelItems, opt => opt.MapFrom(src => src.SizeModelItems));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<CreateSizeModelItemRequest, SizeModelItemProps>()
                 //.ForMember(dest => dest.Profile.GetValue().ProfileName, opt => opt.MapFrom(src => src.ProfileName))
                 //.ForMember(dest => dest.Profile.GetValue().ProfileAvgRate, opt => opt.MapFrom(src => src.ProfileAvgRateAmount))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.ProfileQuantity))
-                .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost))
-                .ForMember(dest => dest.SizeModelTypeFactor, opt => opt.MapFrom(src => src.SizeModelTypeFactorCode));
+                .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost));
+
+
 
             CreateMap<SizeModelProps, SizeModelTable>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))

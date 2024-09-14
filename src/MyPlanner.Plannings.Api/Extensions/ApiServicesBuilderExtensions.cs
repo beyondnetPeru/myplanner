@@ -39,10 +39,8 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<PlanningDbContext>>();
             builder.Services.AddTransient<IPlanningIntegrationEventService, PlanningIntegrationEventService>();
             builder.Services.AddScoped<ISizeModelTypeRepository, SizeModelTypeRepository>();
-            builder.Services.AddScoped<ISizeModelTypeFactorRepository, SizeModelTypeFactorRepository>();
             builder.Services.AddScoped<ISizeModelRepository, SizeModelRepository>();
             builder.Services.AddTransient<IPlanRepository, PlanRepository>();
-            builder.Services.AddTransient<IPlanItemRepository, PlanItemRepository>();
             builder.Services.AddScoped<IRequestManager, RequestManager>();
 
             //builder.AddRabbitMqEventBus("eventbus")

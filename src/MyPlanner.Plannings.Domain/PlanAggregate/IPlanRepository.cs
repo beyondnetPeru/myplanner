@@ -5,10 +5,10 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
     public interface IPlanRepository : IRepository<Plan>
     {
         Task<Plan> GetByIdAsync(string planId);
-        Task AddAsync(Plan plan);
+        Task Create(Plan plan);
         Task ChangeName(string planId, string name);
         Task ChangeOwner(string planId, string owner);
-        Task DeleteAsync(Plan plan);
+        Task Delete(Plan plan);
         Task Draft(string planId);
         Task Activate(string planId);
         Task Deactivate(string planId);

@@ -16,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModelI
 
         public async Task<bool> Handle(ActivateSizeModelItemRequest request, CancellationToken cancellationToken)
         {
-            var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelId, request.SizeModelItemId);
+            var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelItemId);
 
             sizeModelItem.Activate(UserId.Create(request.UserId));
 
