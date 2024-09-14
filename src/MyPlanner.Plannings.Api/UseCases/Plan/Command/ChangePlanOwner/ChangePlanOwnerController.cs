@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
@@ -7,7 +8,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/plans/{planId}/changeowner", async ([AsParameters] PlanServices service, ChangePlanOwnerDto changePlanOwnerDto) =>
+            app.MapPut("/plans/{planId}/changeowner", async ([AsParameters] PlanServices service, [FromBody] ChangePlanOwnerDto changePlanOwnerDto) =>
             {
                 var request = new ChangePlanOwnerRequest(changePlanOwnerDto.Id, changePlanOwnerDto.Owner, changePlanOwnerDto.UserId);
 
@@ -15,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 
                 return result ? Results.Ok() : Results.BadRequest();
 
-            });
+            }).WithTags(Tags.Plan);
 
         }
     }

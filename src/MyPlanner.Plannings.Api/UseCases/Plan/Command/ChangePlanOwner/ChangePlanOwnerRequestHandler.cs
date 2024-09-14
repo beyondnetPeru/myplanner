@@ -7,9 +7,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
     public class ChangePlanOwnerRequestHandler : IRequestHandler<ChangePlanOwnerRequest, bool>
     {
         private readonly IPlanRepository planRepository;
-        private readonly Logger<ChangePlanOwnerRequest> logger;
+        private readonly ILogger<ChangePlanOwnerRequest> logger;
 
-        public ChangePlanOwnerRequestHandler(IPlanRepository planRepository, Logger<ChangePlanOwnerRequest> logger)
+        public ChangePlanOwnerRequestHandler(IPlanRepository planRepository, ILogger<ChangePlanOwnerRequest> logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));

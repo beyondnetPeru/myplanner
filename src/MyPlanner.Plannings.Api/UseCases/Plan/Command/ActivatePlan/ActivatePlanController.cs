@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
@@ -7,7 +8,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/plans/{planId}/activate", async ([AsParameters] PlanServices service, ActivatePlanDto planDto) =>
+            app.MapPut("/plans/{planId}/activate", async ([AsParameters] PlanServices service, [FromBody] ActivatePlanDto planDto) =>
             {
                 var request = new ActivatePlanRequest(planDto.PlanId, planDto.UserId);
 
@@ -15,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 
                 return result ? Results.Ok() : Results.BadRequest();
 
-            });
+            }).WithTags(Tags.Plan);
 
         }
     }

@@ -12,6 +12,9 @@ using Carter;
 using MyPlanner.Plannings.Api.Services.Impl;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Infrastructure.Idempotency;
+using MyPlanner.Plannings.Api.UseCases.SizeModels.Queries;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
+using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {
@@ -39,8 +42,11 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<PlanningDbContext>>();
             builder.Services.AddTransient<IPlanningIntegrationEventService, PlanningIntegrationEventService>();
             builder.Services.AddScoped<ISizeModelTypeRepository, SizeModelTypeRepository>();
+            builder.Services.AddScoped<ISizeModelTypeQueryRepository, SizeModelTypeQueryRepository>();
             builder.Services.AddScoped<ISizeModelRepository, SizeModelRepository>();
+            builder.Services.AddScoped<ISizeModelQueryRepository, SizeModelQueryRepository>();
             builder.Services.AddTransient<IPlanRepository, PlanRepository>();
+            builder.Services.AddTransient<IPlanQueryRepository, PlanQueryRepository>();
             builder.Services.AddScoped<IRequestManager, RequestManager>();
 
             //builder.AddRabbitMqEventBus("eventbus")
