@@ -6,7 +6,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.GetAllSizeModelTypes
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/sizemodeltypes", async (int page = 1, int recordsPerPage = 10) =>
+            app.MapGet("/sizemodeltypes", async ([AsParameters] SizeModelTypeService service, int page = 1, int recordsPerPage = 10) =>
             {
 
                 var pagination = new PaginationDto()

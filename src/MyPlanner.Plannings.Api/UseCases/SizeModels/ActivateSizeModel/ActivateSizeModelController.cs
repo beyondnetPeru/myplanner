@@ -9,7 +9,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.ActivateSizeModel
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/sisemodels/{sizeModelId}/activate", async ([FromHeader(Name = "x-requestid")] Guid requestId, ActivateSizeModelDto activateSizeModelDto) =>
+            app.MapPut("/sisemodels/{sizeModelId}/activate", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] SizeModelService service, ActivateSizeModelDto activateSizeModelDto) =>
             {
                 var request = new ActivateSizeModelRequest(activateSizeModelDto.SizeModelId, activateSizeModelDto.UserId);
 

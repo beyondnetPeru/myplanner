@@ -8,6 +8,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.DeactivateSizeModelTyp
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapPut("/sizemodeltypes/{sizeModelTypeId}/factors/{sizeModelTypeFactorId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
+                                                                            [AsParameters] SizeModelTypeService service,
                                                                             [FromBody] DeactivateSizeModelTypeFactorDto DeactivateSizeModelTypeFactorDto) =>
             {
                 var request = new DeactivateSizeModelTypeFactorRequest(DeactivateSizeModelTypeFactorDto.SizeModelTypeId, DeactivateSizeModelTypeFactorDto.UserId);

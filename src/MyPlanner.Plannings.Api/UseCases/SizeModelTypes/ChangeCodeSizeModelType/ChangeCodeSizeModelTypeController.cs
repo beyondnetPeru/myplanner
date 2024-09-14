@@ -8,6 +8,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.ChangeCodeSizeModelTyp
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapPut("/sizemodeltypes/{sizeModelTypeId}/changecode", async ([FromHeader(Name = "x-requestid")] Guid requestId,
+                                                                            [AsParameters] SizeModelTypeService service,
                                                                             [FromBody] ChangeCodeSizeModelTypeDto changeCodeSizeModelTypeDto) =>
             {
                 var request = new ChangeCodeSizeModelTypeRequest(changeCodeSizeModelTypeDto.SizeModelTypeId, changeCodeSizeModelTypeDto.Code, changeCodeSizeModelTypeDto.UserId);

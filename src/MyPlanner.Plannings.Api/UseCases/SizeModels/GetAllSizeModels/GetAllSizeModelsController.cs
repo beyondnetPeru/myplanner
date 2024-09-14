@@ -1,4 +1,5 @@
 ﻿using MyPlanner.Plannings.Shared.Application.Dtos;
+using System.Net;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModels
 {
@@ -6,7 +7,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModels
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/sizemodels", async (int page = 1, int recordsPerPage = 10) =>
+            app.MapGet("/sizemodels", async ([AsParameters] SizeModelService service, int page = 1, int recordsPerPage = 10) =>
             {
                 var pagination = new PaginationDto()
                 {

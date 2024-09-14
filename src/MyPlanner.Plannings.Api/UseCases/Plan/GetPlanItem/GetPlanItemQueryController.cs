@@ -7,7 +7,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.GetPlanItem
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans/{planId}/items/{planItemId}", async ([AsParameters] PlanItemServices planIteServices, string planId, string planItemId) =>
+            app.MapGet("/plans/{planId}/items/{planItemId}", async ([AsParameters] PlanServices planServices, string planId, string planItemId) =>
             {
                 var query = new GetPlanItemQuery(planId, planItemId);
 

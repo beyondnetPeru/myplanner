@@ -6,7 +6,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.GetAllSizeModelItems
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/sizemodels/{sizeModelId}/items", async (string sizeModelId) =>
+            app.MapGet("/sizemodels/{sizeModelId}/items", async ([AsParameters] SizeModelService service, string sizeModelId) =>
             {
                 var query = new GetAllSizeModelItemQuery(sizeModelId);
 

@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using BeyondNet.Ddd.AutoMapper.Impl;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Plannings.Api.Dtos.Plan;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 

@@ -4,7 +4,7 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans/{planId}/items", async ([AsParameters] PlanItemServices planItemServices, string planId) =>
+            app.MapGet("/plans/{planId}/items", async ([AsParameters] PlanServices planServices, string planId) =>
             {
                 var query = new GetAllPlanItemsQuery(planId);
 

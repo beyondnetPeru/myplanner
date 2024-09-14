@@ -8,7 +8,8 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.AddSizeModelTypeFactor
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapPost("/sizemodeltypes/{sizeModelTypeId}/factors", async ([FromHeader(Name = "x-requestid")] Guid requestId,
-                                                                             [FromBody] AddSizeModelTypeFactorDto addSizeModelTypeFactorDto) =>
+                                                                            [AsParameters] SizeModelTypeService service,
+                                                                            [FromBody] AddSizeModelTypeFactorDto addSizeModelTypeFactorDto) =>
             {
                 var request = new AddSizeModelTypeFactorRequest(addSizeModelTypeFactorDto.SizeModelId, addSizeModelTypeFactorDto.Code, addSizeModelTypeFactorDto.Name, addSizeModelTypeFactorDto.UserId);
 

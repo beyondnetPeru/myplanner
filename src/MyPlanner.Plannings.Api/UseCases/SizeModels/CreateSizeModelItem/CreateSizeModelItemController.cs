@@ -9,7 +9,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.CreateSizeModelItem
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/sizemodels/{sizeModelId}/items", async ([FromHeader(Name = "x-requestid")] Guid requestId, [FromBody] CreateSizeModelItemDto createSizeModelItemDto) =>
+            app.MapPost("/sizemodels/{sizeModelId}/items", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] SizeModelService service, [FromBody] CreateSizeModelItemDto createSizeModelItemDto) =>
             {
                 var createSizeModelItemRequest = new CreateSizeModelItemRequest(createSizeModelItemDto.SizeModelId,
                                                                                 createSizeModelItemDto.ProfileName,

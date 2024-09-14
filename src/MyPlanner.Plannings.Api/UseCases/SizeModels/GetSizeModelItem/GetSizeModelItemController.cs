@@ -5,7 +5,7 @@
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapGet("/sizemodels/{sizeModelId}/items/{sizeModelItemId}", async
-                                                               (string sizeModelId,
+                                                               ([AsParameters] SizeModelService service, string sizeModelId,
                                                                string sizeModelItemId) =>
             {
                 var query = new GetSizeModelItemQuery(sizeModelId, sizeModelItemId);

@@ -9,7 +9,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.ChangeSizeModelName
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/sizemodels/{sizeModelId}/name", async ([FromHeader(Name = "x-requestid")] Guid requestId, [FromBody] ChangeSizeModelNameDto changeSizeModelNameDto) =>
+            app.MapPut("/sizemodels/{sizeModelId}/name", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] SizeModelService service, [FromBody] ChangeSizeModelNameDto changeSizeModelNameDto) =>
             {
                 var request = new ChangeSizeModelNameRequest(changeSizeModelNameDto.SizeModelId, changeSizeModelNameDto.Name, changeSizeModelNameDto.UserId);
 

@@ -1,7 +1,4 @@
-﻿using MediatR;
-
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.CreatePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.CreatePlan
 {
     public class CreatePlanRequest : IRequest<bool>
     {
