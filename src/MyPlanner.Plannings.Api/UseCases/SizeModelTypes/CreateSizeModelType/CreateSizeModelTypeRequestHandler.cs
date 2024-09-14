@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
-using MyPlanner.Plannings.Api.Endpoints;
-using BeyondNet.Ddd.ValueObjects;
+﻿using MyPlanner.Plannings.Api.Endpoints;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
@@ -25,21 +22,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.CreateSizeModelType
                 SizeModelTypeCode.Create(request.Code),
                 Name.Create(request.Name));
 
-            if (request.Factors.Any())
+            if (!sizeModelType.IsValid())
             {
-                foreach (var item in request.Factors)
-                {
-                    sizeModelType.AddFactor(SizeModelTypeFactor.Create(IdValueObject.Create(),
-                                            SizeModelTypeFactorCode.Create(item.Code),
-                                            Name.Create(item.Name), sizeModelType));
-
-                    if (!sizeModelType.IsValid())
-                    {
-                        logger.LogError($"The ${nameof(request)} following errors were found: {sizeModelType.GetBrokenRules()}");
-                        return false;
-                    }
-                }
+                logger.LogError($"SizeModelType is not valid. Errors: {sizeModelType.GetBrokenRules().ToString()}");
+                return false;
             }
+
 
             await sizeModelTypeRepository.Add(sizeModelType);
 
