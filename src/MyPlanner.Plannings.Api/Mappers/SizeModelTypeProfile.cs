@@ -1,5 +1,6 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
@@ -39,7 +40,7 @@ namespace MyPlanner.Plannings.Api.Mappers
               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
 
             CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeRequest>();
-                     
+
             CreateMap<SizeModelTypeTable, SizeModelType>()
                 .ConstructUsing(src => SizeModelType.Create(
                         IdValueObject.Create(src.Id),
@@ -47,6 +48,7 @@ namespace MyPlanner.Plannings.Api.Mappers
                         Name.Create(src.Name)
                     ));
 
+            CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeRequest>();
 
             //CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
             //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))

@@ -11,7 +11,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
                                                                               [AsParameters] SizeModelTypeService service,
                                                                               [FromBody] ChangeNameSizeModelTypeDto changeNameSizeModelTypeDto) =>
             {
-                var request = new ChangeNameSizeModelTypeRequest(changeNameSizeModelTypeDto.SizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
+                var request = service.Mapper.Map<ChangeNameSizeModelTypeRequest>(changeNameSizeModelTypeDto);
 
                 var result = await service.Mediator.Send(request);
 

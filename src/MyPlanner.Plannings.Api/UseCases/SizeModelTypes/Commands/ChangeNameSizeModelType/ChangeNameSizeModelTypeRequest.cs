@@ -4,14 +4,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
 {
     public class ChangeNameSizeModelTypeRequest : IRequest<bool>
     {
-        public ChangeNameSizeModelTypeRequest(string id, string name, string userId)
+        public ChangeNameSizeModelTypeRequest(string sizeModelTypeId, string name, string userId)
         {
-            Id = id;
+            SizeModelTypeId = sizeModelTypeId;
             Name = name;
             UserId = userId;
         }
 
-        public string Id { get; }
+        public string SizeModelTypeId { get; }
         public string Name { get; }
         public string UserId { get; }
     }
