@@ -22,14 +22,32 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         public Audit Audit { get; private set; }
         public PlanItemStatus Status { get; set; } = PlanItemStatus.Draft;
 
-        public PlanItemProps(IdValueObject id, SizeModelTypeFactor sizeModelTypeFactor, SizeModelTypeValueSelected sizeModelTypeValueSelected, BusinessFeature businessFeature, TechnicalDefinition technicalDefinition, UserId userId)
+        public PlanItemProps(IdValueObject id,
+                             SizeModelTypeFactor sizeModelTypeFactor,
+                             SizeModelTypeValueSelected sizeModelTypeValueSelected,
+                             BusinessFeature businessFeature,
+                             TechnicalDefinition technicalDefinition,
+                             ComponentsImpacted componentsImpacted,
+                             TechnicalDependencies technicalDependencies,
+                             BallParkCost ballParkCost,
+                             BallParkDependenciesCost ballParkDependenciesCost,
+                             BallParkTotalCost ballParkTotalCost,
+                             KeyAssumptions keyAssumptions,
+                             UserId userId)
         {
             Id = id;
             SizeModelTypeFactor = sizeModelTypeFactor;
             SizeModelTypeValueSelected = sizeModelTypeValueSelected;
             BusinessFeature = businessFeature;
             TechnicalDefinition = technicalDefinition;
+            ComponentsImpacted = componentsImpacted;
+            TechnicalDependencies = technicalDependencies;
+            BallParkCost = ballParkCost;
+            BallParkDependenciesCost = ballParkDependenciesCost;
+            BallParkTotalCost = ballParkTotalCost;
+            KeyAssumptions = keyAssumptions;
             Audit = Audit.Create(userId.GetValue());
+            Status = PlanItemStatus.Draft;
         }
 
         public object Clone()
@@ -44,9 +62,31 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         {
         }
 
-        public static PlanItem Create(IdValueObject id, SizeModelTypeFactor sizeModelTypeFactor, SizeModelTypeValueSelected sizeModelTypeValueSelected, BusinessFeature businessFeature, TechnicalDefinition technicalDefinition, UserId userId)
+        public static PlanItem Create(IdValueObject id,
+                             SizeModelTypeFactor sizeModelTypeFactor,
+                             SizeModelTypeValueSelected sizeModelTypeValueSelected,
+                             BusinessFeature businessFeature,
+                             TechnicalDefinition technicalDefinition,
+                             ComponentsImpacted componentsImpacted,
+                             TechnicalDependencies technicalDependencies,
+                             BallParkCost ballParkCost,
+                             BallParkDependenciesCost ballParkDependenciesCost,
+                             BallParkTotalCost ballParkTotalCost,
+                             KeyAssumptions keyAssumptions,
+                             UserId userId)
         {
-            return new PlanItem(new PlanItemProps(id, sizeModelTypeFactor, sizeModelTypeValueSelected, businessFeature, technicalDefinition, userId));
+            return new PlanItem(new PlanItemProps(id,
+                                               sizeModelTypeFactor,
+                                               sizeModelTypeValueSelected,
+                                               businessFeature,
+                                               technicalDefinition,
+                                               componentsImpacted,
+                                               technicalDependencies,
+                                               ballParkCost,
+                                               ballParkDependenciesCost,
+                                               ballParkTotalCost,
+                                               keyAssumptions,
+                                               userId));
         }
 
         public void ChangeSizeModelTypeValueSelected(SizeModelTypeValueSelected sizeModelTypeValueSelected, UserId userId)
