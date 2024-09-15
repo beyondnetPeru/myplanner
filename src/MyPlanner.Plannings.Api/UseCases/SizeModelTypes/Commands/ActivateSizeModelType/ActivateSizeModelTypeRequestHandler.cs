@@ -6,15 +6,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeM
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
         private readonly ILogger<ActivateSizeModelTypeRequestHandler> logger;
-        private readonly IMapper mapper;
 
         public ActivateSizeModelTypeRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository,
-                                                   ILogger<ActivateSizeModelTypeRequestHandler> logger,
-                                                   IMapper mapper)
+                                                   ILogger<ActivateSizeModelTypeRequestHandler> logger)
         {
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<bool> Handle(ActivateSizeModelTypeRequest request, CancellationToken cancellationToken)

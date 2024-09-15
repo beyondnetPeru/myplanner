@@ -10,7 +10,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public IdValueObject Id { get; private set; }
         public SizeModelTypeCode Code { get; private set; }
         public Name Name { get; private set; }
-        public ICollection<SizeModelTypeFactor> Factors { get; private set; }
+        public ICollection<SizeModelTypeFactor> Factors { get; private set; } = new List<SizeModelTypeFactor>();
         public SizeModelTypeStatus Status { get; private set; }
 
         public SizeModelTypeProps(IdValueObject id, SizeModelTypeCode code, Name name)
@@ -22,9 +22,17 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Status = SizeModelTypeStatus.Active;
         }
 
+        public SizeModelTypeProps(IdValueObject id, SizeModelTypeCode code, Name name, SizeModelTypeStatus status)
+        {
+            Id = id;
+            Code = code;
+            Name = name;
+            Status = status;
+        }
+
         public object Clone()
         {
-            return new SizeModelTypeProps(Id, Code, Name);
+            return new SizeModelTypeProps(Id, Code, Name, Status);
         }
     }
 
@@ -39,9 +47,20 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             return new SizeModelType(new SizeModelTypeProps(id, code, value));
         }
 
-        public static SizeModelType Load(string id, string code, string name)
+        public static SizeModelType Create(SizeModelTypeProps props)
         {
-            return Create(IdValueObject.Create(id), SizeModelTypeCode.Create(code), Name.Create(name));
+            return new SizeModelType(props);
+        }
+
+        public static SizeModelType Load(string id, string code, string name, int status)
+        {
+            var props = new SizeModelTypeProps(IdValueObject.Create(id),
+                                               SizeModelTypeCode.Create(code),
+                                               Name.Create(name),
+                                               Enumeration.FromValue<SizeModelTypeStatus>(status));
+
+            return SizeModelType.Create(props);
+
         }
 
         public void ChangeCode(SizeModelTypeCode value)

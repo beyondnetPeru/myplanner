@@ -11,7 +11,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeM
                                                                              [AsParameters] SizeModelTypeService service,
                                                                              [FromBody] ActivateSizeModelTypeDto activateSizeModelTypeDto) =>
             {
-                var request = new ActivateSizeModelTypeRequest(activateSizeModelTypeDto.SizeModelTypeId, activateSizeModelTypeDto.UserId);
+                var request = service.Mapper.Map<ActivateSizeModelTypeRequest>(activateSizeModelTypeDto);
 
                 var result = await service.Mediator.Send(request);
 

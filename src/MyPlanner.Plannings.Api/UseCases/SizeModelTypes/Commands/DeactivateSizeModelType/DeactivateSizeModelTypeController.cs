@@ -11,7 +11,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
                                                                             [AsParameters] SizeModelTypeService service,
                                                                             [FromBody] DeactivateSizeModelTypeDto deactivateSizeModelTypeDto) =>
             {
-                var request = new DeactivateSizeModelTypeRequest(deactivateSizeModelTypeDto.SizeModelTypeId, deactivateSizeModelTypeDto.UserId);
+                var request = service.Mapper.Map<DeactivateSizeModelTypeRequest>(deactivateSizeModelTypeDto);
 
                 var result = await service.Mediator.Send(request);
 

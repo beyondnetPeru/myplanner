@@ -1,7 +1,9 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
@@ -42,13 +44,18 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeRequest>();
 
             CreateMap<SizeModelTypeTable, SizeModelType>()
-                .ConstructUsing(src => SizeModelType.Create(
-                        IdValueObject.Create(src.Id),
-                        SizeModelTypeCode.Create(src.Code),
-                        Name.Create(src.Name)
+                .ConstructUsing(src => SizeModelType.Load(
+                        src.Id,
+                        src.Code,
+                        src.Name,
+                        src.Status
                     ));
 
             CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeRequest>();
+
+            CreateMap<ActivateSizeModelTypeDto, ActivateSizeModelTypeRequest>();
+
+            CreateMap<DeactivateSizeModelTypeDto, DeactivateSizeModelTypeRequest>();
 
             //CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
             //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
