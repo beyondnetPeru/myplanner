@@ -4,7 +4,7 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/sizemodeltypes/{sizeModelTypeCode}", async ([AsParameters] SizeModelTypeService service, string sizeModelTypeCode) =>
+            app.MapGet("/sizemodeltypes/bycode/{sizeModelTypeCode}", async ([AsParameters] SizeModelTypeService service, string sizeModelTypeCode) =>
             {
                 var query = new GetSizeModelTypeByCodeQuery(sizeModelTypeCode);
 

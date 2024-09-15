@@ -1,26 +1,19 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
+﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeById
 {
-    public class GetSizeModelTypeByIdQueryHandler : IRequestHandler<GetSizeModelTypeByIdQuery, SizeModelDto>
+    public class GetSizeModelTypeByIdQueryHandler : IRequestHandler<GetSizeModelTypeByIdQuery, SizeModelTypeDto>
     {
         private readonly ISizeModelTypeQueryRepository sizeModelTypeQueryRepository;
-        private readonly IMapper mapper;
 
-        public GetSizeModelTypeByIdQueryHandler(ISizeModelTypeQueryRepository sizeModelTypeQueryRepository, IMapper mapper)
+        public GetSizeModelTypeByIdQueryHandler(ISizeModelTypeQueryRepository sizeModelTypeQueryRepository)
         {
             this.sizeModelTypeQueryRepository = sizeModelTypeQueryRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeQueryRepository));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<SizeModelDto> Handle(GetSizeModelTypeByIdQuery request, CancellationToken cancellationToken)
+        public async Task<SizeModelTypeDto> Handle(GetSizeModelTypeByIdQuery request, CancellationToken cancellationToken)
         {
-            var sizeModelType = await sizeModelTypeQueryRepository.GetById(request.Id);
-
-            var dto = mapper.Map<SizeModelDto>(sizeModelType);
-
-            return dto;
+            return await sizeModelTypeQueryRepository.GetById(request.Id);
         }
     }
 }
