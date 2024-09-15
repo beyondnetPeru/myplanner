@@ -32,7 +32,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public object Clone()
         {
-            return new SizeModelTypeProps(Id, Code, Name, Status);
+            return this.MemberwiseClone();
         }
     }
 
