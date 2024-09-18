@@ -10,7 +10,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
         public ICollection<AddSizeModelTypeFactorRequest> Factors { get; set; }
         public string UserId { get; private set; }
 
-        public CreateSizeModelTypeRequest(string code, string name, string description, ICollection<AddSizeModelTypeFactorRequest> factors, string userId)
+        public CreateSizeModelTypeRequest(string code,
+                                          string name,
+                                          string description,
+                                          ICollection<AddSizeModelTypeFactorRequest> factors,
+                                          string userId)
         {
             Code = code;
             Name = name;

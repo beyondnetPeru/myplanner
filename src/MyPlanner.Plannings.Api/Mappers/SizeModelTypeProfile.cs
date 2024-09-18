@@ -75,31 +75,44 @@ namespace MyPlanner.Plannings.Api.Mappers
                 ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorResolver()));
 
 
-
-
-            CreateMap<SizeModelTypeFactorProps, SizeModelTypeFactorTable>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-            .ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType.GetPropsCopy()))
-            .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
-
-
             CreateMap<SizeModelTypeProps, SizeModelTypeTable>()
-            .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-            .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
-            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
-            .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
-            .ForMember(dest => dest.Factors, opt => opt.MapFrom(src => src.Factors));
+                .ConstructUsing(src =>
+                {
+                    var sizeModelTypeTable = new SizeModelTypeTable
+                    {
+                        Id = src.Id.GetValue(),
+                        Code = src.Code.GetValue(),
+                        Name = src.Name.GetValue(),
+                        Status = src.Status.Id
+                    };
 
+                    if (src.Factors != null)
+                    {
+                        src.Factors.ToList().ForEach(item =>
+                        {
+                            var factor = new SizeModelTypeFactorTable
+                            {
+                                Id = item.GetPropsCopy().Id.GetValue(),
+                                SizeModelType = sizeModelTypeTable,
+                                Code = item.GetPropsCopy().Code.GetValue(),
+                                Name = item.GetPropsCopy().Name.GetValue(),
+                                Status = item.GetPropsCopy().Status.Id,
+                            };
 
+                            sizeModelTypeTable.Factors.Add(factor);
+                        });
+                    }
+
+                    return sizeModelTypeTable;
+                });
+                    
             CreateMap<SizeModelTypeTable, SizeModelType>()
-                .ConstructUsing(src => SizeModelType.Load(
-                        src.Id,
-                        src.Code,
-                        src.Name,
-                        src.Status
-                    ));
+           .ConstructUsing(src => SizeModelType.Load(
+                   src.Id,
+                   src.Code,
+                   src.Name,
+                   src.Status
+               ));
 
             // Size Model Type Factors
             CreateMap<AddSizeModelTypeFactorDto, AddSizeModelTypeFactorRequest>();
@@ -112,33 +125,20 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
 
 
-
-            //CreateMap<SizeModelType, SizeModelTypeDto>()
-            //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GetProps().Id.GetValue()))
-            //    .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.GetProps().Code.GetValue()))
-            //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetProps().Name.GetValue()));
-
-
-            //CreateMap<SizeModelTypeFactor, SizeModelTypeFactorDto>()
-            //   .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.GetProps().Id.GetValue()))
-            //   .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.GetProps().Code.GetValue()))
-            //   .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.GetProps().Name.GetValue()));
-
-            //CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeRequest>();
-
-
-            //CreateMap<SizeModelTypeTable, SizeModelTypeProps>()
-            //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            //    .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
-            //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-            //    .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-            //    .ForMember(dest => dest.Factors, opt => opt.Ignore());
-
+            //CreateMap<SizeModelTypeProps, SizeModelTypeTable>()
+            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
+            //.ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
+            //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
+            //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
+            //.ForMember(dest => dest.Factors, opt => opt.MapFrom(src => src.Factors));
 
             //CreateMap<SizeModelTypeFactorProps, SizeModelTypeFactorTable>()
-            //    .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-            //    .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
-            //    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()));
+            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
+            //.ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType.GetPropsCopy()))
+            //.ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
+            //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
+            //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
+
 
 
         }
