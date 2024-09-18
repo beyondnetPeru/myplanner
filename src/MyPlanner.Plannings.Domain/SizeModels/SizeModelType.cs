@@ -18,7 +18,6 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Id = id;
             Code = code;
             Name = name;
-            Factors = new List<SizeModelTypeFactor>();
             Status = SizeModelTypeStatus.Active;
         }
 
@@ -42,9 +41,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         {
         }
 
-        public static SizeModelType Create(IdValueObject id, SizeModelTypeCode code, Name value)
+        public static SizeModelType Create(IdValueObject id, SizeModelTypeCode code, Name name)
         {
-            return new SizeModelType(new SizeModelTypeProps(id, code, value));
+            return new SizeModelType(new SizeModelTypeProps(id, code, name));
         }
 
         public static SizeModelType Create(SizeModelTypeProps props)

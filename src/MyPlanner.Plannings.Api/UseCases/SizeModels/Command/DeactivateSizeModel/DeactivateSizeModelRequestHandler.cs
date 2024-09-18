@@ -26,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeMode
                 return false;
             }
 
-            await sizeModelRepository.Deactivate(sizeModel.GetPropsCopy().Id.GetValue());
+            sizeModelRepository.Deactivate(sizeModel.GetPropsCopy().Id.GetValue());
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 

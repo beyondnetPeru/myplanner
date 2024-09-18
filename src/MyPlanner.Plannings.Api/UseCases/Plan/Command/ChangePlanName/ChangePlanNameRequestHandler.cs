@@ -15,7 +15,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
-            await planRepository.ChangeName(request.PlanId, request.Name);
+            planRepository.ChangeName(request.PlanId, request.Name);
 
             return true;
         }

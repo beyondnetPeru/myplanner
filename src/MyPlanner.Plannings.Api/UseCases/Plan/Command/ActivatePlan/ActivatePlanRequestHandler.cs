@@ -26,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 
             plan.Activate(UserId.Create(request.UserId));
 
-            await planRepository.Activate(request.PlanId);
+            planRepository.Activate(request.PlanId);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

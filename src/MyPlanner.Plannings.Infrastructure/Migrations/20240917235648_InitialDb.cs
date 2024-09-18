@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCatalog : Migration
+    public partial class InitialDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -167,7 +167,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SizeModelTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SizeModelTypeId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Code = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false)
@@ -180,8 +180,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         column: x => x.SizeModelTypeId,
                         principalSchema: "myplanner-plannings",
                         principalTable: "sizemodeltypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +190,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SizeModelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SizeModelTypeFactorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SizeModelTypeFactorCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -202,7 +202,8 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

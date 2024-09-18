@@ -8,28 +8,22 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.AddSizeModelT
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
         private readonly ILogger<AddSizeModelTypeFactorRequestHandler> logger;
-        private readonly IMapper mapper;
 
-        public AddSizeModelTypeFactorRequestHandler(ISizeModelTypeRepository modelTypeRepository,
-                                                    ILogger<AddSizeModelTypeFactorRequestHandler> logger,
-                                                    IMapper mapper)
+        public AddSizeModelTypeFactorRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository,
+                                                    ILogger<AddSizeModelTypeFactorRequestHandler> logger)
         {
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<bool> Handle(AddSizeModelTypeFactorRequest request, CancellationToken cancellationToken)
         {
-            var dto = await sizeModelTypeRepository.GetById(request.SizeModelId);
 
-            var sizeModelType = mapper.Map<SizeModelType>(dto);
+            var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelId);
 
             var factor = SizeModelTypeFactor.Create(IdValueObject.Create(),
                                                     SizeModelTypeFactorCode.Create(request.Code),
                                                     Name.Create(request.Name), sizeModelType);
-
-            sizeModelType.AddFactor(factor);
 
             if (!factor.IsValid())
             {
@@ -37,7 +31,15 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.AddSizeModelT
                 return false;
             }
 
-            await sizeModelTypeRepository.AddFactor(factor);
+            sizeModelType.AddFactor(factor);
+
+            if (!sizeModelType.IsValid())
+            {
+                logger.LogError($"Invalid factor. Error: {factor.GetBrokenRules()}");
+                return false;
+            }
+
+            sizeModelTypeRepository.AddFactor(factor);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(factor, cancellationToken);
 

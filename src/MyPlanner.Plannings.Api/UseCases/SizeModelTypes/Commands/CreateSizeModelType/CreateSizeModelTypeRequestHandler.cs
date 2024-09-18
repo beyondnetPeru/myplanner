@@ -1,4 +1,6 @@
 ﻿using MyPlanner.Plannings.Api.Endpoints;
+using MyPlanner.Plannings.Api.Services.Impl;
+using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
@@ -7,21 +9,50 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
     public class CreateSizeModelTypeRequestHandler : IRequestHandler<CreateSizeModelTypeRequest, bool>
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
+        private readonly IPlanningIntegrationEventService planningIntegrationEventService;
         private readonly ILogger<CreateSizeModelTypeRequestHandler> logger;
         private readonly IMapper mapper;
 
-        public CreateSizeModelTypeRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository, ILogger<CreateSizeModelTypeRequestHandler> logger, IMapper mapper)
+        public CreateSizeModelTypeRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository,
+                                                 IPlanningIntegrationEventService planningIntegrationEventService,
+                                                 ILogger<CreateSizeModelTypeRequestHandler> logger,
+                                                 IMapper mapper)
         {
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
+            this.planningIntegrationEventService = planningIntegrationEventService ?? throw new ArgumentNullException(nameof(planningIntegrationEventService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<bool> Handle(CreateSizeModelTypeRequest request, CancellationToken cancellationToken)
         {
-            var props = mapper.Map<SizeModelTypeProps>(request);
 
+            var planningIntegrationEvent = new PlanningIntegrationEvent(request.UserId);
+            await planningIntegrationEventService.AddAndSaveEventAsync(planningIntegrationEvent);
+
+
+            var props = mapper.Map<SizeModelTypeProps>(request);
             var sizeModelType = SizeModelType.Create(IdValueObject.Create(), props.Code, props.Name);
+
+            if (request.Factors != null)
+            {
+                foreach (var item in request.Factors)
+                {
+                    var factor = SizeModelTypeFactor.Create(IdValueObject.Create(),
+                                                            SizeModelTypeFactorCode.Create(item.Code),
+                                                            Name.Create(item.Name),
+                                                            sizeModelType);
+
+                    if (!factor.IsValid())
+                    {
+                        logger.LogError($"SizeModelTypeFactor is not valid. Errors: {factor.GetBrokenRules().ToString()}");
+                        return false;
+                    }
+
+                    sizeModelType.AddFactor(factor);
+                }
+            }
+
 
             if (!sizeModelType.IsValid())
             {
@@ -29,7 +60,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
                 return false;
             }
 
-            await sizeModelTypeRepository.Add(sizeModelType);
+            sizeModelTypeRepository.Add(sizeModelType);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelType, cancellationToken);
 

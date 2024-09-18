@@ -39,7 +39,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModelIte
                 return false;
             }
 
-            await sizeModelRepository.AddItem(sizeModelItem);
+            sizeModelRepository.AddItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 

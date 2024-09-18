@@ -27,7 +27,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
                 return false;
             }
 
-            await planRepository.ChangeOwner(request.PlanId, request.Owner);
+            planRepository.ChangeOwner(request.PlanId, request.Owner);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

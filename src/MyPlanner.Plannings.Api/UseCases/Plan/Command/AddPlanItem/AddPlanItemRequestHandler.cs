@@ -52,7 +52,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
                 return false;
             }
 
-            await planRepository.AddItemAsync(planItem);
+            planRepository.AddItem(planItem);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(planItem, cancellationToken);
 

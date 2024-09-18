@@ -7,16 +7,13 @@ using MyPlanner.Plannings.Infrastructure.Database.Configurations;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Products.Infrastructure.Database.Configurations;
 using MyPlanner.Plannings.Shared.Extensions;
+using MyPlanner.Plannings.IntegrationEventLogEF;
 
 namespace MyPlanner.Plannings.Infrastructure.Database
 {
     public class PlanningDbContext : DbContext, IUnitOfWork
     {
-        private readonly IMediator mediator;
 
-        private IDbContextTransaction? currentTransaction;
-        public IDbContextTransaction GetCurrentTransaction() => currentTransaction!;
-        public bool HasActiveTransaction => currentTransaction != null;
         public DbSet<ErrorTable> Errors { get; set; }
         public DbSet<PlanTable> Plans { get; set; }
         public DbSet<PlanItemTable> PlanItems { get; set; }
@@ -24,6 +21,12 @@ namespace MyPlanner.Plannings.Infrastructure.Database
         public DbSet<SizeModelTypeFactorTable> SizeModelTypeFactors { get; set; }
         public DbSet<SizeModelTable> SizeModels { get; set; }
         public DbSet<SizeModelItemTable> SizeModelItems { get; set; }
+
+        private readonly IMediator mediator;
+
+        private IDbContextTransaction? currentTransaction;
+        public IDbContextTransaction GetCurrentTransaction() => currentTransaction!;
+        public bool HasActiveTransaction => currentTransaction != null;
 
         public PlanningDbContext(DbContextOptions<PlanningDbContext> options, IMediator mediator) : base(options)
         {
@@ -46,7 +49,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new PlanConfiguration());
             modelBuilder.ApplyConfiguration(new PlanItemConfiguration());
 
-            //modelBuilder.UseIntegrationEventLogs();
+            modelBuilder.UseIntegrationEventLogs();
         }
 
         public async Task<bool> SaveEntitiesAsync(object entity, CancellationToken cancellationToken = default)

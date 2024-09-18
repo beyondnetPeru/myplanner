@@ -7,13 +7,13 @@ namespace MyPlanner.Plannings.Api.Endpoints
     {
         Task<SizeModelType> GetById(string sizeModelTypeId);
         Task<SizeModelTypeFactor> GetFactorById(string sizeModelTypeId);
-        Task Add(SizeModelType item);
-        Task ChangeCode(string sizeModelTypeId, string code);
-        Task ChangeName(string sizeModelTypeId, string name);
-        Task Activate(string sizeModelTypeId);
-        Task Deactivate(string sizeModelTypeId);
-        Task AddFactor(SizeModelTypeFactor item);
-        Task ActivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
-        Task DeactivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
+        void Add(SizeModelType item);
+        void ChangeCode(string sizeModelTypeId, string code);
+        void ChangeName(string sizeModelTypeId, string name);
+        void Activate(string sizeModelTypeId);
+        void Deactivate(string sizeModelTypeId);
+        void AddFactor(SizeModelTypeFactor item);
+        void ActivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
+        void DeactivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
     }
 }

@@ -12,7 +12,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public Name Name { get; private set; }
         public SizeModelType SizeModelType { get; private set; }
 
-        public SizeModelItemStatus Status { get; private set; }
+        public SizeModelTypeFactorStatus Status { get; private set; }
 
         public SizeModelTypeFactorProps(IdValueObject id, SizeModelTypeFactorCode code, Name name, SizeModelType sizeModelType)
         {
@@ -20,7 +20,16 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Code = code;
             Name = name;
             SizeModelType = sizeModelType;
-            Status = SizeModelItemStatus.Active;
+            Status = SizeModelTypeFactorStatus.Active;
+        }
+
+        public SizeModelTypeFactorProps(IdValueObject id, SizeModelTypeFactorCode code, Name name, SizeModelType sizeModelType, SizeModelTypeFactorStatus sizeModelTypeFactorStatus)
+        {
+            Id = id;
+            Code = code;
+            Name = name;
+            SizeModelType = sizeModelType;
+            Status = sizeModelTypeFactorStatus;
         }
 
         public object Clone()
@@ -40,6 +49,11 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             return new SizeModelTypeFactor(new SizeModelTypeFactorProps(id, code, name, sizeModelType));
         }
 
+        public static SizeModelTypeFactor Load(IdValueObject id, SizeModelTypeFactorCode code, Name name, SizeModelType sizeModelType, SizeModelTypeFactorStatus sizeModelTypeFactorStatus)
+        {
+            return new SizeModelTypeFactor(new SizeModelTypeFactorProps(id, code, name, sizeModelType, sizeModelTypeFactorStatus));
+        }
+
         public void ChangeName(Name name)
         {
             GetProps().Name.SetValue(name.GetValue());
@@ -52,24 +66,24 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void Activate()
         {
-            if (GetProps().Status == SizeModelItemStatus.Active)
+            if (GetProps().Status == SizeModelTypeFactorStatus.Active)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is already active.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Active.Id);
+            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelTypeFactorStatus.Active.Id);
         }
 
         public void Deactivate()
         {
-            if (GetProps().Status == SizeModelItemStatus.Inactive)
+            if (GetProps().Status == SizeModelTypeFactorStatus.Inactive)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is already inactive.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Inactive.Id);
+            GetProps().Status.SetValue<SizeModelTypeFactorStatus>(SizeModelTypeFactorStatus.Inactive.Id);
         }
     }
 

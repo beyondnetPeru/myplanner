@@ -23,79 +23,79 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         private async Task<SizeModelTable> GetSizeModel(string sizeModelId)
         {
-            return await context.SizeModels.FirstAsync(x => x.Id == sizeModelId);
+            return await context.SizeModels.AsNoTracking().FirstAsync(x => x.Id == sizeModelId);
         }
 
         private async Task<SizeModelItemTable> GetSizeItemModel(string sizeModelItemId)
         {
-            return await context.SizeModelItems.FirstAsync(x => x.Id == sizeModelItemId);
+            return await context.SizeModelItems.AsNoTracking().FirstAsync(x => x.Id == sizeModelItemId);
         }
 
 
-        public async Task Activate(string id)
+        public async void Activate(string id)
         {
             var table = await GetSizeModel(id);
 
             table.Status = 1;
         }
 
-        public async Task ActiveItem(string sizeModelItemId)
+        public async void ActiveItem(string sizeModelItemId)
         {
             var table = await GetSizeItemModel(sizeModelItemId);
 
             table.Status = 2;
         }
 
-        public async Task Add(SizeModel sizeModel)
+        public void Add(SizeModel sizeModel)
         {
             var table = mapper.Map<SizeModelTable>(sizeModel);
 
-            await context.SizeModels.AddAsync(table);
+            context.SizeModels.Add(table);
         }
 
-        public async Task AddItem(SizeModelItem sizeModelItem)
+        public void AddItem(SizeModelItem sizeModelItem)
         {
             var table = mapper.Map<SizeModelItemTable>(sizeModelItem);
 
-            await context.SizeModelItems.AddAsync(table);
+            context.SizeModelItems.Add(table);
         }
 
-        public async Task ChangeItemName(string sizeModelItemId, string name)
+        public async void ChangeItemName(string sizeModelItemId, string name)
         {
             var table = await GetSizeItemModel(sizeModelItemId);
 
             table.Name = name;
         }
 
-        public async Task ChangeName(string sizeModelId, string name)
+        public async void ChangeName(string sizeModelId, string name)
         {
             var table = await GetSizeModel(sizeModelId);
 
             table.Name = name;
         }
 
-        public async Task Deactivate(string sizeModelId)
+        public async void Deactivate(string sizeModelId)
         {
             var table = await GetSizeModel(sizeModelId);
 
             table.Status = 1;
         }
 
-        public async Task DeactiveItem(string sizeModelItemId)
+        public async void DeactiveItem(string sizeModelItemId)
         {
             var table = await GetSizeItemModel(sizeModelItemId);
 
             table.Status = 2;
         }
 
-        public async Task Delete(string sizeModelId)
+        public async void Delete(string sizeModelId)
         {
             var table = await GetSizeModel(sizeModelId);
 
             context.SizeModels.Remove(table);
         }
 
-        public async Task DeleteItem(string sizeModelItemId)
+        public async void DeleteItem(string sizeModelItemId)
         {
             var table = await GetSizeItemModel(sizeModelItemId);
 
@@ -104,7 +104,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async Task<SizeModel> Get(string sizeModelId)
         {
-            var data = await context.SizeModels.FindAsync(sizeModelId);
+            var data = await context.SizeModels.AsNoTracking().FirstOrDefaultAsync(x => x.Id == sizeModelId);
 
             var dto = mapper.Map<SizeModel>(data);
 
@@ -113,7 +113,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async Task<SizeModelItem> GetItem(string sizeModelItemId)
         {
-            var data = await context.SizeModelItems.FindAsync(sizeModelItemId);
+            var data = await context.SizeModelItems.AsNoTracking().FirstOrDefaultAsync(x => x.Id == sizeModelItemId);
 
             var dto = mapper.Map<SizeModelItem>(data);
 

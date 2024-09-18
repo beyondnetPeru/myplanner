@@ -26,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
                 return false;
             }
 
-            await sizeModelTypeRepository.Deactivate(request.SizeModelTypeId);
+            sizeModelTypeRepository.Deactivate(request.SizeModelTypeId);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 

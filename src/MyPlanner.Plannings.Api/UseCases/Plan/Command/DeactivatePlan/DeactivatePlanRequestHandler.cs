@@ -25,7 +25,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
                 return false;
             }
 
-            await planRepository.Deactivate(request.PlanId);
+            planRepository.Deactivate(request.PlanId);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

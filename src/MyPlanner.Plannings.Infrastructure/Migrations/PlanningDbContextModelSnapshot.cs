@@ -134,6 +134,10 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("ProfileAvgRateAmount")
                         .HasColumnType("float");
 
@@ -158,6 +162,9 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Property<string>("SizeModelTypeFactorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<double>("TotalCost")
                         .HasColumnType("float");
@@ -206,7 +213,6 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SizeModelTypeId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
@@ -238,6 +244,37 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("sizemodeltypes", "myplanner-plannings");
+                });
+
+            modelBuilder.Entity("MyPlanner.Plannings.IntegrationEventLogEF.IntegrationEventLogEntry", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EventTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimesSent")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("EventId");
+
+                    b.ToTable("IntegrationEventLog", "myplanner-plannings");
                 });
 
             modelBuilder.Entity("MyPlanner.Plannings.Shared.Infrastructure.Idempotency.ClientRequest", b =>
@@ -446,9 +483,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
                         .WithMany("Factors")
-                        .HasForeignKey("SizeModelTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SizeModelTypeId");
 
                     b.Navigation("SizeModelType");
                 });

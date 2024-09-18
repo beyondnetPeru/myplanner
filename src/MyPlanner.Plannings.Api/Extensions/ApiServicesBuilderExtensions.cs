@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.IntegrationEventLogEF.Services;
 using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
-using MyPlanner.Plannings.Shared.Application.Behaviors;
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Api.Endpoints;
 using MyPlanner.Plannings.Infrastructure.Repositories;
@@ -15,6 +14,8 @@ using MyPlanner.Plannings.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Queries;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
 using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
+using MyPlanner.Plannings.Shared.Application.Behaviors;
+using MyPlanner.Plannings.Api.Behaviors;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {
@@ -34,6 +35,14 @@ namespace MyPlanner.Plannings.Api.Extensions
             var assembly = typeof(Program).Assembly;
 
             builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
+
+            builder.Services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
+
+                cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+                cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
+            });
 
             builder.Services.AddCarter();
 

@@ -51,7 +51,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 
         public async Task<IEnumerable<SizeModelTypeFactorDto>> GetFactors(string sizeModelTypeId)
         {
-            var data = await context.SizeModelTypeFactors.Where(x => x.SizeModelTypeId == sizeModelTypeId).ToListAsync();
+            var data = await context.SizeModelTypeFactors.Where(x => x.Id == sizeModelTypeId).ToListAsync();
 
             var dtos = mapper.Map<ICollection<SizeModelTypeFactorDto>>(data);
 

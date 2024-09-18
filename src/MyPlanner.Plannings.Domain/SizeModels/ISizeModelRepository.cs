@@ -6,15 +6,15 @@ namespace MyPlanner.Plannings.Domain.SizeModels
     {
         Task<SizeModel> Get(string sizeModelId);
         Task<SizeModelItem> GetItem(string sizeModelItemId);
-        Task Add(SizeModel sizeModel);
-        Task ChangeName(string sizeModelId, string name);
-        Task Deactivate(string sizeModelId);
-        Task Activate(string sizeModelId);
-        Task Delete(string sizeModelId);
-        Task AddItem(SizeModelItem sizeModelItem);
-        Task ChangeItemName(string sizeModelItemId, string name);
-        Task DeactiveItem(string sizeModelItemId);
-        Task ActiveItem(string sizeModelItemId);
-        Task DeleteItem(string idsizeModelItemId);
+        void Add(SizeModel sizeModel);
+        void ChangeName(string sizeModelId, string name);
+        void Deactivate(string sizeModelId);
+        void Activate(string sizeModelId);
+        void Delete(string sizeModelId);
+        void AddItem(SizeModelItem sizeModelItem);
+        void ChangeItemName(string sizeModelItemId, string name);
+        void DeactiveItem(string sizeModelItemId);
+        void ActiveItem(string sizeModelItemId);
+        void DeleteItem(string idsizeModelItemId);
     }
 }

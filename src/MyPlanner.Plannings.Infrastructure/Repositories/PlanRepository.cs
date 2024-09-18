@@ -12,6 +12,8 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         private readonly PlanningDbContext context;
         private readonly IMapper mapper;
 
+        public IUnitOfWork UnitOfWork => context;
+
         public PlanRepository(IMapper mapper, PlanningDbContext context)
         {
             this.context = context ?? throw new ArgumentNullException(nameof(context));
@@ -20,17 +22,25 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         private async Task<PlanTable> GetPlanTable(string planId)
         {
-            return await context.Plans.FirstAsync(x => x.Id == planId);
+            var plan = await context.Plans.FindAsync(planId);
+
+            if (plan == null)
+                throw new Exception("Plan not found");
+
+            return plan;
         }
 
         private async Task<PlanItemTable> GetPlanItemTable(string planItemId)
         {
-            return await context.PlanItems.FirstAsync(x => x.Id == planItemId);
+            var plan = await context.PlanItems.AsNoTracking().FirstAsync(x => x.Id == planItemId);
+
+            if (plan == null)
+                throw new Exception("Plan Item not found");
+
+            return plan;
         }
 
-        public IUnitOfWork UnitOfWork => context;
-
-        public async Task Activate(string planId)
+        public async void Activate(string planId)
         {
             var table = await GetPlanTable(planId);
 
@@ -44,49 +54,49 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return mapper.Map<Plan>(table);
         }
 
-        public async Task Create(Plan plan)
+        public void Create(Plan plan)
         {
             var table = mapper.Map<PlanTable>(plan);
 
-            await context.Plans.AddAsync(table);
+            context.Plans.Add(table);
         }
 
-        public async Task ChangeName(string planId, string name)
+        public async void ChangeName(string planId, string name)
         {
             var table = await GetPlanTable(planId);
 
             table.Name = name;
         }
 
-        public async Task ChangeOwner(string planId, string owner)
+        public async void ChangeOwner(string planId, string owner)
         {
             var table = await GetPlanTable(planId);
 
             table.Owner = owner;
         }
 
-        public async Task Delete(Plan plan)
+        public void Delete(Plan plan)
         {
             var table = mapper.Map<PlanTable>(plan);
 
             context.Plans.Remove(table);
         }
 
-        public async Task Draft(string planId)
+        public async void Draft(string planId)
         {
             var table = await GetPlanTable(planId);
 
             table.Status = 0;
         }
 
-        public async Task Deactivate(string planId)
+        public async void Deactivate(string planId)
         {
             var table = await GetPlanTable(planId);
 
             table.Status = 2;
         }
 
-        public async Task Close(string planId)
+        public async void Close(string planId)
         {
             var table = await GetPlanTable(planId);
 
@@ -100,84 +110,84 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return mapper.Map<PlanItem>(table);
         }
 
-        public async Task AddItemAsync(PlanItem planItem)
+        public void AddItem(PlanItem planItem)
         {
             var table = mapper.Map<PlanItemTable>(planItem);
 
-            await context.PlanItems.AddAsync(table);
+            context.PlanItems.Add(table);
         }
 
-        public async Task ChangeItemSizeModelTypeValueSelected(string planItemId, string sizeModelTypeValueSelected)
+        public async void ChangeItemSizeModelTypeValueSelected(string planItemId, string sizeModelTypeValueSelected)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.SizeModelTypeValueSelected = sizeModelTypeValueSelected;
         }
 
-        public async Task ChangeItemTechnicalDefinition(string planItemId, string technicalDefinition)
+        public async void ChangeItemTechnicalDefinition(string planItemId, string technicalDefinition)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.TechnicalDefinition = technicalDefinition;
         }
 
-        public async Task ChangeItemComponentsImpacted(string planItemId, string componentsImpacted)
+        public async void ChangeItemComponentsImpacted(string planItemId, string componentsImpacted)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.ComponentsImpacted = componentsImpacted;
         }
 
-        public async Task ChangeItemTechnicalDependencies(string planItemId, string technicalDependencies)
+        public async void ChangeItemTechnicalDependencies(string planItemId, string technicalDependencies)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.TechnicalDependencies = technicalDependencies;
         }
 
-        public async Task ChangeItemBallParkCost(string planItemId, double ballParkCost)
+        public async void ChangeItemBallParkCost(string planItemId, double ballParkCost)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.BallParkCost = ballParkCost;
         }
 
-        public async Task ChangeItemBallParkDependenciesCost(string planItemId, double ballParkDependenciesCost)
+        public async void ChangeItemBallParkDependenciesCost(string planItemId, double ballParkDependenciesCost)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.BallParkDependenciesCost = ballParkDependenciesCost;
         }
 
-        public async Task ChangeItemKeyAssumptions(string planItemId, string technicalDependencies)
+        public async void ChangeItemKeyAssumptions(string planItemId, string technicalDependencies)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.KeyAssumptions = technicalDependencies;
         }
 
-        public async Task DraftItem(string planItemId)
+        public async void DraftItem(string planItemId)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.Status = 0;
         }
 
-        public async Task ActivateItem(string planItemId)
+        public async void ActivateItem(string planItemId)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.Status = 1;
         }
 
-        public async Task DeactivateItem(string planItemId)
+        public async void DeactivateItem(string planItemId)
         {
             var table = await GetPlanItemTable(planItemId);
 
             table.Status = 2;
         }
 
-        public async Task CloseItem(string planItemId)
+        public async void CloseItem(string planItemId)
         {
             var table = await GetPlanItemTable(planItemId);
 

@@ -26,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
                 return false;
             }
 
-            await planRepository.Draft(request.PlanId);
+            planRepository.Draft(request.PlanId);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

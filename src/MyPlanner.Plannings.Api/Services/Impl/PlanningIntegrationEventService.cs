@@ -24,13 +24,6 @@ namespace MyPlanner.Plannings.Api.Services.Impl
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task AddAndSaveEventAsync(IntegrationEvent evt)
-        {
-            logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
-
-            await integrationEventLogService.SaveEventAsync(evt, planningDbContext.GetCurrentTransaction());
-        }
-
         public async Task PublishEventsThroughEventBusAsync(Guid transactionId)
         {
             var pendingLogEvents = await integrationEventLogService.RetrieveEventLogsPendingToPublishAsync(transactionId);
@@ -53,5 +46,13 @@ namespace MyPlanner.Plannings.Api.Services.Impl
                 }
             }
         }
+
+        public async Task AddAndSaveEventAsync(IntegrationEvent evt)
+        {
+            logger.LogInformation("----- Enqueuing integration event {IntegrationEventId} to repository ({@IntegrationEvent})", evt.Id, evt);
+
+            await integrationEventLogService.SaveEventAsync(evt, planningDbContext.GetCurrentTransaction());
+        }
+
     }
 }
