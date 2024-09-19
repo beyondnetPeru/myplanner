@@ -29,6 +29,11 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
             var table = mapper.Map<SizeModelTypeTable>(propsCopy);
 
+            foreach (var factor in table.Factors)
+            {
+                factor.SizeModelType = table;
+            }
+
             context.SizeModelTypes.Add(table);
         }
 

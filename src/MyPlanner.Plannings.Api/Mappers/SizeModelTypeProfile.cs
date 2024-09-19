@@ -11,7 +11,36 @@ using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {
-    public class SizeModelTypeFactorResolver : IValueResolver<CreateSizeModelTypeRequest, SizeModelTypeProps, ICollection<SizeModelTypeFactor>>
+    public class SizeModelTypeFactorPropsToTableResolver : IValueResolver<SizeModelTypeProps, SizeModelTypeTable, ICollection<SizeModelTypeFactorTable>>
+    {
+        public ICollection<SizeModelTypeFactorTable> Resolve(SizeModelTypeProps source, SizeModelTypeTable destination, ICollection<SizeModelTypeFactorTable> destMember, ResolutionContext context)
+        {
+            var factors = new List<SizeModelTypeFactorTable>();
+
+            if (destination.Factors == null)
+            {
+                destination.Factors = new List<SizeModelTypeFactorTable>();
+            }
+
+            source.Factors.ToList().ForEach(item =>
+            {
+                var factor = new SizeModelTypeFactorTable
+                {
+                    Id = item.GetPropsCopy().Id.GetValue(),
+                    Code = item.GetPropsCopy().Code.GetValue(),
+                    Name = item.GetPropsCopy().Name.GetValue(),
+                    Status = item.GetPropsCopy().Status.Id,
+                    SizeModelType = null
+                };
+
+                destination.Factors.Add(factor);
+            });
+
+            return destination.Factors;
+        }
+    }
+
+    public class SizeModelTypeFactorRequestToPropsResolver : IValueResolver<CreateSizeModelTypeRequest, SizeModelTypeProps, ICollection<SizeModelTypeFactor>>
     {
         public ICollection<SizeModelTypeFactor> Resolve(CreateSizeModelTypeRequest source, SizeModelTypeProps destination, ICollection<SizeModelTypeFactor> destMember, ResolutionContext context)
         {
@@ -72,40 +101,18 @@ namespace MyPlanner.Plannings.Api.Mappers
                         new SizeModelTypeProps(IdValueObject.DefaultValue,
                                                SizeModelTypeCode.Create(src.Code),
                                                Name.Create(src.Name))).
-                ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorResolver()));
+                ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorRequestToPropsResolver()));
 
 
             CreateMap<SizeModelTypeProps, SizeModelTypeTable>()
-                .ConstructUsing(src =>
-                {
-                    var sizeModelTypeTable = new SizeModelTypeTable
-                    {
-                        Id = src.Id.GetValue(),
-                        Code = src.Code.GetValue(),
-                        Name = src.Name.GetValue(),
-                        Status = src.Status.Id
-                    };
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
+                .ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorPropsToTableResolver()));
 
-                    if (src.Factors != null)
-                    {
-                        src.Factors.ToList().ForEach(item =>
-                        {
-                            var factor = new SizeModelTypeFactorTable
-                            {
-                                Id = item.GetPropsCopy().Id.GetValue(),
-                                SizeModelType = sizeModelTypeTable,
-                                Code = item.GetPropsCopy().Code.GetValue(),
-                                Name = item.GetPropsCopy().Name.GetValue(),
-                                Status = item.GetPropsCopy().Status.Id,
-                            };
 
-                            sizeModelTypeTable.Factors.Add(factor);
-                        });
-                    }
 
-                    return sizeModelTypeTable;
-                });
-                    
             CreateMap<SizeModelTypeTable, SizeModelType>()
            .ConstructUsing(src => SizeModelType.Load(
                    src.Id,
