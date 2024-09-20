@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+using MyPlanner.Plannings.Domain.SizeModels;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelTypeFactor
 {
@@ -7,11 +8,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/sizemodeltypes/{sizeModelTypeId}/items/{sizeModelTypeFactorId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
+            app.MapPut("/sizemodeltypes/{sizeModelTypeId}/items/{sizeModelTypeItemId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
                                                                             [AsParameters] SizeModelTypeService service,
+                                                                            string sizeModelTypeItemId,
                                                                             [FromBody] DeactivateSizeModelTypeItemDto deactivateSizeModelTypeItemDto) =>
             {
-                var request = new DeactivateSizeModelTypeItemRequest(deactivateSizeModelTypeItemDto.SizeModelTypeId, deactivateSizeModelTypeItemDto.UserId);
+                var request = new DeactivateSizeModelTypeItemRequest(sizeModelTypeItemId, deactivateSizeModelTypeItemDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

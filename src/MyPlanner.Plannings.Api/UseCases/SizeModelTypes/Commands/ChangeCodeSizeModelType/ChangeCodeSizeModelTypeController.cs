@@ -9,9 +9,10 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSiz
         {
             app.MapPut("/sizemodeltypes/{sizeModelTypeId}/changecode", async ([FromHeader(Name = "x-requestid")] Guid requestId,
                                                                             [AsParameters] SizeModelTypeService service,
+                                                                            string sizeModelTypeId,
                                                                             [FromBody] ChangeCodeSizeModelTypeDto changeCodeSizeModelTypeDto) =>
             {
-                var request = service.Mapper.Map<ChangeCodeSizeModelTypeRequest>(changeCodeSizeModelTypeDto);
+                var request = new ChangeCodeSizeModelTypeRequest(sizeModelTypeId, changeCodeSizeModelTypeDto.Code, changeCodeSizeModelTypeDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

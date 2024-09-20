@@ -2,8 +2,6 @@
 {
     public class DeleteSizeModelTypeRequest : IRequest<bool>
     {
-
-
         public DeleteSizeModelTypeRequest(string sizeModelTypeId, string userId)
         {
             if (string.IsNullOrEmpty(sizeModelTypeId))
