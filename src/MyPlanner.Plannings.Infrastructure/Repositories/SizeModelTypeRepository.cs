@@ -53,7 +53,12 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await FindSizeModelTypeByIdAsync(sizeModelTypeId);
 
-            context.SizeModelTypes.Remove(table);
+            foreach (var factor in table.Factors)
+            {
+                factor.Status = -1;
+            }
+
+            table.Status = -1;
         }
 
         public async void ChangeCode(string sizeModelTypeId, string code)

@@ -91,6 +91,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
     {
         public static SizeModelTypeFactorStatus Active = new SizeModelTypeFactorStatus(1, "Active");
         public static SizeModelTypeFactorStatus Inactive = new SizeModelTypeFactorStatus(0, "Inactive");
+        public static SizeModelTypeFactorStatus Delete = new SizeModelTypeFactorStatus(-1, "Deleted");
 
         public SizeModelTypeFactorStatus(int id, string name) : base(id, name)
         { }

@@ -58,7 +58,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                                                Name.Create(name),
                                                Enumeration.FromValue<SizeModelTypeStatus>(status));
 
-            return SizeModelType.Create(props);
+            return Create(props);
 
         }
 
@@ -102,7 +102,14 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
+            if (GetPropsCopy().Factors.Any(x => x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
+            {
+                AddBrokenRule("Status", "Size Model Type has active factors");
+                return;
+            }
+
             GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Inactive.Id);
+
         }
 
         public void Activate()
@@ -115,13 +122,38 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
             GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Active.Id);
         }
+
+        public void Delete()
+        {
+            if (GetPropsCopy().Status == SizeModelTypeStatus.Active)
+            {
+                AddBrokenRule("Status", "Size Model Type is already Active. Cannot be deleted");
+                return;
+            }
+
+            if (GetPropsCopy().Factors.Any(x => x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
+            {
+                AddBrokenRule("Status", "Size Model Type has active factors. Cannot be deleted");
+                return;
+            }
+
+            foreach (var item in GetProps().Factors)
+            {
+                item.GetProps().Status.SetValue<SizeModelTypeFactorStatus>(SizeModelTypeFactorStatus.Delete.Id);
+            }
+
+
+            GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Delete.Id);
+        }
+
     }
 
     public class SizeModelTypeStatus : Enumeration
     {
-
+        public static SizeModelTypeStatus Delete = new SizeModelTypeStatus(-1, nameof(Active).ToLowerInvariant());
         public static SizeModelTypeStatus Active = new SizeModelTypeStatus(1, nameof(Active).ToLowerInvariant());
         public static SizeModelTypeStatus Inactive = new SizeModelTypeStatus(0, nameof(Inactive).ToLowerInvariant());
+
 
         public SizeModelTypeStatus(int id, string name) : base(id, name)
         {

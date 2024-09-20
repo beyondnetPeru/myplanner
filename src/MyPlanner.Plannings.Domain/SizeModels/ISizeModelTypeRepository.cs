@@ -15,5 +15,6 @@ namespace MyPlanner.Plannings.Api.Endpoints
         void AddFactor(SizeModelTypeFactor item);
         void ActivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
         void DeactivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId);
+        void Delete(string sizeModelTypeId);
     }
 }
