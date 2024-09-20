@@ -162,7 +162,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "sizemodeltypefactors",
+                name: "sizemodeltypeitems",
                 schema: "myplanner-plannings",
                 columns: table => new
                 {
@@ -174,9 +174,9 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_sizemodeltypefactors", x => x.Id);
+                    table.PrimaryKey("PK_sizemodeltypeitems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_sizemodeltypefactors_sizemodeltypes_SizeModelTypeId",
+                        name: "FK_sizemodeltypeitems_sizemodeltypes_SizeModelTypeId",
                         column: x => x.SizeModelTypeId,
                         principalSchema: "myplanner-plannings",
                         principalTable: "sizemodeltypes",
@@ -237,9 +237,9 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 column: "SizeModelTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_sizemodeltypefactors_SizeModelTypeId",
+                name: "IX_sizemodeltypeitems_SizeModelTypeId",
                 schema: "myplanner-plannings",
-                table: "sizemodeltypefactors",
+                table: "sizemodeltypeitems",
                 column: "SizeModelTypeId");
         }
 
@@ -267,7 +267,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 schema: "myplanner-plannings");
 
             migrationBuilder.DropTable(
-                name: "sizemodeltypefactors",
+                name: "sizemodeltypeitems",
                 schema: "myplanner-plannings");
 
             migrationBuilder.DropTable(

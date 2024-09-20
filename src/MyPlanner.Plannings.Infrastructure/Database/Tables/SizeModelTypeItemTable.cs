@@ -1,6 +1,6 @@
 ﻿namespace MyPlanner.Plannings.Infrastructure.Database.Tables
 {
-    public class SizeModelTypeFactorTable
+    public class SizeModelTypeItemTable
     {
         public string Id { get; set; }
         public string SizeModelTypeId { get; set; }

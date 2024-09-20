@@ -19,7 +19,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
         public async Task<IEnumerable<SizeModelTypeDto>> GetAll(PaginationDto pagination)
         {
             var data = await context.SizeModelTypes
-            .Include(x => x.Factors)
+            .Include(x => x.Items)
             .OrderBy(c => c.Name)
             .Skip(pagination.RecordsPerPage * pagination.Page)
             .Take(pagination.RecordsPerPage)
@@ -34,7 +34,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
         public async Task<SizeModelTypeDto> GetById(string id)
         {
 
-            var data = await context.SizeModelTypes.Include(x => x.Factors).FirstOrDefaultAsync(x => x.Id == id);
+            var data = await context.SizeModelTypes.Include(x => x.Items).FirstOrDefaultAsync(x => x.Id == id);
 
             var entity = mapper.Map<SizeModelTypeDto>(data);
 
@@ -43,36 +43,36 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 
         public async Task<SizeModelTypeDto> GetByCode(string code)
         {
-            var data = await context.SizeModelTypes.Include(x => x.Factors).FirstOrDefaultAsync(x => x.Code == code);
+            var data = await context.SizeModelTypes.Include(x => x.Items).FirstOrDefaultAsync(x => x.Code == code);
 
             var entity = mapper.Map<SizeModelTypeDto>(data);
 
             return entity;
         }
 
-        public async Task<IEnumerable<SizeModelTypeFactorDto>> GetFactors(string sizeModelTypeId)
+        public async Task<IEnumerable<SizeModelTypeItemDto>> GetItems(string sizeModelTypeId)
         {
-            var data = await context.SizeModelTypeFactors.Where(x => x.SizeModelType.Id == sizeModelTypeId).Include(x => x.SizeModelType).ToListAsync();
+            var data = await context.SizeModelTypeItems.Where(x => x.SizeModelType.Id == sizeModelTypeId).Include(x => x.SizeModelType).ToListAsync();
 
-            var dtos = mapper.Map<ICollection<SizeModelTypeFactorDto>>(data);
+            var dtos = mapper.Map<ICollection<SizeModelTypeItemDto>>(data);
 
             return dtos;
         }
 
-        public async Task<SizeModelTypeFactorDto> GetFactorById(string id)
+        public async Task<SizeModelTypeItemDto> GetItemById(string id)
         {
-            var data = await context.SizeModelTypeFactors.FirstOrDefaultAsync(x => x.Id == id);
+            var data = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == id);
 
-            var dto = mapper.Map<SizeModelTypeFactorDto>(data);
+            var dto = mapper.Map<SizeModelTypeItemDto>(data);
 
             return dto;
         }
 
-        public async Task<SizeModelTypeFactorDto> GetFactorByCode(string code)
+        public async Task<SizeModelTypeItemDto> GetItemByCode(string code)
         {
-            var data = await context.SizeModelTypeFactors.FirstOrDefaultAsync(x => x.Code == code);
+            var data = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Code == code);
 
-            var dto = mapper.Map<SizeModelTypeFactorDto>(data);
+            var dto = mapper.Map<SizeModelTypeItemDto>(data);
 
             return dto;
         }

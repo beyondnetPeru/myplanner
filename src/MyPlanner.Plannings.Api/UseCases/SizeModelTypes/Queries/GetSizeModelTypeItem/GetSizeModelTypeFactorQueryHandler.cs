@@ -3,7 +3,7 @@
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeFactor
 {
-    public class GetSizeModelTypeFactorQueryHandler : IRequestHandler<GetSizeModelTypeFactorQuery, SizeModelTypeFactorDto>
+    public class GetSizeModelTypeFactorQueryHandler : IRequestHandler<GetSizeModelTypeItemQuery, SizeModelTypeItemDto>
     {
         private readonly ISizeModelTypeQueryRepository modelTypeQueryRepository;
         private readonly IMapper mapper;
@@ -14,11 +14,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTy
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<SizeModelTypeFactorDto> Handle(GetSizeModelTypeFactorQuery request, CancellationToken cancellationToken)
+        public async Task<SizeModelTypeItemDto> Handle(GetSizeModelTypeItemQuery request, CancellationToken cancellationToken)
         {
-            var entity = await modelTypeQueryRepository.GetFactorById(request.SizeModelTypeFactorId);
+            var entity = await modelTypeQueryRepository.GetItemById(request.SizeModelTypeItemId);
 
-            var dto = mapper.Map<SizeModelTypeFactorDto>(entity);
+            var dto = mapper.Map<SizeModelTypeItemDto>(entity);
 
             return dto;
         }

@@ -100,6 +100,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
     public class SizeModelStatus : Enumeration
     {
+        public static SizeModelStatus Delete = new SizeModelStatus(-1, "Delete");
         public static SizeModelStatus Active = new SizeModelStatus(1, "Active");
         public static SizeModelStatus Inactive = new SizeModelStatus(0, "Inactive");
 

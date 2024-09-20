@@ -2,6 +2,7 @@
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using static MyPlanner.Plannings.Domain.SizeModels.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
 {
@@ -10,7 +11,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public IdValueObject Id { get; private set; }
         public SizeModelTypeCode Code { get; private set; }
         public Name Name { get; private set; }
-        public ICollection<SizeModelTypeFactor> Factors { get; private set; } = new List<SizeModelTypeFactor>();
+        public ICollection<SizeModelTypeItem> Items { get; private set; } = new List<SizeModelTypeItem>();
         public SizeModelTypeStatus Status { get; private set; }
 
         public SizeModelTypeProps(IdValueObject id, SizeModelTypeCode code, Name name)
@@ -72,33 +73,33 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             GetProps().Name.SetValue(value.GetValue());
         }
 
-        public void AddFactor(SizeModelTypeFactor factor)
+        public void AddItem(SizeModelTypeItem item)
         {
-            if (GetProps().Factors.Any(x => x.GetPropsCopy().Code == factor.GetPropsCopy().Code
-            && x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
+            if (GetProps().Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code
+            && x.GetPropsCopy().Status == SizeModelTypeItemStatus.Active))
             {
-                AddBrokenRule("Factor", "Factor already exists in the list");
+                AddBrokenRule("Item", "Item already exists in the list");
                 return;
             }
 
-            GetProps().Factors.Add(factor);
+            GetProps().Items.Add(item);
         }
 
-        public void RemoveFactor(SizeModelTypeFactor factor)
+        public void DeleteItem(SizeModelTypeItem item)
         {
             if (GetProps().Status == SizeModelTypeStatus.Active)
             {
-                AddBrokenRule("Status", "Size Model Type is Active. Cannot remove factor");
+                AddBrokenRule("Status", "Size Model Type is Active. Cannot remove Item");
                 return;
             }
 
-            if (!GetProps().Factors.Any(x => x.GetPropsCopy().Code == factor.GetPropsCopy().Code))
+            if (!GetProps().Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code))
             {
-                AddBrokenRule("Factor", "Factor does not exist in the list");
+                AddBrokenRule("Item", "Item does not exist in the list");
                 return;
             }
 
-            GetProps().Factors.Remove(factor);
+            GetProps().Items.Remove(item);
         }
 
         public void Deactivate()
@@ -109,9 +110,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            if (GetPropsCopy().Factors.Any(x => x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
+            if (GetPropsCopy().Items.Any(x => x.GetPropsCopy().Status == SizeModelTypeItemStatus.Active))
             {
-                AddBrokenRule("Status", "Size Model Type has active factors");
+                AddBrokenRule("Status", "Size Model Type has active Items");
                 return;
             }
 
@@ -138,15 +139,15 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            if (GetPropsCopy().Factors.Any(x => x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
+            if (GetPropsCopy().Items.Any(x => x.GetPropsCopy().Status == SizeModelTypeItemStatus.Active))
             {
-                AddBrokenRule("Status", "Size Model Type has active factors. Cannot be deleted");
+                AddBrokenRule("Status", "Size Model Type has active Items. Cannot be deleted");
                 return;
             }
 
-            foreach (var item in GetProps().Factors)
+            foreach (var item in GetProps().Items)
             {
-                item.GetProps().Status.SetValue<SizeModelTypeFactorStatus>(SizeModelTypeFactorStatus.Delete.Id);
+                item.GetProps().Status.SetValue<SizeModelTypeItemStatus>(SizeModelTypeItemStatus.Delete.Id);
             }
 
 
@@ -157,7 +158,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
     public class SizeModelTypeStatus : Enumeration
     {
-        public static SizeModelTypeStatus Delete = new SizeModelTypeStatus(-1, nameof(Active).ToLowerInvariant());
+        public static SizeModelTypeStatus Delete = new SizeModelTypeStatus(-1, nameof(Delete).ToLowerInvariant());
         public static SizeModelTypeStatus Active = new SizeModelTypeStatus(1, nameof(Active).ToLowerInvariant());
         public static SizeModelTypeStatus Inactive = new SizeModelTypeStatus(0, nameof(Inactive).ToLowerInvariant());
 

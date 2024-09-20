@@ -12,7 +12,7 @@ using MyPlanner.Plannings.Infrastructure.Database;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     [DbContext(typeof(PlanningDbContext))]
-    [Migration("20240920021727_UpdateSizeModelTypes")]
+    [Migration("20240920130800_UpdateSizeModelTypes")]
     partial class UpdateSizeModelTypes
     {
         /// <inheritdoc />
@@ -202,7 +202,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.ToTable("sizemodels", "myplanner-plannings");
                 });
 
-            modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeFactorTable", b =>
+            modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeItemTable", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -226,7 +226,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
                     b.HasIndex("SizeModelTypeId");
 
-                    b.ToTable("sizemodeltypefactors", "myplanner-plannings");
+                    b.ToTable("sizemodeltypeitems", "myplanner-plannings");
                 });
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", b =>
@@ -483,10 +483,10 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Navigation("SizeModelType");
                 });
 
-            modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeFactorTable", b =>
+            modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeItemTable", b =>
                 {
                     b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
-                        .WithMany("Factors")
+                        .WithMany("Items")
                         .HasForeignKey("SizeModelTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -506,7 +506,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", b =>
                 {
-                    b.Navigation("Factors");
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -20,7 +20,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModelIte
 
         public async Task<bool> Handle(CreateSizeModelItemRequest request, CancellationToken cancellationToken)
         {
-            var sizeModelTypeFactor = await sizeModelTypeRepository.GetFactorById(request.SizeModelTypeFactorId);
+            var sizeModelTypeFactor = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeFactorId);
 
             var sizeModel = await sizeModelRepository.Get(request.SizeModelId);
 

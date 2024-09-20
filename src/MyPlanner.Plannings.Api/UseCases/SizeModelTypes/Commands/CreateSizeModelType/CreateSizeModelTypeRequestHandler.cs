@@ -34,12 +34,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
             var props = mapper.Map<SizeModelTypeProps>(request);
             var sizeModelType = SizeModelType.Create(IdValueObject.Create(), props.Code, props.Name);
 
-            if (request.Factors != null)
+            if (request.Items != null)
             {
-                foreach (var item in request.Factors)
+                foreach (var item in request.Items)
                 {
-                    var factor = SizeModelTypeFactor.Create(IdValueObject.Create(),
-                                                            SizeModelTypeFactorCode.Create(item.Code),
+                    var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
+                                                            SizeModelTypeItemCode.Create(item.Code),
                                                             Name.Create(item.Name),
                                                             sizeModelType);
 
@@ -49,7 +49,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
                         return false;
                     }
 
-                    sizeModelType.AddFactor(factor);
+                    sizeModelType.AddItem(factor);
                 }
             }
 

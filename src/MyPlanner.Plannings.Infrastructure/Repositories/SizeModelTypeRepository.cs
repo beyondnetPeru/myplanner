@@ -29,9 +29,9 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
             var table = mapper.Map<SizeModelTypeTable>(propsCopy);
 
-            foreach (var factor in table.Factors)
+            foreach (var itemTable in table.Items)
             {
-                factor.SizeModelType = table;
+                itemTable.SizeModelType = table;
             }
 
             context.SizeModelTypes.Add(table);
@@ -53,9 +53,9 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await FindSizeModelTypeByIdAsync(sizeModelTypeId);
 
-            foreach (var factor in table.Factors)
+            foreach (var item in table.Items)
             {
-                factor.Status = -1;
+                DeleteItem(item.Id);
             }
 
             table.Status = -1;
@@ -109,39 +109,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Status = 0;
         }
 
-        public async void AddFactor(SizeModelTypeFactor item)
-        {
-            var propsCopy = item.GetPropsCopy();
-
-            var table = mapper.Map<SizeModelTypeFactorTable>(propsCopy);
-
-            await context.SizeModelTypeFactors.AddAsync(table);
-        }
-
-        public async void ActivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId)
-        {
-            var table = await context.SizeModelTypeFactors.FirstOrDefaultAsync(x => x.Id == sizeModelTypeFactorId);
-
-            if (table == null)
-            {
-                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeFactorTable)}\" ({sizeModelTypeFactorId}) was not found.");
-            }
-
-            table.Status = 1;
-        }
-
-        public async void DeactivateFactor(string sizeModelTypeId, string sizeModelTypeFactorId)
-        {
-            var table = await context.SizeModelTypeFactors.FirstOrDefaultAsync(x => x.Id == sizeModelTypeFactorId);
-
-            if (table == null)
-            {
-                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeFactorTable)}\" ({sizeModelTypeFactorId}) was not found.");
-            }
-
-            table.Status = 0;
-        }
-
         public async Task<SizeModelType> GetById(string sizeModelTypeId)
         {
             var table = await FindSizeModelTypeByIdAsync(sizeModelTypeId);
@@ -151,13 +118,59 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return entity;
         }
 
-        public async Task<SizeModelTypeFactor> GetFactorById(string sizeModelTypeId)
+        public async Task<SizeModelTypeItem> GetItemById(string sizeModelTypeId)
         {
-            var table = await context.SizeModelTypeFactors.FirstOrDefaultAsync(x => x.Id == sizeModelTypeId);
+            var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeId);
 
-            var factor = mapper.Map<SizeModelTypeFactor>(table);
+            var factor = mapper.Map<SizeModelTypeItem>(table);
 
             return factor;
         }
+
+        public async void AddItem(SizeModelTypeItem item)
+        {
+            var propsCopy = item.GetPropsCopy();
+
+            var table = mapper.Map<SizeModelTypeItemTable>(propsCopy);
+
+            await context.SizeModelTypeItems.AddAsync(table);
+        }
+
+        public void DeleteItem(string sizeModelTypeItemId)
+        {
+            var table = context.SizeModelTypeItems.FirstOrDefault(x => x.Id == sizeModelTypeItemId);
+
+            if (table == null)
+            {
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
+            }
+
+            table.Status = -1;
+        }
+
+        public async void ActivateItem(string sizeModelTypeItemId)
+        {
+            var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeItemId);
+
+            if (table == null)
+            {
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
+            }
+
+            table.Status = 1;
+        }
+
+        public async void DeactivateItem(string sizeModelTypeItemId)
+        {
+            var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeItemId);
+
+            if (table == null)
+            {
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
+            }
+
+            table.Status = 0;
+        }
+
     }
 }

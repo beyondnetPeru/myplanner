@@ -4,9 +4,9 @@
 
 namespace MyPlanner.Plannings.Domain.SizeModels
 {
-     public class SizeModelTypeFactorCode : ValueObject<string>
+     public class SizeModelTypeItemCode : ValueObject<string>
     {
-        public SizeModelTypeFactorCode(string value) : base(value)
+        public SizeModelTypeItemCode(string value) : base(value)
         {
         }
 
@@ -15,14 +15,14 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             base.AddValidators();
         }
 
-        public static SizeModelTypeFactorCode Create(string value)
+        public static SizeModelTypeItemCode Create(string value)
         {
-            return new SizeModelTypeFactorCode(value);
+            return new SizeModelTypeItemCode(value);
         }
 
-        public static SizeModelTypeFactorCode DefaultValue()
+        public static SizeModelTypeItemCode DefaultValue()
         {
-            return new SizeModelTypeFactorCode("MTS999");
+            return new SizeModelTypeItemCode("MTS999");
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

@@ -3,15 +3,15 @@ using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelTypeFactor
 {
-    public class ActivateSizeModelTypeFactorController : ICarterModule
+    public class ActivateSizeModelTypeItemController : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/sizemodeltypes/{sizeModelTypeId}/factors/{sizeModelTypeFactorId}/activate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
+            app.MapPut("/sizemodeltypes/{sizeModelTypeId}/items/{sizeModelTypeFactorId}/activate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
                                                                              [AsParameters] SizeModelTypeService service,
-                                                                             [FromBody] ActivateSizeModelTypeFactorDto activateSizeModelTypeFactorDto) =>
+                                                                             [FromBody] ActivateSizeModelTypeItemDto activateSizeModelTypeItemDto) =>
             {
-                var request = new ActivateSizeModelTypeFactorRequest(activateSizeModelTypeFactorDto.SizeModelTypeId, activateSizeModelTypeFactorDto.UserId);
+                var request = new ActivateSizeModelTypeItemRequest(activateSizeModelTypeItemDto.SizeModelTypeId, activateSizeModelTypeItemDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

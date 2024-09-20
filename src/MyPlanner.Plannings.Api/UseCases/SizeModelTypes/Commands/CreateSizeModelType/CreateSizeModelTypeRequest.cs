@@ -6,26 +6,26 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public ICollection<CreateSizeModelTypeFactorRequest> Factors { get; set; }
+        public ICollection<CreateSizeModelTypeItemsRequest> Items { get; set; }
         public string UserId { get; private set; }
 
         public CreateSizeModelTypeRequest(string code,
                                           string name,
                                           string description,
-                                          ICollection<CreateSizeModelTypeFactorRequest> factors,
+                                          ICollection<CreateSizeModelTypeItemsRequest> items,
                                           string userId)
         {
             Code = code;
             Name = name;
-            Factors = factors;
+            Items = items;
             Description = description;
             UserId = userId;
         }
     }
 
-    public class CreateSizeModelTypeFactorRequest
+    public class CreateSizeModelTypeItemsRequest
     {
-        public CreateSizeModelTypeFactorRequest(string code, string name, string userId)
+        public CreateSizeModelTypeItemsRequest(string code, string name, string userId)
         {
             Code = code;
             Name = name;

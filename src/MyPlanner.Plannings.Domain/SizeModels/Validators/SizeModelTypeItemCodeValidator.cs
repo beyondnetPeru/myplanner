@@ -4,9 +4,9 @@ using BeyondNet.Ddd.Rules.Impl;
 
 namespace MyPlanner.Plannings.Domain.SizeModels.Validators
 {
-    public class SizeModelTypeFactorCodeValidator : AbstractRuleValidator<ValueObject<string>>
+    public class SizeModelTypeItemCodeValidator : AbstractRuleValidator<ValueObject<string>>
     {
-        public SizeModelTypeFactorCodeValidator(SizeModelTypeCode subject) : base(subject)
+        public SizeModelTypeItemCodeValidator(SizeModelTypeCode subject) : base(subject)
         {
         }
 

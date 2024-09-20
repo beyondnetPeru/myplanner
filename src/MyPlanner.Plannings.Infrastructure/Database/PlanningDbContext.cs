@@ -18,7 +18,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
         public DbSet<PlanTable> Plans { get; set; }
         public DbSet<PlanItemTable> PlanItems { get; set; }
         public DbSet<SizeModelTypeTable> SizeModelTypes { get; set; }
-        public DbSet<SizeModelTypeFactorTable> SizeModelTypeFactors { get; set; }
+        public DbSet<SizeModelTypeItemTable> SizeModelTypeItems { get; set; }
         public DbSet<SizeModelTable> SizeModels { get; set; }
         public DbSet<SizeModelItemTable> SizeModelItems { get; set; }
 
@@ -42,7 +42,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new ErrorEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ClientRequestEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SizeModelTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SizeModelTypeFactorConfiguration());
+            modelBuilder.ApplyConfiguration(new SizeModelTypeItemsConfiguration());
             modelBuilder.ApplyConfiguration(new SizeModelConfiguration());
             modelBuilder.ApplyConfiguration(new SizeModelItemConfiguration());
             modelBuilder.ApplyConfiguration(new SizeModelTypeConfiguration());

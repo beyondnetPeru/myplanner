@@ -13,7 +13,7 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         public TechnicalDefinition TechnicalDefinition { get; private set; } = TechnicalDefinition.DefaultValue();
         public ComponentsImpacted ComponentsImpacted { get; private set; } = ComponentsImpacted.DefaultValue();
         public TechnicalDependencies TechnicalDependencies { get; private set; } = TechnicalDependencies.DefaultValue();
-        public SizeModelTypeFactor SizeModelTypeFactor { get; private set; }
+        public SizeModelTypeItem SizeModelTypeFactor { get; private set; }
         public SizeModelTypeValueSelected SizeModelTypeValueSelected { get; set; }
         public BallParkCost BallParkCost { get; private set; }
         public BallParkDependenciesCost BallParkDependenciesCost { get; private set; } = BallParkDependenciesCost.DefaultValue();
@@ -23,7 +23,7 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         public PlanItemStatus Status { get; set; } = PlanItemStatus.Draft;
 
         public PlanItemProps(IdValueObject id,
-                             SizeModelTypeFactor sizeModelTypeFactor,
+                             SizeModelTypeItem sizeModelTypeFactor,
                              SizeModelTypeValueSelected sizeModelTypeValueSelected,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
@@ -63,7 +63,7 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         }
 
         public static PlanItem Create(IdValueObject id,
-                             SizeModelTypeFactor sizeModelTypeFactor,
+                             SizeModelTypeItem sizeModelTypeFactor,
                              SizeModelTypeValueSelected sizeModelTypeValueSelected,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,

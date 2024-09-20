@@ -3,15 +3,15 @@ using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeFactor
 {
-    public class GetSizeModelTypeFactorQuery : IRequest<SizeModelTypeFactorDto>
+    public class GetSizeModelTypeItemQuery : IRequest<SizeModelTypeItemDto>
     {
-        public GetSizeModelTypeFactorQuery(string sizeModelTypeId, string sizeModelTypeFactorId)
+        public GetSizeModelTypeItemQuery(string sizeModelTypeId, string sizeModelTypeItemId)
         {
             SizeModelTypeId = sizeModelTypeId;
-            SizeModelTypeFactorId = sizeModelTypeFactorId;
+            SizeModelTypeItemId = sizeModelTypeItemId;
         }
 
         public string SizeModelTypeId { get; }
-        public string SizeModelTypeFactorId { get; }
+        public string SizeModelTypeItemId { get; }
     }
 }

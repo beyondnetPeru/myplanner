@@ -7,23 +7,24 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeMod
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using static MyPlanner.Plannings.Domain.SizeModels.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {
-    public class SizeModelTypeFactorPropsToTableResolver : IValueResolver<SizeModelTypeProps, SizeModelTypeTable, ICollection<SizeModelTypeFactorTable>>
+    public class SizeModelTypeItemPropsToTableResolver : IValueResolver<SizeModelTypeProps, SizeModelTypeTable, ICollection<SizeModelTypeItemTable>>
     {
-        public ICollection<SizeModelTypeFactorTable> Resolve(SizeModelTypeProps source, SizeModelTypeTable destination, ICollection<SizeModelTypeFactorTable> destMember, ResolutionContext context)
+        public ICollection<SizeModelTypeItemTable> Resolve(SizeModelTypeProps source, SizeModelTypeTable destination, ICollection<SizeModelTypeItemTable> destMember, ResolutionContext context)
         {
-            var factors = new List<SizeModelTypeFactorTable>();
+            var items = new List<SizeModelTypeItemTable>();
 
-            if (destination.Factors == null)
+            if (destination.Items == null)
             {
-                destination.Factors = new List<SizeModelTypeFactorTable>();
+                destination.Items = new List<SizeModelTypeItemTable>();
             }
 
-            source.Factors.ToList().ForEach(item =>
+            source.Items.ToList().ForEach(item =>
             {
-                var factor = new SizeModelTypeFactorTable
+                var factor = new SizeModelTypeItemTable
                 {
                     Id = item.GetPropsCopy().Id.GetValue(),
                     Code = item.GetPropsCopy().Code.GetValue(),
@@ -32,30 +33,30 @@ namespace MyPlanner.Plannings.Api.Mappers
                     SizeModelType = null
                 };
 
-                destination.Factors.Add(factor);
+                destination.Items.Add(factor);
             });
 
-            return destination.Factors;
+            return destination.Items;
         }
     }
 
-    public class SizeModelTypeFactorRequestToPropsResolver : IValueResolver<CreateSizeModelTypeRequest, SizeModelTypeProps, ICollection<SizeModelTypeFactor>>
+    public class SizeModelTypeItemRequestToPropsResolver : IValueResolver<CreateSizeModelTypeRequest, SizeModelTypeProps, ICollection<SizeModelTypeItem>>
     {
-        public ICollection<SizeModelTypeFactor> Resolve(CreateSizeModelTypeRequest source, SizeModelTypeProps destination, ICollection<SizeModelTypeFactor> destMember, ResolutionContext context)
+        public ICollection<SizeModelTypeItem> Resolve(CreateSizeModelTypeRequest source, SizeModelTypeProps destination, ICollection<SizeModelTypeItem> destMember, ResolutionContext context)
         {
-            var factors = new List<SizeModelTypeFactor>();
+            var items = new List<SizeModelTypeItem>();
 
-            source.Factors.ToList().ForEach(item =>
+            source.Items.ToList().ForEach(item =>
             {
-                var factor = SizeModelTypeFactor.Create(IdValueObject.Create(),
-                                                        SizeModelTypeFactorCode.Create(item.Code),
+                var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
+                                                        SizeModelTypeItemCode.Create(item.Code),
                                                         Name.Create(item.Name),
                                                         null);
 
-                factors.Add(factor);
+                items.Add(factor);
             });
 
-            return factors;
+            return items;
         }
     }
 
@@ -67,11 +68,11 @@ namespace MyPlanner.Plannings.Api.Mappers
         }
     }
 
-    public class SizeModelTypeFcatorEnumAction : IMappingAction<SizeModelTypeFactorTable, SizeModelTypeFactorDto>
+    public class SizeModelTypeItemEnumAction : IMappingAction<SizeModelTypeItemTable, SizeModelTypeItemDto>
     {
-        public void Process(SizeModelTypeFactorTable source, SizeModelTypeFactorDto destination, ResolutionContext context)
+        public void Process(SizeModelTypeItemTable source, SizeModelTypeItemDto destination, ResolutionContext context)
         {
-            destination.Status = Enumeration.FromValue<SizeModelTypeFactorStatus>(source.Status).Name.ToUpper();
+            destination.Status = Enumeration.FromValue<SizeModelTypeItemStatus>(source.Status).Name.ToUpper();
         }
     }
 
@@ -81,10 +82,10 @@ namespace MyPlanner.Plannings.Api.Mappers
         {
             // Size Model Types
             CreateMap<int, SizeModelTypeStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeStatus>>();
-            CreateMap<int, SizeModelTypeFactorStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeFactorStatus>>();
+            CreateMap<int, SizeModelTypeItemStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeItemStatus>>();
 
             CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeRequest>();
-            CreateMap<CreateSizeModelTypeFactorDto, CreateSizeModelTypeFactorRequest>();
+            CreateMap<CreateSizeModelTypeItemDto, CreateSizeModelTypeItemsRequest>();
             CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeRequest>();
             CreateMap<ActivateSizeModelTypeDto, ActivateSizeModelTypeRequest>();
             CreateMap<DeactivateSizeModelTypeDto, DeactivateSizeModelTypeRequest>();
@@ -102,7 +103,7 @@ namespace MyPlanner.Plannings.Api.Mappers
                         new SizeModelTypeProps(IdValueObject.DefaultValue,
                                                SizeModelTypeCode.Create(src.Code),
                                                Name.Create(src.Name))).
-                ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorRequestToPropsResolver()));
+                ForMember(dest => dest.Items, opt => opt.MapFrom(new SizeModelTypeItemRequestToPropsResolver()));
 
 
             CreateMap<SizeModelTypeProps, SizeModelTypeTable>()
@@ -110,7 +111,7 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
-                .ForMember(dest => dest.Factors, opt => opt.MapFrom(new SizeModelTypeFactorPropsToTableResolver()));
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(new SizeModelTypeItemPropsToTableResolver()));
 
 
 
@@ -125,16 +126,16 @@ namespace MyPlanner.Plannings.Api.Mappers
 
             // Size Model Type Factors
 
-            CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorDto>()
+            CreateMap<SizeModelTypeItemTable, SizeModelTypeItemDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelType.Id))
                 .ForMember(dest => dest.SizeModelTypeName, opt => opt.MapFrom(src => src.SizeModelType.Name))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelTypeFcatorEnumAction>();
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelTypeItemEnumAction>();
 
 
-            CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
+            CreateMap<SizeModelTypeItemTable, SizeModelTypeItemProps>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))

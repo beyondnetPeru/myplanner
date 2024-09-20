@@ -10,7 +10,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public IdValueObject Id { get; private set; }
         public SizeModel SizeModel { get; private set; }
         public SizeModelProfile Profile { get; private set; } // SM, SRE, FE, BE, DB, QA, PM
-        public SizeModelTypeFactor SizeModelTypeFactor { get; private set; } // Enum: Percentage, Flat
+        public SizeModelTypeItem SizeModelTypeFactor { get; private set; } // Enum: Percentage, Flat
         public SizeModelTypeValueSelected ProfileValueSelected { get; private set; } // 0, 0.00, %
         public SizeModelTypeQuantity Quantity { get; private set; } //1, 2, ..., 30
         public SizeModelTotalCost TotalCost { get; set; } = SizeModelTotalCost.DefaultValue(); // 0.00
@@ -20,7 +20,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public SizeModelItemProps(IdValueObject id,
                                  SizeModel sizeModel,
                                  SizeModelProfile profile,
-                                 SizeModelTypeFactor sizeModelTypeFactor,
+                                 SizeModelTypeItem sizeModelTypeFactor,
                                  SizeModelTypeValueSelected valueSelected,
                                  SizeModelTypeQuantity quantity,
                                  SizeModelTotalCost totalCost,
@@ -53,7 +53,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public static SizeModelItem Create(IdValueObject id,
                                            SizeModel sizeModel,
                                            SizeModelProfile profile,
-                                           SizeModelTypeFactor sizeModelTypeFactor,
+                                           SizeModelTypeItem sizeModelTypeFactor,
                                            SizeModelTypeValueSelected valueSelected,
                                            SizeModelTypeQuantity quantity, SizeModelTotalCost totalCost, UserId userId)
         {
@@ -103,6 +103,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
     public class SizeModelItemStatus : Enumeration
     {
+        public static SizeModelItemStatus Delete = new SizeModelItemStatus(1, nameof(Delete).ToLowerInvariant());
         public static SizeModelItemStatus Active = new SizeModelItemStatus(1, nameof(Active).ToLowerInvariant());
         public static SizeModelItemStatus Inactive = new SizeModelItemStatus(0, nameof(Inactive).ToLowerInvariant());
 

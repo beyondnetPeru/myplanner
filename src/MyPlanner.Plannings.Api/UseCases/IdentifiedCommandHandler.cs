@@ -100,12 +100,12 @@ namespace MyPlanner.Plannings.Api.UseCases
                             commandId = deactivateSizeModelTypeRequest.UserId;
                             break;
 
-                        case ActivateSizeModelTypeFactorRequest activateSizeModelTypeFactorRequest:
+                        case ActivateSizeModelTypeItemRequest activateSizeModelTypeFactorRequest:
                             idProperty = nameof(activateSizeModelTypeFactorRequest.UserId);
                             commandId = activateSizeModelTypeFactorRequest.UserId;
                             break;
 
-                        case DeactivateSizeModelTypeFactorRequest deactivateSizeModelTypeFactorRequest:
+                        case DeactivateSizeModelTypeItemRequest deactivateSizeModelTypeFactorRequest:
                             idProperty = nameof(deactivateSizeModelTypeFactorRequest.UserId);
                             commandId = deactivateSizeModelTypeFactorRequest.UserId;
                             break;

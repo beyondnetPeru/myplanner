@@ -9,8 +9,8 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
         Task<SizeModelTypeDto> GetById(string id);
         Task<SizeModelTypeDto> GetByCode(string code);
 
-        Task<IEnumerable<SizeModelTypeFactorDto>> GetFactors(string sizeModelTypeId);
-        Task<SizeModelTypeFactorDto> GetFactorById(string id);
-        Task<SizeModelTypeFactorDto> GetFactorByCode(string code);
+        Task<IEnumerable<SizeModelTypeItemDto>> GetItems(string sizeModelTypeId);
+        Task<SizeModelTypeItemDto> GetItemById(string id);
+        Task<SizeModelTypeItemDto> GetItemByCode(string code);
     }
 }

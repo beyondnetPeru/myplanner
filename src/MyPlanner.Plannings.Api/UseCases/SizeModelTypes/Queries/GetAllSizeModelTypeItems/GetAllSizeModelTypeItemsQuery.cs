@@ -2,9 +2,9 @@
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetAllSizeModelTypeFactors
 {
-    public class GetAllSizeModelTypeFactorQuery : IRequest<IEnumerable<SizeModelTypeFactorDto>>
+    public class GetAllSizeModelTypeItemsQuery : IRequest<IEnumerable<SizeModelTypeItemDto>>
     {
-        public GetAllSizeModelTypeFactorQuery(string sizeModelTypeId)
+        public GetAllSizeModelTypeItemsQuery(string sizeModelTypeId)
         {
             SizeModelTypeId = sizeModelTypeId;
         }

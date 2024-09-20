@@ -1,12 +1,12 @@
 ﻿namespace MyPlanner.Plannings.Api.Dtos.SizeModelType
 {
-    public class ActivateSizeModelTypeFactorDto
+    public class DeactivateSizeModelTypeItemDto
     {
         public string SizeModelTypeId { get; set; }
         public string SizeModelTypeFactorId { get; set; }
         public string UserId { get; set; }
 
-        public ActivateSizeModelTypeFactorDto(string sizeModelTypeId, string sizeModelTypeFactorId, string userId)
+        public DeactivateSizeModelTypeItemDto(string sizeModelTypeId, string sizeModelTypeFactorId, string userId)
         {
             SizeModelTypeId = sizeModelTypeId;
             SizeModelTypeFactorId = sizeModelTypeFactorId;
