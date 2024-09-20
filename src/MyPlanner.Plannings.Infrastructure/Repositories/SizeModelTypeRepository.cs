@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Api.Endpoints;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
+using static MyPlanner.Plannings.Domain.SizeModels.SizeModelTypeItem;
 
 
 namespace MyPlanner.Plannings.Infrastructure.Repositories
@@ -122,9 +124,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeId);
 
-            var factor = mapper.Map<SizeModelTypeItem>(table);
-
-            return factor;
+            return mapper.Map<SizeModelTypeItem>(table);
         }
 
         public async void AddItem(SizeModelTypeItem item)
@@ -172,5 +172,28 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Status = 0;
         }
 
+        public void ChangeItemCode(string sizeModelTypeItemId, string code)
+        {
+            var table = context.SizeModelTypeItems.FirstOrDefault(x => x.Id == sizeModelTypeItemId);
+
+            if (table == null)
+            {
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
+            }
+
+            table.Code = code;
+        }
+
+        public void ChangeItemName(string sizeModelTypeItemId, string name)
+        {
+            var table = context.SizeModelTypeItems.FirstOrDefault(x => x.Id == sizeModelTypeItemId);
+
+            if (table == null)
+            {
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
+            }
+
+            table.Name = name;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType
 {
@@ -12,7 +13,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
                                                                               string sizeModelTypeId,
                                                                               [FromBody] ChangeNameSizeModelTypeDto changeNameSizeModelTypeDto) =>
             {
-                var request = new ChangeNameSizeModelTypeRequest(sizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
+                var request = new ChangeCodeSizeModelTypeItemRequest(sizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

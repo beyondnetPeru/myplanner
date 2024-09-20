@@ -13,6 +13,8 @@ namespace MyPlanner.Plannings.Api.Endpoints
         void Activate(string sizeModelTypeId);
         void Deactivate(string sizeModelTypeId);
         void AddItem(SizeModelTypeItem item);
+        void ChangeItemCode(string sizeModelTypeItemId, string code);
+        void ChangeItemName(string sizeModelTypeItemId, string name);
         void DeleteItem(string sizeModelTypeItemId);
         void ActivateItem(string sizeModelTypeItemId);
         void DeactivateItem(string sizeModelTypeItemId);

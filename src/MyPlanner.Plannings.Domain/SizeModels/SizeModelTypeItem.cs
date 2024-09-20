@@ -50,9 +50,13 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             return new SizeModelTypeItem(new SizeModelTypeItemProps(id, code, name, sizeModelType));
         }
 
-        public static SizeModelTypeItem Load(IdValueObject id, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType, SizeModelTypeItemStatus sizeModelTypeItemStatus)
+        public static SizeModelTypeItem Load(string id, string code, string name, SizeModelType sizeModelType, int status)
         {
-            return new SizeModelTypeItem(new SizeModelTypeItemProps(id, code, name, sizeModelType, sizeModelTypeItemStatus));
+            return new SizeModelTypeItem(new SizeModelTypeItemProps(IdValueObject.Create(id),
+                SizeModelTypeItemCode.Create(code),
+                Name.Create(name), 
+                sizeModelType,
+                Enumeration.FromValue<SizeModelTypeItemStatus>(status)));
         }
 
         public void ChangeName(Name name)

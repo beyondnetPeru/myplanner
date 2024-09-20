@@ -4,7 +4,6 @@
     {
         public ActivateSizeModelTypeDto(string userId) : base(userId)
         {
-            UserId = userId;
         }
     }
 }

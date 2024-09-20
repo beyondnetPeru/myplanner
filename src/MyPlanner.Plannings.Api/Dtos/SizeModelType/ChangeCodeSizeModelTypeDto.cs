@@ -5,7 +5,6 @@
         public ChangeCodeSizeModelTypeDto(string code, string userId) : base(userId)
         {
             Code = code;
-            UserId = userId;
         }
 
         public string Code { get; }

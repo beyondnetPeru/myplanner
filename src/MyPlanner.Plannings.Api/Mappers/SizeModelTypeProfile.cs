@@ -126,6 +126,17 @@ namespace MyPlanner.Plannings.Api.Mappers
 
             // Size Model Type Factors
 
+            CreateMap<SizeModelTypeItemTable, SizeModelTypeItem>()
+         .ConstructUsing(src => SizeModelTypeItem.Load(
+                 src.Id,
+                 src.Code,
+                 src.Name,
+                 null,
+                 src.Status
+             ));
+
+
+
             CreateMap<SizeModelTypeItemTable, SizeModelTypeItemDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
