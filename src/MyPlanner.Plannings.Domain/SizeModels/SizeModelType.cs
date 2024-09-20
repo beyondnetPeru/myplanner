@@ -74,7 +74,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void AddFactor(SizeModelTypeFactor factor)
         {
-            if (GetProps().Factors.Contains(factor))
+            if (GetProps().Factors.Any(x => x.GetPropsCopy().Code == factor.GetPropsCopy().Code
+            && x.GetPropsCopy().Status == SizeModelTypeFactorStatus.Active))
             {
                 AddBrokenRule("Factor", "Factor already exists in the list");
                 return;
@@ -85,7 +86,13 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void RemoveFactor(SizeModelTypeFactor factor)
         {
-            if (!GetProps().Factors.Contains(factor))
+            if (GetProps().Status == SizeModelTypeStatus.Active)
+            {
+                AddBrokenRule("Status", "Size Model Type is Active. Cannot remove factor");
+                return;
+            }
+
+            if (!GetProps().Factors.Any(x => x.GetPropsCopy().Code == factor.GetPropsCopy().Code))
             {
                 AddBrokenRule("Factor", "Factor does not exist in the list");
                 return;

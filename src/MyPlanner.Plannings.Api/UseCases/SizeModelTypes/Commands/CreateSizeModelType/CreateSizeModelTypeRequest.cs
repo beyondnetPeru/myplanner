@@ -25,15 +25,13 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
 
     public class CreateSizeModelTypeFactorRequest
     {
-        public CreateSizeModelTypeFactorRequest(string sizeModelId, string code, string name, string userId)
+        public CreateSizeModelTypeFactorRequest(string code, string name, string userId)
         {
-            SizeModelId = sizeModelId;
             Code = code;
             Name = name;
             UserId = userId;
         }
 
-        public string SizeModelId { get; }
         public string Code { get; }
         public string Name { get; }
         public string UserId { get; }

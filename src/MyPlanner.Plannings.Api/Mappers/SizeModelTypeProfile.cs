@@ -123,6 +123,8 @@ namespace MyPlanner.Plannings.Api.Mappers
                ));
 
 
+            // Size Model Type Factors
+
             CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
@@ -131,31 +133,13 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.SizeModelTypeName, opt => opt.MapFrom(src => src.SizeModelType.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelTypeFcatorEnumAction>();
 
-            // Size Model Type Factors
+
             CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
-
-
-            //CreateMap<SizeModelTypeProps, SizeModelTypeTable>()
-            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-            //.ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
-            //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
-            //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
-            //.ForMember(dest => dest.Factors, opt => opt.MapFrom(src => src.Factors));
-
-            //CreateMap<SizeModelTypeFactorProps, SizeModelTypeFactorTable>()
-            //.ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-            //.ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType.GetPropsCopy()))
-            //.ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code.GetValue()))
-            //.ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
-            //.ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id));
-
-
-
         }
     }
 }
