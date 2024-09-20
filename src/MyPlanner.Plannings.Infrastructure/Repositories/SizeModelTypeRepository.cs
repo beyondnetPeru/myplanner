@@ -39,7 +39,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         private async Task<SizeModelTypeTable> FindSizeModelTypeByIdAsync(string sizeModelTypeId)
         {
-            var table = await context.SizeModelTypes.AsNoTracking().FirstOrDefaultAsync(x => x.Id == sizeModelTypeId);
+            var table = await context.SizeModelTypes.FirstOrDefaultAsync(x => x.Id == sizeModelTypeId);
 
             if (table == null)
             {

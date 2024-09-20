@@ -1,6 +1,5 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.AddSizeModelTypeFactor;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
@@ -84,11 +83,13 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<int, SizeModelTypeStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeStatus>>();
             CreateMap<int, SizeModelTypeFactorStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeFactorStatus>>();
 
+            CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeRequest>();
+            CreateMap<CreateSizeModelTypeFactorDto, CreateSizeModelTypeFactorRequest>();
             CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeRequest>();
             CreateMap<ActivateSizeModelTypeDto, ActivateSizeModelTypeRequest>();
             CreateMap<DeactivateSizeModelTypeDto, DeactivateSizeModelTypeRequest>();
-            CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeRequest>();
             CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeRequest>();
+
             CreateMap<SizeModelTypeTable, SizeModelTypeDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
@@ -121,9 +122,16 @@ namespace MyPlanner.Plannings.Api.Mappers
                    src.Status
                ));
 
-            // Size Model Type Factors
-            CreateMap<AddSizeModelTypeFactorDto, AddSizeModelTypeFactorRequest>();
 
+            CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelType.Id))
+                .ForMember(dest => dest.SizeModelTypeName, opt => opt.MapFrom(src => src.SizeModelType.Name))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelTypeFcatorEnumAction>();
+
+            // Size Model Type Factors
             CreateMap<SizeModelTypeFactorTable, SizeModelTypeFactorProps>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType))

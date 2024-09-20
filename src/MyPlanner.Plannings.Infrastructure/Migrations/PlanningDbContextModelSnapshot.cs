@@ -213,6 +213,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SizeModelTypeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
@@ -483,7 +484,9 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
                         .WithMany("Factors")
-                        .HasForeignKey("SizeModelTypeId");
+                        .HasForeignKey("SizeModelTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("SizeModelType");
                 });

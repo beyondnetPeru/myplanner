@@ -19,6 +19,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
         public async Task<IEnumerable<SizeModelTypeDto>> GetAll(PaginationDto pagination)
         {
             var data = await context.SizeModelTypes
+            .Include(x => x.Factors)
             .OrderBy(c => c.Name)
             .Skip(pagination.RecordsPerPage * pagination.Page)
             .Take(pagination.RecordsPerPage)
@@ -33,7 +34,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
         public async Task<SizeModelTypeDto> GetById(string id)
         {
 
-            var data = await context.SizeModelTypes.FirstOrDefaultAsync(x => x.Id == id);
+            var data = await context.SizeModelTypes.Include(x => x.Factors).FirstOrDefaultAsync(x => x.Id == id);
 
             var entity = mapper.Map<SizeModelTypeDto>(data);
 
@@ -42,7 +43,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 
         public async Task<SizeModelTypeDto> GetByCode(string code)
         {
-            var data = await context.SizeModelTypes.FirstOrDefaultAsync(x => x.Code == code);
+            var data = await context.SizeModelTypes.Include(x => x.Factors).FirstOrDefaultAsync(x => x.Code == code);
 
             var entity = mapper.Map<SizeModelTypeDto>(data);
 
@@ -51,7 +52,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 
         public async Task<IEnumerable<SizeModelTypeFactorDto>> GetFactors(string sizeModelTypeId)
         {
-            var data = await context.SizeModelTypeFactors.Where(x => x.Id == sizeModelTypeId).ToListAsync();
+            var data = await context.SizeModelTypeFactors.Where(x => x.SizeModelType.Id == sizeModelTypeId).Include(x => x.SizeModelType).ToListAsync();
 
             var dtos = mapper.Map<ICollection<SizeModelTypeFactorDto>>(data);
 

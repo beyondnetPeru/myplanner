@@ -6,5 +6,6 @@
         public string Code { get; set; }
         public string Name { get; set; }
         public string Status { get; set; }
+        public ICollection<SizeModelTypeFactorDto> Factors { get; set; }
     }
 }

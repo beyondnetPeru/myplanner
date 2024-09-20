@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.AddSizeModelTypeFactor;
-
+﻿
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType
 {
     public class CreateSizeModelTypeRequest : IRequest<bool>
@@ -7,13 +6,13 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public ICollection<AddSizeModelTypeFactorRequest> Factors { get; set; }
+        public ICollection<CreateSizeModelTypeFactorRequest> Factors { get; set; }
         public string UserId { get; private set; }
 
         public CreateSizeModelTypeRequest(string code,
                                           string name,
                                           string description,
-                                          ICollection<AddSizeModelTypeFactorRequest> factors,
+                                          ICollection<CreateSizeModelTypeFactorRequest> factors,
                                           string userId)
         {
             Code = code;
@@ -22,5 +21,21 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
             Description = description;
             UserId = userId;
         }
+    }
+
+    public class CreateSizeModelTypeFactorRequest
+    {
+        public CreateSizeModelTypeFactorRequest(string sizeModelId, string code, string name, string userId)
+        {
+            SizeModelId = sizeModelId;
+            Code = code;
+            Name = name;
+            UserId = userId;
+        }
+
+        public string SizeModelId { get; }
+        public string Code { get; }
+        public string Name { get; }
+        public string UserId { get; }
     }
 }

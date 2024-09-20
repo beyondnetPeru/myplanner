@@ -12,8 +12,8 @@ using MyPlanner.Plannings.Infrastructure.Database;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     [DbContext(typeof(PlanningDbContext))]
-    [Migration("20240917235648_InitialDb")]
-    partial class InitialDb
+    [Migration("20240920021727_UpdateSizeModelTypes")]
+    partial class UpdateSizeModelTypes
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,6 +216,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SizeModelTypeId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
@@ -486,7 +487,9 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
                         .WithMany("Factors")
-                        .HasForeignKey("SizeModelTypeId");
+                        .HasForeignKey("SizeModelTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("SizeModelType");
                 });

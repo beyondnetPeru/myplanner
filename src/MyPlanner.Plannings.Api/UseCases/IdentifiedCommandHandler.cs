@@ -8,7 +8,6 @@ using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModel;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModelItem;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelTypeFactor;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.AddSizeModelTypeFactor;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
@@ -99,11 +98,6 @@ namespace MyPlanner.Plannings.Api.UseCases
                         case DeactivateSizeModelTypeRequest deactivateSizeModelTypeRequest:
                             idProperty = nameof(deactivateSizeModelTypeRequest.UserId);
                             commandId = deactivateSizeModelTypeRequest.UserId;
-                            break;
-
-                        case AddSizeModelTypeFactorRequest addSizeModelTypeFactorRequest:
-                            idProperty = nameof(addSizeModelTypeFactorRequest.UserId);
-                            commandId = addSizeModelTypeFactorRequest.UserId;
                             break;
 
                         case ActivateSizeModelTypeFactorRequest activateSizeModelTypeFactorRequest:
