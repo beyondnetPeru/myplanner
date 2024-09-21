@@ -1,4 +1,5 @@
-﻿using MyPlanner.Plannings.Api.Services.Interfaces;
+﻿using MyPlanner.Plannings.Api.Boostrapper;
+using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
@@ -11,17 +12,17 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
         private readonly ILogger<CreateSizeModelRequestHandler> logger;
-        private readonly ISizeModelTypeFactorCostCalculator sizeModelTypeFactorCostCalculator;
+        private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory;
 
         public CreateSizeModelRequestHandler(ISizeModelRepository sizeModelRepository,
                                              ISizeModelTypeRepository sizeModelTypeRepository,
                                              ILogger<CreateSizeModelRequestHandler> logger,
-                                             ISizeModelTypeFactorCostCalculator sizeModelTypeFactorCostCalculator)
+                                             ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.sizeModelTypeFactorCostCalculator = sizeModelTypeFactorCostCalculator ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostCalculator));
+            this.sizeModelTypeFactorCostCalculatorFactory = sizeModelTypeFactorCostCalculatorFactory ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostCalculatorFactory));
         }
 
         public async Task<bool> Handle(CreateSizeModelRequest request, CancellationToken cancellationToken)
@@ -43,10 +44,13 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                 {
                     var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(item.SizeModelTypeItemId);
 
-                    item.TotalCost = sizeModelTypeFactorCostCalculator.Calculate(
-                                    Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                    sizeModelTypeItem.GetPropsCopy().Code.GetValue().ToLower().ToString(),
-                                    item.ProfileAvgRateAmount);
+                    var costCalculator = this.sizeModelTypeFactorCostCalculatorFactory.Create(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                    sizeModelTypeItem.GetPropsCopy().Code.GetValue().ToLower().ToString());
+
+                    item.TotalCost = costCalculator.Calculate(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                             item.SizeModelTypeSelected,
+                                             item.ProfileAvgRateAmount);
+
 
                     var sizeModelItem = SizeModelItem.Create(IdValueObject.Create(),
                                                              sizeModel,

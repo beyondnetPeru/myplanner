@@ -1,13 +1,12 @@
-﻿
-using BeyondNet.Factory.Impl;
+﻿using Jal.Factory;
 using MyPlanner.Plannings.Api.Services.Impl;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 
 namespace MyPlanner.Plannings.Api.Boostrapper
 {
-    public class SizeModelTypeFactorCostConfiguration : AbstractFactoryRecordSetupSource
+    public class SizeModelTypeFactorCostConfigurationSource : AbstractObjectFactoryConfigurationSource
     {
-        public SizeModelTypeFactorCostConfiguration()
+        public SizeModelTypeFactorCostConfigurationSource()
         {
             For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeSprintFactorCostCalculator>().When(x =>
                                                             x.Factor == "sprints" &

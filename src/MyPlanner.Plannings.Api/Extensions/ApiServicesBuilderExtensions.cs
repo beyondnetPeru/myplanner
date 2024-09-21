@@ -6,7 +6,6 @@ using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Infrastructure.Repositories;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.PlanAggregate;
-using Carter;
 using MyPlanner.Plannings.Api.Services.Impl;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Infrastructure.Idempotency;
@@ -16,6 +15,8 @@ using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
 using MyPlanner.Plannings.Shared.Application.Behaviors;
 using MyPlanner.Plannings.Api.Behaviors;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
+using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
+using MyPlanner.Plannings.Api.Boostrapper;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {
@@ -44,6 +45,14 @@ namespace MyPlanner.Plannings.Api.Extensions
                 cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
             });
 
+            builder.Services.AddFactory(c =>
+            {
+                c.AddSource<SizeModelTypeFactorCostConfigurationSource>();
+                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeSprintFactorCostCalculator>();
+                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorCostCalculator>();
+
+            });
+
             builder.Services.AddCarter();
 
             builder.Services.AddAutoMapper(assembly);
@@ -57,8 +66,6 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddTransient<IPlanRepository, PlanRepository>();
             builder.Services.AddTransient<IPlanQueryRepository, PlanQueryRepository>();
             builder.Services.AddScoped<IRequestManager, RequestManager>();
-            builder.Services.AddScoped<ISizeModelTypeFactorCostCalculator, SizeModelTypeSprintFactorCostCalculator>();
-            builder.Services.AddScoped<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorCostCalculator>();
 
             //builder.AddRabbitMqEventBus("eventbus")
             //       .AddEventBusSubscriptions();
