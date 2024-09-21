@@ -1,12 +1,11 @@
-﻿
-namespace MyPlanner.Plannings.Api.Boostrapper
+﻿namespace MyPlanner.Plannings.Api.Models
 {
-    public class Criteria
+    public class SizeModelTypeFactorCostCriteria
     {
         public string Factor { get; set; }
         public string SizeModelTypeSelected { get; set; }
 
-        public Criteria(string factor, string sizeModelTypeSelected)
+        public SizeModelTypeFactorCostCriteria(string factor, string sizeModelTypeSelected)
         {
             Factor = factor;
             SizeModelTypeSelected = sizeModelTypeSelected;

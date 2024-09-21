@@ -1,9 +1,9 @@
 ﻿using Jal.Factory;
-using MyPlanner.Plannings.Api.Services.Impl;
+using MyPlanner.Plannings.Api.Models;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 
-namespace MyPlanner.Plannings.Api.Boostrapper
+namespace MyPlanner.Plannings.Api.Services.Impl
 {
 
     public class SizeModelTypeFactorCostFactory : ISizeModelTypeFactorCostFactory
@@ -19,9 +19,9 @@ namespace MyPlanner.Plannings.Api.Boostrapper
         {
             try
             {
-                var criteria = new Criteria(factor.Name, sizeModelTypeItemValueSelected);
+                var criteria = new SizeModelTypeFactorCostCriteria(factor.Name, sizeModelTypeItemValueSelected);
 
-                var factorCostCalculator = objectFactory.Create<Criteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
+                var factorCostCalculator = objectFactory.Create<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
 
                 if (factorCostCalculator == null)
                 {

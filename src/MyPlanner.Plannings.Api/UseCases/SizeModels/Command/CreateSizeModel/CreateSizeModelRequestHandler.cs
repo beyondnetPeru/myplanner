@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Boostrapper;
-using MyPlanner.Plannings.Api.Services.Interfaces;
+﻿using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;

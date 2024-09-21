@@ -1,4 +1,5 @@
 ﻿using Jal.Factory;
+using MyPlanner.Plannings.Api.Models;
 using MyPlanner.Plannings.Api.Services.Impl;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 
@@ -8,10 +9,10 @@ namespace MyPlanner.Plannings.Api.Boostrapper
     {
         public SizeModelTypeFactorCostConfigurationSource()
         {
-            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeSprintFactorCostCalculator>().When(x =>
+            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeSprintFactorCostCalculator>().When(x =>
                                                             x.Factor == "sprints" &
                                                             x.SizeModelTypeSelected == "t-shirt");
-            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorCostCalculator>().When(x =>
+            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorCostCalculator>().When(x =>
                                                             x.Factor == "" &
                                                             x.SizeModelTypeSelected == "");
         }
