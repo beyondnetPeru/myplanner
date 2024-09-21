@@ -1,6 +1,7 @@
 ﻿using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
@@ -10,7 +11,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public IdValueObject Id { get; private set; }
         public SizeModelType SizeModelType { get; private set; } // TShirt
         public Name Name { get; private set; } // TShirt size for Squads
-        public ICollection<SizeModelItem> SizeModelItems { get; private set; }
+        public ICollection<SizeModelItem> Items { get; private set; }
         public Audit Audit { get; set; }
         public SizeModelStatus Status { get; private set; } = SizeModelStatus.Active;
 
@@ -19,7 +20,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Id = id;
             SizeModelType = sizeModelType;
             Name = name;
-            SizeModelItems = new List<SizeModelItem>();
+            Items = new List<SizeModelItem>();
             Audit = Audit.Create(userId.GetValue());
             Status = SizeModelStatus.Active;
         }
@@ -43,25 +44,25 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void AddItem(SizeModelItem sizeModelItem, UserId userId)
         {
-            if (GetPropsCopy().SizeModelItems.Any(x => x.GetPropsCopy().Id == sizeModelItem.GetPropsCopy().Id))
+            if (GetPropsCopy().Items.Any(x => x.GetPropsCopy().Id == sizeModelItem.GetPropsCopy().Id))
             {
                 AddBrokenRule("SizeModel", "SizeModelItem already exists");
                 return;
             }
 
-            GetProps().SizeModelItems.Add(sizeModelItem);
+            GetProps().Items.Add(sizeModelItem);
             GetProps().Audit.Update(userId.GetValue());
         }
 
         public void RemoveItem(SizeModelItem sizeModelItem, UserId userId)
         {
-            if (!GetPropsCopy().SizeModelItems.Any(x => x.GetPropsCopy().Id == sizeModelItem.GetPropsCopy().Id))
+            if (!GetPropsCopy().Items.Any(x => x.GetPropsCopy().Id == sizeModelItem.GetPropsCopy().Id))
             {
                 AddBrokenRule("SizeModel", "SizeModelItem does not exist");
                 return;
             }
 
-            GetProps().SizeModelItems.Remove(sizeModelItem);
+            GetProps().Items.Remove(sizeModelItem);
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -85,7 +86,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void Deactivate(UserId userId)
         {
-            var count = GetProps().SizeModelItems.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
+            var count = GetProps().Items.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
 
             if (count > 0)
             {
@@ -94,6 +95,27 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             }
 
             GetProps().Status.SetValue<SizeModelStatus>(SizeModelStatus.Inactive.Id);
+            GetProps().Audit.Update(userId.GetValue());
+        }
+
+        public void Delete(UserId userId)
+        {
+            if (GetProps().Status == SizeModelStatus.Delete)
+            {
+                AddBrokenRule("SizeModel", "SizeModel is already deleted");
+                return;
+            }
+
+            foreach (var item in GetPropsCopy().Items)
+            {
+                if (item.GetPropsCopy().Status == SizeModelItemStatus.Active)
+                {
+                    AddBrokenRule("SizeModel", "SizeModel has active SizeModelItems");
+                    return;
+                }
+            }
+
+            GetProps().Status.SetValue<SizeModelStatus>(SizeModelStatus.Delete.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
     }

@@ -23,12 +23,12 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         private async Task<SizeModelTable> GetSizeModel(string sizeModelId)
         {
-            return await context.SizeModels.AsNoTracking().FirstAsync(x => x.Id == sizeModelId);
+            return await context.SizeModels.FirstAsync(x => x.Id == sizeModelId);
         }
 
-        private async Task<SizeModelItemTable> GetSizeItemModel(string sizeModelItemId)
+        private async Task<SizeModelItemTable> GetSizeModelItem(string sizeModelItemId)
         {
-            return await context.SizeModelItems.AsNoTracking().FirstAsync(x => x.Id == sizeModelItemId);
+            return await context.SizeModelItems.FirstAsync(x => x.Id == sizeModelItemId);
         }
 
 
@@ -41,7 +41,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async void ActiveItem(string sizeModelItemId)
         {
-            var table = await GetSizeItemModel(sizeModelItemId);
+            var table = await GetSizeModelItem(sizeModelItemId);
 
             table.Status = 2;
         }
@@ -60,12 +60,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             context.SizeModelItems.Add(table);
         }
 
-        public async void ChangeItemName(string sizeModelItemId, string name)
-        {
-            var table = await GetSizeItemModel(sizeModelItemId);
-
-            table.Name = name;
-        }
 
         public async void ChangeName(string sizeModelId, string name)
         {
@@ -83,7 +77,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async void DeactiveItem(string sizeModelItemId)
         {
-            var table = await GetSizeItemModel(sizeModelItemId);
+            var table = await GetSizeModelItem(sizeModelItemId);
 
             table.Status = 2;
         }
@@ -97,14 +91,14 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async void DeleteItem(string sizeModelItemId)
         {
-            var table = await GetSizeItemModel(sizeModelItemId);
+            var table = await GetSizeModelItem(sizeModelItemId);
 
             context.SizeModelItems.Remove(table);
         }
 
         public async Task<SizeModel> Get(string sizeModelId)
         {
-            var data = await context.SizeModels.AsNoTracking().FirstOrDefaultAsync(x => x.Id == sizeModelId);
+            var data = await context.SizeModels.FirstOrDefaultAsync(x => x.Id == sizeModelId);
 
             var dto = mapper.Map<SizeModel>(data);
 
@@ -113,11 +107,46 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async Task<SizeModelItem> GetItem(string sizeModelItemId)
         {
-            var data = await context.SizeModelItems.AsNoTracking().FirstOrDefaultAsync(x => x.Id == sizeModelItemId);
+            var data = await context.SizeModelItems.FirstOrDefaultAsync(x => x.Id == sizeModelItemId);
 
             var dto = mapper.Map<SizeModelItem>(data);
 
             return dto;
+        }
+
+        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId)
+        {
+            var item = await GetSizeModelItem(sizeModelItemId);
+
+            item.SizeModelFactorSelected = sizeModelItemTypeId;
+        }
+
+        public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected)
+        {
+            var item = await GetSizeModelItem(sizeModelItemId);
+
+            item.ProfileCountValue = factorSelected;
+        }
+
+        public async void ChangeQuantity(string sizeModelItemId, int quantity)
+        {
+            var item = await GetSizeModelItem(sizeModelItemId);
+
+            item.ProfileCountValue = quantity;
+        }
+
+        public async void ChangeTotalCost(string sizeModelItemId, double totalCost)
+        {
+            var item = await GetSizeModelItem(sizeModelItemId);
+
+            item.TotalCost = totalCost;
+        }
+
+        public async void ChangeIsStandard(string sizeModelItemId, bool isStandard)
+        {
+            var item = await GetSizeModelItem(sizeModelItemId);
+
+            item.IsStandard = isStandard;
         }
     }
 }

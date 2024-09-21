@@ -15,4 +15,8 @@
     <ProjectReference Include="..\MyPlanner.Plannings.Shared\MyPlanner.Plannings.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SizeModels\Validators\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,6 @@
-﻿using MyPlanner.Plannings.Api.Endpoints;
-using MyPlanner.Plannings.Api.Services.Impl;
+﻿using MyPlanner.Plannings.Api.Services.Impl;
 using MyPlanner.Plannings.Api.Services.Interfaces;
-using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType

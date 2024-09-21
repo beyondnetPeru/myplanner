@@ -2,11 +2,10 @@
 using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.Api.Endpoints;
-using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
-using static MyPlanner.Plannings.Domain.SizeModels.SizeModelTypeItem;
+using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 
 namespace MyPlanner.Plannings.Infrastructure.Repositories

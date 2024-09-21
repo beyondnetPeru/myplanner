@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.IntegrationEventLogEF.Services;
 using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Infrastructure.Database;
-using MyPlanner.Plannings.Api.Endpoints;
 using MyPlanner.Plannings.Infrastructure.Repositories;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.PlanAggregate;
@@ -16,6 +15,7 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
 using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
 using MyPlanner.Plannings.Shared.Application.Behaviors;
 using MyPlanner.Plannings.Api.Behaviors;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {
@@ -57,6 +57,8 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddTransient<IPlanRepository, PlanRepository>();
             builder.Services.AddTransient<IPlanQueryRepository, PlanQueryRepository>();
             builder.Services.AddScoped<IRequestManager, RequestManager>();
+            builder.Services.AddScoped<ISizeModelTypeFactorCostCalculator, SizeModelTypeSprintFactorCostCalculator>();
+            builder.Services.AddScoped<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorCostCalculator>();
 
             //builder.AddRabbitMqEventBus("eventbus")
             //       .AddEventBusSubscriptions();

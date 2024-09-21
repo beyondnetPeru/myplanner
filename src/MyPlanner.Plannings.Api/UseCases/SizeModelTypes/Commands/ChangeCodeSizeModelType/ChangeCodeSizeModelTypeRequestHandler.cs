@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Endpoints;
-using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType
 {

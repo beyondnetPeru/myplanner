@@ -1,5 +1,5 @@
-﻿using MyPlanner.Plannings.Api.Endpoints;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
+﻿using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes

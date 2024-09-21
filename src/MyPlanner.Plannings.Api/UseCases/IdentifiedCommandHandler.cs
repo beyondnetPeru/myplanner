@@ -3,7 +3,6 @@ using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModelItem;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelName;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModelItem;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModel;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModelItem;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
@@ -125,7 +124,7 @@ namespace MyPlanner.Plannings.Api.UseCases
                             commandId = createSizeModelRequest.UserId;
                             break;
 
-                        case ChangeSizeModelNameRequest changeSizeModelNameRequest:
+                        case ChangeNameSizeModelRequest changeSizeModelNameRequest:
                             idProperty = nameof(changeSizeModelNameRequest.UserId);
                             commandId = changeSizeModelNameRequest.UserId;
                             break;

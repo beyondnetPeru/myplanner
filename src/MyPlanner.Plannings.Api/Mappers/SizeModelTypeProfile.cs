@@ -4,10 +4,10 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeMod
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
-using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
-using static MyPlanner.Plannings.Domain.SizeModels.SizeModelTypeItem;
+using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {

@@ -1,5 +1,6 @@
 ﻿using BeyondNet.Ddd;
-using MyPlanner.Plannings.Domain.SizeModels.Validators;
+using MyPlanner.Plannings.Domain.SizeModelTypes.Validators;
+
 
 namespace MyPlanner.Plannings.Domain.SizeModels
 {

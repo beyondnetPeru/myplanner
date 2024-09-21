@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Endpoints;
+﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType

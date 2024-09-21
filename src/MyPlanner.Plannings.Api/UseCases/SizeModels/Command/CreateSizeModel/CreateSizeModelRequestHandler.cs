@@ -1,5 +1,7 @@
-﻿using MyPlanner.Plannings.Api.Endpoints;
+﻿using MyPlanner.Plannings.Api.Services.Interfaces;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
@@ -9,20 +11,25 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
         private readonly ILogger<CreateSizeModelRequestHandler> logger;
+        private readonly ISizeModelTypeFactorCostCalculator sizeModelTypeFactorCostCalculator;
 
         public CreateSizeModelRequestHandler(ISizeModelRepository sizeModelRepository,
                                              ISizeModelTypeRepository sizeModelTypeRepository,
-                                             ILogger<CreateSizeModelRequestHandler> logger)
+                                             ILogger<CreateSizeModelRequestHandler> logger,
+                                             ISizeModelTypeFactorCostCalculator sizeModelTypeFactorCostCalculator)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
-            this.sizeModelTypeRepository = sizeModelTypeRepository;
+            this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.sizeModelTypeFactorCostCalculator = sizeModelTypeFactorCostCalculator ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostCalculator));
         }
 
         public async Task<bool> Handle(CreateSizeModelRequest request, CancellationToken cancellationToken)
         {
             var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
+
             var sizeModel = SizeModel.Create(IdValueObject.Create(), sizeModelType, Name.Create(request.Name), UserId.Create(request.UserId));
+
 
             if (!sizeModel.IsValid())
             {
@@ -30,12 +37,44 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                 return false;
             }
 
+            if (request.Items.Any())
+            {
+                foreach (var item in request.Items)
+                {
+                    var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(item.SizeModelTypeItemId);
+
+                    item.TotalCost = sizeModelTypeFactorCostCalculator.Calculate(
+                                    Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                    sizeModelTypeItem.GetPropsCopy().Code.GetValue().ToLower().ToString(),
+                                    item.ProfileAvgRateAmount);
+
+                    var sizeModelItem = SizeModelItem.Create(IdValueObject.Create(),
+                                                             sizeModel,
+                                                             sizeModelTypeItem,
+                                                             Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                                             SizeModelProfile.Create(ProfileName.Create(item.ProfileName), ProfileAvgRate.Create(item.ProfileAvgRateAmount)),
+                                                             SizeModelTypeValueSelected.Create(item.SizeModelTypeSelected),
+                                                             SizeModelTypeQuantity.Create(item.Quantity),
+                                                             SizeModelTotalCost.Create(item.TotalCost),
+                                                             SizeModelItemIsStandard.Create(item.IsStandard),
+                                                             UserId.Create(item.UserId));
+
+                    if (!sizeModelItem.IsValid())
+                    {
+                        logger.LogInformation($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules()}");
+                        return false;
+                    }
+
+                    sizeModel.AddItem(sizeModelItem, UserId.Create(request.UserId));
+                }
+
+            }
+
             sizeModelRepository.Add(sizeModel);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
             return true;
-
         }
     }
 }

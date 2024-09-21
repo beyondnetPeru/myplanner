@@ -7,9 +7,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeMode
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/sizemodels/{sizeModelId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] SizeModelService service, DeactivateSizeModelDto activateSizeModelDto) =>
+            app.MapPut("/sizemodels/{sizeModelId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] SizeModelService service,
+                                                                       string sizeModelId,
+                                                                       DeactivateSizeModelDto activateSizeModelDto) =>
             {
-                var request = new DeactivateSizeModelRequest(activateSizeModelDto.SizeModelId, activateSizeModelDto.UserId);
+                var request = new DeactivateSizeModelRequest(sizeModelId, activateSizeModelDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

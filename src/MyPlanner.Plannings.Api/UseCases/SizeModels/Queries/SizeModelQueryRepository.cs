@@ -27,7 +27,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
         public async Task<IEnumerable<SizeModelDto>> GetAll(PaginationDto pagination)
         {
             var data = await context.SizeModels
-                .Include(x => x.SizeModelItems)
+                .Include(x => x.Items)
                 .Skip(pagination.Page)
                 .Take(pagination.RecordsPerPage)
                 .ToListAsync();

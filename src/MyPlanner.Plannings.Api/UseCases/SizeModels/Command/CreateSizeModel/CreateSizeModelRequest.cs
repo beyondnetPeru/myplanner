@@ -2,21 +2,59 @@
 {
     public class CreateSizeModelRequest : IRequest<bool>
     {
-        public string Code { get; set; }
         public string SizeModelTypeId { get; set; }
         public string Name { get; set; }
-        public string Description { get; set; }
-        public int IsStandard { get; set; }
+        public ICollection<CreateSizeModelItemRequest> Items { get; set; }
         public string UserId { get; set; }
 
-        public CreateSizeModelRequest(string sizeModelTypeId, string code, string name, string description, int isStandard, string userId)
+        public CreateSizeModelRequest(string sizeModelTypeId,
+                                      string name,
+                                      ICollection<CreateSizeModelItemRequest> items,
+                                      string userId)
         {
             SizeModelTypeId = sizeModelTypeId;
-            Code = code;
             Name = name;
-            Description = description;
+            Items = items;
+            UserId = userId;
+        }
+    }
+
+    public class CreateSizeModelItemRequest
+    {
+        public string SizeModelId { get; set; }
+        public string SizeModelTypeItemId { get; set; }
+        public int FactorSelected { get; set; }
+        public string ProfileName { get; set; }
+        public double ProfileAvgRateAmount { get; set; }
+        public string SizeModelTypeSelected { get; set; }
+        public int Quantity { get; set; }
+        public double TotalCost { get; set; }
+        public bool IsStandard { get; set; }
+        public string UserId { get; }
+
+        public CreateSizeModelItemRequest(string sizeModelId,
+                                          string sizeModelTypeItemId,
+                                          int factorSelected,
+                                          string profileName,
+                                          double profileAvgRateAmount,
+                                          string sizeModelTypeSelected,
+                                          int quantity,
+                                          double totalCost,
+                                          bool isStandard,
+                                          string userId)
+
+        {
+            SizeModelId = sizeModelId;
+            SizeModelTypeItemId = sizeModelTypeItemId;
+            FactorSelected = factorSelected;
+            ProfileName = profileName;
+            ProfileAvgRateAmount = profileAvgRateAmount;
+            SizeModelTypeSelected = sizeModelTypeSelected;
+            Quantity = quantity;
+            TotalCost = totalCost;
             IsStandard = isStandard;
             UserId = userId;
+
         }
     }
 
