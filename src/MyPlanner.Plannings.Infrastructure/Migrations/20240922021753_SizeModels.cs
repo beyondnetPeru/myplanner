@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateSizeModelTypes : Migration
+    public partial class SizeModels : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -83,6 +83,26 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "sizemodels",
+                schema: "myplanner-plannings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SizeModelTypeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_sizemodels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "sizemodeltypes",
                 schema: "myplanner-plannings",
                 columns: table => new
@@ -135,33 +155,6 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "sizemodels",
-                schema: "myplanner-plannings",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    SizeModelTypeId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_sizemodels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_sizemodels_sizemodeltypes_SizeModelTypeId",
-                        column: x => x.SizeModelTypeId,
-                        principalSchema: "myplanner-plannings",
-                        principalTable: "sizemodeltypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "sizemodeltypeitems",
                 schema: "myplanner-plannings",
                 columns: table => new
@@ -191,20 +184,21 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SizeModelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SizeModelTypeFactorId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SizeModelTypeFactorCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SizeModelTypeItemId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FactorSelected = table.Column<int>(type: "int", nullable: false),
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProfileAvgRateAmount = table.Column<double>(type: "float", nullable: false),
-                    ProfileValueSelected = table.Column<double>(type: "float", nullable: false),
+                    ProfileAvgRateSymbol = table.Column<int>(type: "int", nullable: false),
+                    ProfileAvgRateValue = table.Column<double>(type: "float", nullable: false),
+                    SizeModelTypeSelected = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     TotalCost = table.Column<double>(type: "float", nullable: false),
+                    IsStandard = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Status = table.Column<int>(type: "int", nullable: false)
+                    TimeSpan = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -214,6 +208,13 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         column: x => x.SizeModelId,
                         principalSchema: "myplanner-plannings",
                         principalTable: "sizemodels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_sizemodelitems_sizemodeltypeitems_SizeModelTypeItemId",
+                        column: x => x.SizeModelTypeItemId,
+                        principalSchema: "myplanner-plannings",
+                        principalTable: "sizemodeltypeitems",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -231,10 +232,10 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 column: "SizeModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_sizemodels_SizeModelTypeId",
+                name: "IX_sizemodelitems_SizeModelTypeItemId",
                 schema: "myplanner-plannings",
-                table: "sizemodels",
-                column: "SizeModelTypeId");
+                table: "sizemodelitems",
+                column: "SizeModelTypeItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_sizemodeltypeitems_SizeModelTypeId",
@@ -267,15 +268,15 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 schema: "myplanner-plannings");
 
             migrationBuilder.DropTable(
-                name: "sizemodeltypeitems",
-                schema: "myplanner-plannings");
-
-            migrationBuilder.DropTable(
                 name: "plans",
                 schema: "myplanner-plannings");
 
             migrationBuilder.DropTable(
                 name: "sizemodels",
+                schema: "myplanner-plannings");
+
+            migrationBuilder.DropTable(
+                name: "sizemodeltypeitems",
                 schema: "myplanner-plannings");
 
             migrationBuilder.DropTable(

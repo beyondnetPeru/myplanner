@@ -11,6 +11,10 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Configurations
             builder.ToTable("sizemodels");
             builder.HasKey(p => p.Id);
 
+            builder.HasMany(x => x.Items)
+                .WithOne(x => x.SizeModel)
+                .HasForeignKey(x => x.SizeModelId);
+
             builder.OwnsOne(p => p.Audit).Property(p => p.CreatedBy).HasColumnName("CreatedBy").IsRequired();
             builder.OwnsOne(p => p.Audit).Property(p => p.CreatedAt).HasColumnName("CreatedAt").IsRequired();
             builder.OwnsOne(p => p.Audit).Property(p => p.UpdatedBy).HasColumnName("UpdatedBy").IsRequired(false);

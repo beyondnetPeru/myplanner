@@ -11,6 +11,10 @@ namespace MyPlanner.Products.Infrastructure.Database.Configurations
         {
             builder.ToTable("sizemodeltypes");
             builder.HasKey(x => x.Id);
+
+            builder.HasMany(x => x.Items)
+                .WithOne(x => x.SizeModelType)
+                .HasForeignKey(x => x.SizeModelTypeId);
         }
     }
 }

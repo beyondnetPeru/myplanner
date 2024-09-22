@@ -5,12 +5,17 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
     public class SizeModelItemDto
     {
         public string SizeModelId { get; set; }
+        public string SizeModelName { get; set; }
+        public string SizeModelTypeItemId { get; set; }
+        public string SizeModelTypeItemCode { get; set; }
+        public int FactorSelected { get; set; }
         public string ProfileName { get; set; }
-        public double ProfileAvgRateAmount { get; set; }
-        public string SizeModelTypeFactorCode { get; set; }
-        public string ProfileValueSelected { get; set; }
-        public int ProfileQuantity { get; set; }
+        public int ProfileAvgRateSymbol { get; set; }
+        public double ProfileAvgRateValue { get; set; }
+        public string SizeModelTypeSelected { get; set; }
+        public int Quantity { get; set; }
         public double TotalCost { get; set; }
-        public string UserId { get; }
+        public bool IsStandard { get; set; }
+        public string Status { get; set; }
     }
 }

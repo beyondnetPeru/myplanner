@@ -159,7 +159,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
                     b.Property<string>("SizeModelTypeItemId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SizeModelTypeSelected")
                         .IsRequired()
@@ -175,6 +175,8 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
                     b.HasIndex("SizeModelId");
 
+                    b.HasIndex("SizeModelTypeItemId");
+
                     b.ToTable("sizemodelitems", "myplanner-plannings");
                 });
 
@@ -183,10 +185,11 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsStandard")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SizeModelTypeId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -391,6 +394,12 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeItemTable", "SizeModelTypeItem")
+                        .WithMany()
+                        .HasForeignKey("SizeModelTypeItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelItemTableId")
@@ -429,6 +438,8 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("SizeModel");
+
+                    b.Navigation("SizeModelTypeItem");
                 });
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTable", b =>

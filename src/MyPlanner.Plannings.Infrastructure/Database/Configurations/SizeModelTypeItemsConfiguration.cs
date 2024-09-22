@@ -13,9 +13,7 @@ namespace MyPlanner.Products.Infrastructure.Database.Configurations
             builder.HasKey(x => x.Id);
 
 
-            builder.HasOne(x => x.SizeModelType)
-                .WithMany(x => x.Items)
-                .HasForeignKey(x => x.SizeModelTypeId);
+    
         }
     }
 }
