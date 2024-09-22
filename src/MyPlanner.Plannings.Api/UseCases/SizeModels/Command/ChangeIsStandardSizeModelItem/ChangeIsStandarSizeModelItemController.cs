@@ -9,10 +9,10 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSi
         void ICarterModule.AddRoutes(IEndpointRouteBuilder app)
         {
             app.MapPut("/sizemodels/{sizeModelId}/items/{sizeModelItemId}/changeisstandar", async ([FromHeader(Name = "x-requestid")] Guid requestId,
-                                                                                               [AsParameters] SizeModelService service,
+                                                                                                [AsParameters] SizeModelService service,
                                                                                                 string sizeModelId,
                                                                                                 string sizeModelItemId,
-                                                              [FromBody] ChangeIsStandardSizeModelItemDto changeIsStandardSizeModelItemDto) =>
+                                                                                                [FromBody] ChangeIsStandardSizeModelItemDto changeIsStandardSizeModelItemDto) =>
             {
                 var changeIsStandardSizeModelItemRequest = new ChangeIsStandardSizeModelItemRequest(sizeModelItemId, changeIsStandardSizeModelItemDto.IsStandard, changeIsStandardSizeModelItemDto.UserId);
 

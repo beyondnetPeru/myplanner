@@ -18,8 +18,8 @@ namespace MyPlanner.Plannings.Domain.Test
             container.AddFactory(c =>
             {
                 c.AddSource<SizeModelTypeFactorCostConfiguration>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorCostCalculator>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeSprintFactorCostCalculator>();
+                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorDefaultCostCalculator>();
+                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeTShirtAndSprintFactorCostCalculator>();
             });
         }
 

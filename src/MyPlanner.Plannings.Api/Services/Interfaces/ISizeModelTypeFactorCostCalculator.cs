@@ -4,8 +4,9 @@ namespace MyPlanner.Plannings.Api.Services.Interfaces
 {
     public interface ISizeModelTypeFactorCostCalculator
     {
-        double Calculate(FactorsEnum factor,
-                         string sizeModelTypeItemValueSelected,
-                         double profileAvgRate);
+        double Calculate(FactorsEnum factor,// sprints, mandays
+                         string sizeModelTypeItemValueSelected,// xs, s, m, sm, l,xl
+                         int quantity, // 2
+                         double profileAvgRate); //5000
     }
 }

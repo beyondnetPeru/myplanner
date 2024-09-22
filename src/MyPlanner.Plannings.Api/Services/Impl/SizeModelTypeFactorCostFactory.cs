@@ -15,17 +15,17 @@ namespace MyPlanner.Plannings.Api.Services.Impl
             this.objectFactory = objectFactory;
         }
 
-        public ISizeModelTypeFactorCostCalculator Create(FactorsEnum factor, string sizeModelTypeItemValueSelected)
+        public ISizeModelTypeFactorCostCalculator Create(FactorsEnum factor, string sizeModelTypeCodeSelected)
         {
             try
             {
-                var criteria = new SizeModelTypeFactorCostCriteria(factor.Name, sizeModelTypeItemValueSelected);
+                var criteria = new SizeModelTypeFactorCostCriteria(factor.Name.ToLower().Trim(), sizeModelTypeCodeSelected.ToLower().Trim());
 
                 var factorCostCalculator = objectFactory.Create<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
 
                 if (factorCostCalculator == null)
                 {
-                    return new SizeModelTypeDefaultFactorCostCalculator();
+                    return new SizeModelTypeDefaultFactorDefaultCostCalculator();
                 }
 
                 return factorCostCalculator;

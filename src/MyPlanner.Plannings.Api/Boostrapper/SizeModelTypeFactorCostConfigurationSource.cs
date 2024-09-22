@@ -9,12 +9,12 @@ namespace MyPlanner.Plannings.Api.Boostrapper
     {
         public SizeModelTypeFactorCostConfigurationSource()
         {
-            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeSprintFactorCostCalculator>().When(x =>
-                                                            x.Factor == "sprints" &
-                                                            x.SizeModelTypeSelected == "t-shirt");
-            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorCostCalculator>().When(x =>
+            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeTShirtAndSprintFactorCostCalculator>().When(x =>
+                                                            x.Factor.ToLower().Trim() == "sprints" &
+                                                            x.SizeModelTypeCodeSelected == "smt001");
+            For<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorDefaultCostCalculator>().When(x =>
                                                             x.Factor == "" &
-                                                            x.SizeModelTypeSelected == "");
+                                                            x.SizeModelTypeCodeSelected == "");
         }
 
     }

@@ -44,12 +44,6 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void AddItem(SizeModelItem sizeModelItem, UserId userId)
         {
-            if (GetPropsCopy().Items.Any(x => x.GetPropsCopy().Id == sizeModelItem.GetPropsCopy().Id))
-            {
-                AddBrokenRule("SizeModel", "SizeModelItem already exists");
-                return;
-            }
-
             GetProps().Items.Add(sizeModelItem);
             GetProps().Audit.Update(userId.GetValue());
         }

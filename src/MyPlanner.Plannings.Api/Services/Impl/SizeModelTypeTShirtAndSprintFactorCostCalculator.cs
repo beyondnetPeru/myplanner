@@ -4,15 +4,15 @@ using MyPlanner.Plannings.Shared.Domain;
 
 namespace MyPlanner.Plannings.Api.Services.Impl
 {
-    public class SizeModelTypeSprintFactorCostCalculator : ISizeModelTypeFactorCostCalculator
+    public class SizeModelTypeTShirtAndSprintFactorCostCalculator : ISizeModelTypeFactorCostCalculator
     {
-        public double Calculate(FactorsEnum factor, string sizeModelTypeItemValueSelected, double profileAvgRate)
+        public double Calculate(FactorsEnum factor, string sizeModelTypeItemValueSelected, int quantity, double profileAvgRate)
         {
             Guard(factor, sizeModelTypeItemValueSelected, profileAvgRate);
 
             var sprintCount = GetSprintCount(sizeModelTypeItemValueSelected);
 
-            return sprintCount * profileAvgRate;
+            return sprintCount * (quantity * profileAvgRate);
         }
 
         private void Guard(FactorsEnum factor,
@@ -33,29 +33,35 @@ namespace MyPlanner.Plannings.Api.Services.Impl
             var sprintCount = 0;
             var tShirtSelected = sizeModelTypeItemValueSelected.ToLower().Trim();
 
-            if (tShirtSelected == "S")
+            if (tShirtSelected == "xs")
             {
                 sprintCount = 1;
             }
 
-            if (tShirtSelected == "M")
+            if (tShirtSelected == "s")
             {
                 sprintCount = 2;
             }
 
-            if (tShirtSelected == "L")
+            if (tShirtSelected == "m")
             {
                 sprintCount = 3;
             }
 
-            if (tShirtSelected == "XL")
+            if (tShirtSelected == "sm")
             {
                 sprintCount = 4;
             }
 
-            if (tShirtSelected == "XXL")
+            if (tShirtSelected == "l")
             {
                 sprintCount = 5;
+            }
+
+
+            if (tShirtSelected == "xl")
+            {
+                sprintCount = 6;
             }
 
             return sprintCount;

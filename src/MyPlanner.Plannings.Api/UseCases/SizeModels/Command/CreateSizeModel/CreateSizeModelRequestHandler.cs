@@ -44,18 +44,20 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                     var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(item.SizeModelTypeItemId);
 
                     var costCalculator = this.sizeModelTypeFactorCostCalculatorFactory.Create(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                    sizeModelTypeItem.GetPropsCopy().Code.GetValue().ToLower().ToString());
+                                                                                              request.SizeModelTypeCode);
 
                     item.TotalCost = costCalculator.Calculate(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                             item.SizeModelTypeSelected,
-                                             item.ProfileAvgRateAmount);
+                                                                                                 item.SizeModelTypeSelected,
+                                                                                                 item.Quantity,
+                                                                                                 item.ProfileAvgRateValue);
 
 
                     var sizeModelItem = SizeModelItem.Create(IdValueObject.Create(),
                                                              sizeModel,
                                                              sizeModelTypeItem,
                                                              Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                                             SizeModelProfile.Create(ProfileName.Create(item.ProfileName), ProfileAvgRate.Create(item.ProfileAvgRateAmount)),
+                                                             SizeModelProfile.Create(ProfileName.Create(item.ProfileName),
+                                                                                     ProfileAvgRate.Create(Enumeration.FromValue<CurrencySymbolEnum>(item.ProfileAvgRateSymbol), item.ProfileAvgRateValue)),
                                                              SizeModelTypeValueSelected.Create(item.SizeModelTypeSelected),
                                                              SizeModelTypeQuantity.Create(item.Quantity),
                                                              SizeModelTotalCost.Create(item.TotalCost),

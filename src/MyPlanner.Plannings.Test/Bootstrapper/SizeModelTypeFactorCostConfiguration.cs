@@ -8,10 +8,10 @@ namespace MyPlanner.Plannings.Domain.Test.Bootstrapper
     {
         public SizeModelTypeFactorCostConfiguration()
         {
-            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeSprintFactorCostCalculator>().When(x =>
+            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeTShirtAndSprintFactorCostCalculator>().When(x =>
                                                             x.Factor == "sprints" &
                                                             x.SizeModelTypeSelected == "t-shirt");
-            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorCostCalculator>().When(x =>
+            For<Criteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorDefaultCostCalculator>().When(x =>
                                                             x.Factor == "" &
                                                             x.SizeModelTypeSelected == "");
         }

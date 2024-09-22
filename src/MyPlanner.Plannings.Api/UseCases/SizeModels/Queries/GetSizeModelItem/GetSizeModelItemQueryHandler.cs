@@ -16,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModelItem
 
         public async Task<SizeModelItemDto> Handle(GetSizeModelItemQuery request, CancellationToken cancellationToken)
         {
-            var sizeModelItem = await sizeModelQueryRepository.GetItem(request.SizeModelId, request.SizeModelItemId);
+            var sizeModelItem = await sizeModelQueryRepository.GetItem(request.SizeModelItemId);
 
             var dto = mapper.Map<SizeModelItemDto>(sizeModelItem);
 

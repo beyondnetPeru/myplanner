@@ -7,7 +7,6 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public string Id { get; set; }
         public string Name { get; set; }
         public ICollection<SizeModelItemTable> Items { get; set; }
-        public bool IsStandard { get; set; }
         public AuditTable Audit { get; set; }
         public int Status { get; set; }
     }

@@ -8,7 +8,7 @@
                                                                ([AsParameters] SizeModelService service, string sizeModelId,
                                                                string sizeModelItemId) =>
             {
-                var query = new GetSizeModelItemQuery(sizeModelId, sizeModelItemId);
+                var query = new GetSizeModelItemQuery(sizeModelItemId);
 
                 var request = await service.Mediator.Send(query);
 

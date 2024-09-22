@@ -37,9 +37,9 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
             return dto;
         }
 
-        public async Task<SizeModelItemDto> GetItem(string sizeModelId, string sizeModelItemId)
+        public async Task<SizeModelItemDto> GetItem(string sizeModelItemId)
         {
-            var data = await context.SizeModelItems.FindAsync(sizeModelId, sizeModelItemId);
+            var data = await context.SizeModelItems.FindAsync(sizeModelItemId);
 
             var dto = mapper.Map<SizeModelItemDto>(data);
 
@@ -49,7 +49,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
         public async Task<IEnumerable<SizeModelItemDto>> GetItems(string sizeModelId)
         {
             var data = await context.SizeModelItems
-                .Where(x => x.SizeModelId == sizeModelId)
+                .Where(x => x.SizeModel.Id == sizeModelId)
                 .ToListAsync();
 
             var dto = mapper.Map<IEnumerable<SizeModelItemDto>>(data);

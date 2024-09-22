@@ -48,7 +48,9 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public void Add(SizeModel sizeModel)
         {
-            var table = mapper.Map<SizeModelTable>(sizeModel);
+            var sizeModelProps = sizeModel.GetPropsCopy();
+
+            var table = mapper.Map<SizeModelTable>(sizeModelProps);
 
             context.SizeModels.Add(table);
         }
@@ -118,21 +120,21 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
-            item.SizeModelFactorSelected = sizeModelItemTypeId;
+            item.SizeModelTypeItemId = sizeModelItemTypeId;
         }
 
         public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
-            item.ProfileCountValue = factorSelected;
+            item.FactorSelected = factorSelected;
         }
 
         public async void ChangeQuantity(string sizeModelItemId, int quantity)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
-            item.ProfileCountValue = quantity;
+            item.Quantity = quantity;
         }
 
         public async void ChangeTotalCost(string sizeModelItemId, double totalCost)

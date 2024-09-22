@@ -48,8 +48,9 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddFactory(c =>
             {
                 c.AddSource<SizeModelTypeFactorCostConfigurationSource>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeSprintFactorCostCalculator>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorCostCalculator>();
+                c.AddTransient<ISizeModelTypeFactorCostFactory, SizeModelTypeFactorCostFactory>();
+                c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeTShirtAndSprintFactorCostCalculator>();
+                c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorDefaultCostCalculator>();
 
             });
 

@@ -10,7 +10,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
             {
                 var query = new GetSizeModelQuery(sizeModelId);
 
-                SizeModelDto request = await service.Mediator.Send(query);
+                var request = await service.Mediator.Send(query);
 
                 return request is null
                         ? Results.NotFound()

@@ -6,13 +6,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModelItem
     public class GetSizeModelItemQuery : IRequest<SizeModelItemDto>
     {
 
-        public GetSizeModelItemQuery(string sizeModelId, string sizeModelItemId)
+        public GetSizeModelItemQuery(string sizeModelItemId)
         {
-            SizeModelId = sizeModelId;
             SizeModelItemId = sizeModelItemId;
         }
 
-        public string SizeModelId { get; }
         public string SizeModelItemId { get; }
     }
 }

@@ -3,12 +3,12 @@
     public class SizeModelTypeFactorCostCriteria
     {
         public string Factor { get; set; }
-        public string SizeModelTypeSelected { get; set; }
+        public string SizeModelTypeCodeSelected { get; set; }
 
-        public SizeModelTypeFactorCostCriteria(string factor, string sizeModelTypeSelected)
+        public SizeModelTypeFactorCostCriteria(string factor, string sizeModelTypeCodeSelected)
         {
             Factor = factor;
-            SizeModelTypeSelected = sizeModelTypeSelected;
+            SizeModelTypeCodeSelected = sizeModelTypeCodeSelected;
         }
     }
 }

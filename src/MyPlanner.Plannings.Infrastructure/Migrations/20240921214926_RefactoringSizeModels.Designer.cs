@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPlanner.Plannings.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using MyPlanner.Plannings.Infrastructure.Database;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     [DbContext(typeof(PlanningDbContext))]
-    partial class PlanningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240921214926_RefactoringSizeModels")]
+    partial class RefactoringSizeModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -134,36 +137,30 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("FactorSelected")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsStandard")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ProfileAvgRateSymbol")
-                        .HasColumnType("int");
-
-                    b.Property<double>("ProfileAvgRateValue")
+                    b.Property<double>("ProfileAvgRateAmount")
                         .HasColumnType("float");
+
+                    b.Property<int>("ProfileCountValue")
+                        .HasColumnType("int");
 
                     b.Property<string>("ProfileName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfileValueSelected")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SizeModelFactorSelected")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SizeModelId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SizeModelTypeItemId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SizeModelTypeSelected")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

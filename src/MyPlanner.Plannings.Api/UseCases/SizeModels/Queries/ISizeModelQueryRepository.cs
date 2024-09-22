@@ -8,6 +8,6 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
         Task<IEnumerable<SizeModelDto>> GetAll(PaginationDto pagination);
         Task<SizeModelDto> Get(string sizeModelId);
         Task<IEnumerable<SizeModelItemDto>> GetItems(string sizeModelId);
-        Task<SizeModelItemDto> GetItem(string sizeModelId, string sizeModelItemId);
+        Task<SizeModelItemDto> GetItem(string sizeModelItemId);
     }
 }
