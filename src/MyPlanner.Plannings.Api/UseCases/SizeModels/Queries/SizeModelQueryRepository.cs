@@ -17,7 +17,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
         }
         public async Task<SizeModelDto> Get(string sizeModelId)
         {
-            var data = await context.SizeModels.FindAsync(sizeModelId);
+            var data = await context.SizeModels.Include(x => x.Items).ThenInclude(x => x.SizeModelTypeItem).Where(x => x.Id == sizeModelId).FirstOrDefaultAsync();
 
             var dto = mapper.Map<SizeModelDto>(data);
 
@@ -28,6 +28,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
         {
             var data = await context.SizeModels
                 .Include(x => x.Items)
+                .ThenInclude(x => x.SizeModelTypeItem)
                 .Skip(pagination.Page)
                 .Take(pagination.RecordsPerPage)
                 .ToListAsync();

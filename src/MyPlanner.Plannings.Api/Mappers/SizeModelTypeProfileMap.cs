@@ -76,9 +76,9 @@ namespace MyPlanner.Plannings.Api.Mappers
         }
     }
 
-    public class SizeModelTypeProfile : Profile
+    public class SizeModelTypeProfileMap : Profile
     {
-        public SizeModelTypeProfile()
+        public SizeModelTypeProfileMap()
         {
             // Size Model Types
             CreateMap<int, SizeModelTypeStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeStatus>>();

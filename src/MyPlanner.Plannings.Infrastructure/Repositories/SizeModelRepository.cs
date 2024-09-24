@@ -109,11 +109,14 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async Task<SizeModelItem> GetItem(string sizeModelItemId)
         {
-            var data = await context.SizeModelItems.FirstOrDefaultAsync(x => x.Id == sizeModelItemId);
+            var data = await context.SizeModelItems
+                .Include(x => x.SizeModel)
+                .Include(x => x.SizeModelTypeItem)
+               .FirstOrDefaultAsync(x => x.Id == sizeModelItemId);
 
-            var dto = mapper.Map<SizeModelItem>(data);
+            var entity = mapper.Map<SizeModelItem>(data);
 
-            return dto;
+            return entity;
         }
 
         public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId)

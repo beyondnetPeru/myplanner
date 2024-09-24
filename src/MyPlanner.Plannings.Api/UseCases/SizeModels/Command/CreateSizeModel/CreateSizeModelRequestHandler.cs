@@ -43,14 +43,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                 {
                     var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(item.SizeModelTypeItemId);
 
-                    var costCalculator = this.sizeModelTypeFactorCostCalculatorFactory.Create(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                                                                              request.SizeModelTypeCode);
-
-                    item.TotalCost = costCalculator.Calculate(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                                                                                 item.SizeModelTypeSelected,
-                                                                                                 item.Quantity,
-                                                                                                 item.ProfileAvgRateValue);
-
+                    SetTotalCost(request, item);
 
                     var sizeModelItem = SizeModelItem.Create(IdValueObject.Create(),
                                                              sizeModel,
@@ -80,6 +73,17 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
             return true;
+        }
+
+        private void SetTotalCost(CreateSizeModelRequest request, CreateSizeModelItemRequest item)
+        {
+            var costCalculator = this.sizeModelTypeFactorCostCalculatorFactory.Create(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                                                                      request.SizeModelTypeCode);
+
+            item.TotalCost = costCalculator.Calculate(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
+                                                                                         item.SizeModelTypeSelected,
+                                                                                         item.Quantity,
+                                                                                         item.ProfileAvgRateValue);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Api.Services.Interfaces;
+using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
@@ -9,14 +10,17 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
         private readonly ILogger<ChangeSizeModelTypeItemModelItemRequestHandler> logger;
+        private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory;
 
         public ChangeSizeModelTypeItemModelItemRequestHandler(ISizeModelRepository sizeModelRepository,
                                                      ISizeModelTypeRepository sizeModelTypeRepository,
-                                                     ILogger<ChangeSizeModelTypeItemModelItemRequestHandler> logger)
+                                                     ILogger<ChangeSizeModelTypeItemModelItemRequestHandler> logger,
+                                                     ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.sizeModelTypeFactorCostFactory = sizeModelTypeFactorCostFactory ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostFactory));
         }
 
         public async Task<bool> Handle(ChangeSizeModelTypeItemModelItemRequest request, CancellationToken cancellationToken)
@@ -26,6 +30,8 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
             var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(request.SizeModelItemTypeId);
 
             sizeModelItem.ChangeSizeModelTypeItem(sizeModelTypeItem, UserId.Create(request.UserId));
+
+            SetTotalCost(request, sizeModelItem);
 
             if (!sizeModelItem.IsValid())
             {
@@ -39,6 +45,22 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
 
             return true;
 
+        }
+
+        private void SetTotalCost(ChangeSizeModelTypeItemModelItemRequest request, SizeModelItem sizeModelItem)
+        {
+            var costCalculator = this.sizeModelTypeFactorCostFactory.Create(
+                            Enumeration.FromValue<FactorsEnum>(sizeModelItem.GetPropsCopy().FactorSelected.Id),
+                            sizeModelItem.GetPropsCopy().SizeModelTypeSelected.GetValue());
+
+
+
+            var totalCost = costCalculator.Calculate(sizeModelItem.GetPropsCopy().FactorSelected,
+                                                                           sizeModelItem.GetPropsCopy().SizeModelTypeSelected.GetValue(),
+                                                                           sizeModelItem.GetPropsCopy().Quantity.GetValue(),
+                                                                           sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value);
+
+            sizeModelItem.ChangeTotalCost(totalCost, UserId.Create(request.UserId));
         }
     }
 }

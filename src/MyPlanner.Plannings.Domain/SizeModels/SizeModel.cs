@@ -1,7 +1,6 @@
 ﻿using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
@@ -9,20 +8,30 @@ namespace MyPlanner.Plannings.Domain.SizeModels
     public class SizeModelProps : IProps
     {
         public IdValueObject Id { get; private set; }
-        public SizeModelType SizeModelType { get; private set; } // TShirt
+        public IdValueObject SizeModelTypeId { get; private set; } // TShirt
         public Name Name { get; private set; } // TShirt size for Squads
         public ICollection<SizeModelItem> Items { get; private set; }
         public Audit Audit { get; set; }
         public SizeModelStatus Status { get; private set; } = SizeModelStatus.Active;
 
-        public SizeModelProps(IdValueObject id, SizeModelType sizeModelType, Name name, UserId userId)
+        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, UserId userId)
         {
             Id = id;
-            SizeModelType = sizeModelType;
+            SizeModelTypeId = sizeModelTypeId;
             Name = name;
             Items = new List<SizeModelItem>();
             Audit = Audit.Create(userId.GetValue());
             Status = SizeModelStatus.Active;
+        }
+
+        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Audit audit, SizeModelStatus status)
+        {
+            Id = id;
+            SizeModelTypeId = sizeModelTypeId;
+            Name = name;
+            Items = new List<SizeModelItem>();
+            Audit = audit;
+            Status = status;
         }
 
         public object Clone()
@@ -37,9 +46,24 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         {
         }
 
-        public static SizeModel Create(IdValueObject id, SizeModelType sizeModelType, Name name, UserId userId)
+        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, UserId userId)
         {
-            return new SizeModel(new SizeModelProps(id, sizeModelType, name, userId));
+            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, name, userId));
+        }
+
+        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Audit audit, SizeModelStatus status)
+        {
+            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, name, audit, status));
+        }
+
+        public static SizeModel Load(SizeModelProps sizeModelProps)
+        {
+
+            return Create(sizeModelProps.Id,
+                          sizeModelProps.SizeModelTypeId,
+                          sizeModelProps.Name,
+                          sizeModelProps.Audit,
+                          sizeModelProps.Status);
         }
 
         public void AddItem(SizeModelItem sizeModelItem, UserId userId)

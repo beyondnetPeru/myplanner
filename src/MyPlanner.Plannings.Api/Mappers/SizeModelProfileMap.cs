@@ -1,7 +1,8 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
-using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 using MyPlanner.Plannings.Shared.Infrastructure.Database;
@@ -13,6 +14,14 @@ namespace MyPlanner.Plannings.Api.Mappers
         public void Process(SizeModelItemTable source, SizeModelItemDto destination, ResolutionContext context)
         {
             destination.Status = Enumeration.FromValue<SizeModelItemStatus>(source.Status).Name.ToUpper();
+        }
+    }
+
+    public class SizeModelEnumAction : IMappingAction<SizeModelTable, SizeModelDto>
+    {
+        public void Process(SizeModelTable source, SizeModelDto destination, ResolutionContext context)
+        {
+            destination.Status = Enumeration.FromValue<SizeModelStatus>(source.Status).Name.ToUpper();
         }
     }
 
@@ -78,30 +87,32 @@ namespace MyPlanner.Plannings.Api.Mappers
         }
     }
 
-    public class SizeModelProfile : Profile
+    public class SizeModelProfileMap : Profile
     {
-        public SizeModelProfile()
+        public SizeModelProfileMap()
         {
+            CreateMap<Audit, AuditTable>().ConvertUsing(new AuditToAuditTableConvert());
+
             // SizeModel
             CreateMap<CreateSizeModelDto, CreateSizeModelRequest>();
-            CreateMap<SizeModelTable, SizeModelDto>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
-
-            CreateMap<Audit, AuditTable>().ConvertUsing(new AuditToAuditTableConvert());
+            CreateMap<CreateSizeModelItemDto, CreateSizeModelItemRequest>();
 
             CreateMap<SizeModelProps, SizeModelTable>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
-                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelType.GetPropsCopy().Id.GetValue()))
+                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId.GetValue()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(new SizeModelItemPropsToTableResolver()));
 
-            //SizeModelItem
-            CreateMap<CreateSizeModelItemDto, CreateSizeModelItemRequest>();
+            CreateMap<SizeModelTable, SizeModelDto>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+               .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId))
+               .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+               .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items))
+               .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelEnumAction>();
+
             CreateMap<SizeModelItemTable, SizeModelItemDto>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dest => dest.SizeModelId, opt => opt.MapFrom(src => src.SizeModelId))
                 .ForMember(dest => dest.SizeModelName, opt => opt.MapFrom(src => src.SizeModel.Name))
                 .ForMember(dest => dest.SizeModelTypeItemId, opt => opt.MapFrom(src => src.SizeModelTypeItemId))
@@ -114,7 +125,16 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost))
                 .ForMember(dest => dest.IsStandard, opt => opt.MapFrom(src => src.IsStandard))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelItemEnumAction>(); ;
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelItemEnumAction>();
+
+            CreateMap<SizeModelTable, SizeModelProps>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
+
         }
     }
 }
