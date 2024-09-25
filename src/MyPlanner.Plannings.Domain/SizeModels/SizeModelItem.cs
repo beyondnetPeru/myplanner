@@ -9,11 +9,11 @@ namespace MyPlanner.Plannings.Domain.SizeModels
     public class SizeModelItemProps : IProps
     {
         public IdValueObject Id { get; private set; }
-        public IdValueObject SizeModelId { get; set; }// T-Shirt
-        public IdValueObject SizeModelTypeItemId { get; set; } // X, XS, S, M, L, XL, XXL, XXXL
+        public IdValueObject SizeModelId { get; private set; }// T-Shirt
+        public IdValueObject SizeModelTypeItemId { get; private set; } // X, XS, S, M, L, XL, XXL, XXXL
+        public SizeModelTypeItemCode SizeModelTypeItemCode { get; private set; } // X, XS, S, M, L, XL, XXL, XXXL
         public FactorsEnum FactorSelected { get; private set; }
         public SizeModelProfile Profile { get; private set; } // SM - $3000, SRE - $5000
-        public SizeModelTypeValueSelected SizeModelTypeSelected { get; private set; } // X, XS, S, M, L, XL, XXL, XXXL
         public SizeModelTypeQuantity Quantity { get; private set; } //1, 2, ..., 30
         public SizeModelTotalCost TotalCost { get; set; } = SizeModelTotalCost.DefaultValue(); // 0.00
         public SizeModelItemIsStandard IsStandard { get; set; }
@@ -23,9 +23,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public SizeModelItemProps(IdValueObject id,
                                  IdValueObject sizeModelId,
                                  IdValueObject sizeModelTypeItemId,
+                                 SizeModelTypeItemCode sizeModelTypeItemCode,
                                  FactorsEnum factorSelected,
                                  SizeModelProfile profile,
-                                 SizeModelTypeValueSelected sizeModelTypeSelected,
                                  SizeModelTypeQuantity quantity,
                                  SizeModelTotalCost totalCost,
                                  SizeModelItemIsStandard isStandard,
@@ -34,9 +34,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Id = id;
             SizeModelId = sizeModelId;
             SizeModelTypeItemId = sizeModelTypeItemId;
+            SizeModelTypeItemCode = sizeModelTypeItemCode;
             FactorSelected = factorSelected;
             Profile = profile;
-            SizeModelTypeSelected = sizeModelTypeSelected;
             Quantity = quantity;
             TotalCost = totalCost;
             IsStandard = isStandard;
@@ -47,9 +47,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public SizeModelItemProps(IdValueObject id,
                                  IdValueObject sizeModelId,
                                  IdValueObject sizeModelTypeItemId,
+                                 SizeModelTypeItemCode sizeModelTypeItemCode,
                                  FactorsEnum factorSelected,
                                  SizeModelProfile profile,
-                                 SizeModelTypeValueSelected sizeModelTypeSelected,
                                  SizeModelTypeQuantity quantity,
                                  SizeModelTotalCost totalCost,
                                  SizeModelItemIsStandard isStandard,
@@ -59,9 +59,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             Id = id;
             SizeModelId = sizeModelId;
             SizeModelTypeItemId = sizeModelTypeItemId;
+            SizeModelTypeItemCode = sizeModelTypeItemCode;
             FactorSelected = factorSelected;
             Profile = profile;
-            SizeModelTypeSelected = sizeModelTypeSelected;
             Quantity = quantity;
             TotalCost = totalCost;
             IsStandard = isStandard;
@@ -84,17 +84,17 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         }
 
         public static SizeModelItem Create(IdValueObject id,
-                                 SizeModel sizeModel,
-                                 SizeModelTypeItem sizeModelTypeItem,
+                                 IdValueObject sizeModelId,
+                                 IdValueObject sizeModelTypeItemId,
+                                 SizeModelTypeItemCode sizeModelTypeItemCode,
                                  FactorsEnum factorSelected,
                                  SizeModelProfile profile,
-                                 SizeModelTypeValueSelected sizeModelTypeSelected,
                                  SizeModelTypeQuantity quantity,
                                  SizeModelTotalCost totalCost,
                                  SizeModelItemIsStandard isStandard,
                                  UserId userId)
         {
-            var props = new SizeModelItemProps(id, sizeModelId, sizeModelTypeItemId, factorSelected, profile, sizeModelTypeSelected, quantity, totalCost, isStandard, userId);
+            var props = new SizeModelItemProps(id, sizeModelId, sizeModelTypeItemId, sizeModelTypeItemCode, factorSelected, profile, quantity, totalCost, isStandard, userId);
 
             return new SizeModelItem(props);
         }
@@ -103,11 +103,11 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         {
             var props = new SizeModelItemProps(
                 sizeModelItem.Id,
-                sizeModelItem.SizeModel,
-                sizeModelItem.SizeModelTypeItem,
+                sizeModelItem.SizeModelId,
+                sizeModelItem.SizeModelTypeItemId,
+                sizeModelItem.SizeModelTypeItemCode,
                 sizeModelItem.FactorSelected,
                 sizeModelItem.Profile,
-                sizeModelItem.SizeModelTypeSelected,
                 sizeModelItem.Quantity,
                 sizeModelItem.TotalCost,
                 sizeModelItem.IsStandard,
@@ -118,10 +118,10 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             return new SizeModelItem(props);
         }
 
-        public void ChangeSizeModelTypeItem(SizeModelTypeItem sizeModelTypeItem, UserId userId)
+        public void ChangeSizeModelTypeItem(IdValueObject sizeModelTypeItemId, SizeModelTypeItemCode sizeModelTypeItemCode, UserId userId)
         {
-            GetProps().SizeModelTypeItem = sizeModelTypeItem;
-            GetProps().SizeModelTypeSelected.SetValue(sizeModelTypeItem.GetPropsCopy().Code.GetValue());
+            GetProps().SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
+            GetProps().SizeModelTypeItemCode.SetValue(sizeModelTypeItemCode.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
 

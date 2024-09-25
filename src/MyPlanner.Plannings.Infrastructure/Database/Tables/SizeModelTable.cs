@@ -10,8 +10,9 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         [Key]
         public string Id { get; set; }
 
-        [ForeignKey("SizeModelType")]
+        [ForeignKey("SizeModelTypeId")]
         public string SizeModelTypeId { get; set; }
+        public string SizeModelTypeCode { get; set; }
         public string Name { get; set; }
         public ICollection<SizeModelItemTable> Items { get; set; }
         public AuditTable Audit { get; set; }

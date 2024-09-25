@@ -27,11 +27,15 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
         {
             var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelItemId);
 
+            var sizeModel = await sizeModelRepository.Get(sizeModelItem.GetPropsCopy().SizeModelId.GetValue());
+
             var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(request.SizeModelItemTypeId);
 
-            sizeModelItem.ChangeSizeModelTypeItem(sizeModelTypeItem, UserId.Create(request.UserId));
+            sizeModelItem.ChangeSizeModelTypeItem(sizeModelTypeItem.GetPropsCopy().Id,
+                                                  sizeModelTypeItem.GetPropsCopy().Code,
+                                                  UserId.Create(request.UserId));
 
-            SetTotalCost(request, sizeModelItem);
+            SetTotalCost(request, sizeModelItem, sizeModel);
 
             if (!sizeModelItem.IsValid())
             {
@@ -47,16 +51,16 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
 
         }
 
-        private void SetTotalCost(ChangeSizeModelTypeItemModelItemRequest request, SizeModelItem sizeModelItem)
+        private void SetTotalCost(ChangeSizeModelTypeItemModelItemRequest request, SizeModelItem sizeModelItem, SizeModel sizeModel)
         {
             var costCalculator = this.sizeModelTypeFactorCostFactory.Create(
                             Enumeration.FromValue<FactorsEnum>(sizeModelItem.GetPropsCopy().FactorSelected.Id),
-                            sizeModelItem.GetPropsCopy().SizeModelTypeSelected.GetValue());
+                            sizeModel.GetPropsCopy().SizeModelTypeCode.GetValue());
 
 
 
             var totalCost = costCalculator.Calculate(sizeModelItem.GetPropsCopy().FactorSelected,
-                                                                           sizeModelItem.GetPropsCopy().SizeModelTypeSelected.GetValue(),
+                                                                           sizeModelItem.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
                                                                            sizeModelItem.GetPropsCopy().Quantity.GetValue(),
                                                                            sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value);
 

@@ -6,11 +6,11 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
     {
         public string SizeModelId { get; set; }
         public string SizeModelTypeItemId { get; set; }
+        public string SizeModelTypeItemCode { get; set; }
         public int FactorSelected { get; set; }
         public string ProfileName { get; set; }
         public int ProfileAvgRateSymbol { get; set; }
         public double ProfileAvgRateValue { get; set; }
-        public string SizeModelTypeSelected { get; set; }
         public int Quantity { get; set; }
         public double TotalCost { get; set; }
         public bool IsStandard { get; set; }
@@ -18,11 +18,11 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
 
         public CreateSizeModelItemDto(string sizeModelId,
                                       string sizeModelTypeItemId,
+                                      string sizeModelTypeItemCode,
                                       int factorSelected,
                                       string profileName,
                                       int profileAvgRateSymbol,
                                       double profileAvgRateValue,
-                                      string sizeModelTypeSelected,
                                       int quantity,
                                       double totalCost,
                                       bool isStandard,
@@ -31,11 +31,11 @@ namespace MyPlanner.Plannings.Api.Dtos.SizeModel
         {
             SizeModelId = sizeModelId;
             SizeModelTypeItemId = sizeModelTypeItemId;
+            SizeModelTypeItemCode = sizeModelTypeItemCode;
             FactorSelected = factorSelected;
             ProfileName = profileName;
             ProfileAvgRateSymbol = profileAvgRateSymbol;
             ProfileAvgRateValue = profileAvgRateValue;
-            SizeModelTypeSelected = sizeModelTypeSelected;
             Quantity = quantity;
             TotalCost = totalCost;
             IsStandard = isStandard;

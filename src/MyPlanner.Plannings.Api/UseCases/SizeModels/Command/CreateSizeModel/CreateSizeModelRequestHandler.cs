@@ -28,7 +28,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
         {
             var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
 
-            var sizeModel = SizeModel.Create(IdValueObject.Create(), sizeModelType, Name.Create(request.Name), UserId.Create(request.UserId));
+            var sizeModel = SizeModel.Create(IdValueObject.Create(), sizeModelType.GetPropsCopy().Id, sizeModelType.GetPropsCopy().Code, Name.Create(request.Name), UserId.Create(request.UserId));
 
 
             if (!sizeModel.IsValid())
@@ -46,12 +46,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                     SetTotalCost(request, item);
 
                     var sizeModelItem = SizeModelItem.Create(IdValueObject.Create(),
-                                                             sizeModel,
-                                                             sizeModelTypeItem,
+                                                             sizeModel.GetPropsCopy().Id,
+                                                             sizeModelTypeItem.GetPropsCopy().Id,
+                                                             sizeModelTypeItem.GetPropsCopy().Code,
                                                              Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
                                                              SizeModelProfile.Create(ProfileName.Create(item.ProfileName),
                                                                                      ProfileAvgRate.Create(Enumeration.FromValue<CurrencySymbolEnum>(item.ProfileAvgRateSymbol), item.ProfileAvgRateValue)),
-                                                             SizeModelTypeValueSelected.Create(item.SizeModelTypeSelected),
                                                              SizeModelTypeQuantity.Create(item.Quantity),
                                                              SizeModelTotalCost.Create(item.TotalCost),
                                                              SizeModelItemIsStandard.Create(item.IsStandard),
@@ -81,7 +81,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
                                                                                       request.SizeModelTypeCode);
 
             item.TotalCost = costCalculator.Calculate(Enumeration.FromValue<FactorsEnum>(item.FactorSelected),
-                                                                                         item.SizeModelTypeSelected,
+                                                                                         item.SizeModelTypeItemCode,
                                                                                          item.Quantity,
                                                                                          item.ProfileAvgRateValue);
         }

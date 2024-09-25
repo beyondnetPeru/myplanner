@@ -12,8 +12,8 @@ using MyPlanner.Plannings.Infrastructure.Database;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     [DbContext(typeof(PlanningDbContext))]
-    [Migration("20240922021753_SizeModels")]
-    partial class SizeModels
+    [Migration("20240925005319_updateTable1")]
+    partial class updateTable1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -160,6 +160,10 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("SizeModelTypeItemCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SizeModelTypeItemId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -189,6 +193,10 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SizeModelTypeCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

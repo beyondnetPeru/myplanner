@@ -1,8 +1,6 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
-using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 using MyPlanner.Plannings.Shared.Infrastructure.Database;
@@ -43,12 +41,12 @@ namespace MyPlanner.Plannings.Api.Mappers
                     Id = item.GetPropsCopy().Id.GetValue(),
                     SizeModelId = item.GetPropsCopy().Id.GetValue(),
                     SizeModel = destination,
-                    SizeModelTypeItemId = item.GetPropsCopy().SizeModelTypeItem.GetPropsCopy().Id.GetValue(),
+                    SizeModelTypeItemId = item.GetPropsCopy().SizeModelTypeItemId.GetValue(),
+                    SizeModelTypeItemCode = item.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
                     FactorSelected = item.GetPropsCopy().FactorSelected.Id,
                     ProfileName = item.GetPropsCopy().Profile.GetValue().ProfileName.GetValue(),
                     ProfileAvgRateSymbol = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Symbol.Id,
                     ProfileAvgRateValue = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value,
-                    SizeModelTypeSelected = item.GetPropsCopy().SizeModelTypeSelected.GetValue(),
                     Quantity = item.GetPropsCopy().Quantity.GetValue(),
                     TotalCost = item.GetPropsCopy().TotalCost.GetValue(),
                     IsStandard = item.GetPropsCopy().IsStandard.GetValue(),
@@ -121,7 +119,6 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.ProfileName, opt => opt.MapFrom(src => src.ProfileName))
                 .ForMember(dest => dest.ProfileAvgRateSymbol, opt => opt.MapFrom(src => src.ProfileAvgRateSymbol))
                 .ForMember(dest => dest.ProfileAvgRateValue, opt => opt.MapFrom(src => src.ProfileAvgRateValue))
-                .ForMember(dest => dest.SizeModelTypeSelected, opt => opt.MapFrom(src => src.SizeModelTypeSelected))
                 .ForMember(dest => dest.Quantity, opt => opt.MapFrom(src => src.Quantity))
                 .ForMember(dest => dest.TotalCost, opt => opt.MapFrom(src => src.TotalCost))
                 .ForMember(dest => dest.IsStandard, opt => opt.MapFrom(src => src.IsStandard))
@@ -133,8 +130,6 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
-
-
         }
     }
 }

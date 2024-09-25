@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class SizeModels : Migration
+    public partial class updateTable1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,6 +89,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SizeModelTypeId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SizeModelTypeCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -185,6 +186,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SizeModelId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     SizeModelTypeItemId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SizeModelTypeItemCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FactorSelected = table.Column<int>(type: "int", nullable: false),
                     ProfileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileAvgRateSymbol = table.Column<int>(type: "int", nullable: false),

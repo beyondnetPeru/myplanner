@@ -6,32 +6,32 @@ namespace MyPlanner.Plannings.Api.Services.Impl
 {
     public class SizeModelTypeTShirtAndSprintFactorCostCalculator : ISizeModelTypeFactorCostCalculator
     {
-        public double Calculate(FactorsEnum factor, string sizeModelTypeItemValueSelected, int quantity, double profileAvgRate)
+        public double Calculate(FactorsEnum factor, string sizeModelTypeItemCode, int quantity, double profileAvgRate)
         {
-            Guard(factor, sizeModelTypeItemValueSelected, profileAvgRate);
+            Guard(factor, sizeModelTypeItemCode, profileAvgRate);
 
-            var sprintCount = GetSprintCount(sizeModelTypeItemValueSelected);
+            var sprintCount = GetSprintCount(sizeModelTypeItemCode);
 
             return sprintCount * (quantity * profileAvgRate);
         }
 
         private void Guard(FactorsEnum factor,
-                        string sizeModelTypeItemValueSelected,
+                        string sizeModelTypeItemCode,
                         double profileAvgRate)
         {
             ArgumentNullException.ThrowIfNull(factor, nameof(factor));
             ArgumentNullException.ThrowIfNull(profileAvgRate, nameof(profileAvgRate));
-            ArgumentNullException.ThrowIfNull(sizeModelTypeItemValueSelected, nameof(sizeModelTypeItemValueSelected));
+            ArgumentNullException.ThrowIfNull(sizeModelTypeItemCode, nameof(sizeModelTypeItemCode));
 
 
             if (factor != FactorsEnum.Sprints)
                 throw new DomainException("Factor is not sprint.");
         }
 
-        private int GetSprintCount(string sizeModelTypeItemValueSelected)
+        private int GetSprintCount(string sizeModelTypeItemCode)
         {
             var sprintCount = 0;
-            var tShirtSelected = sizeModelTypeItemValueSelected.ToLower().Trim();
+            var tShirtSelected = sizeModelTypeItemCode.ToLower().Trim();
 
             if (tShirtSelected == "xs")
             {

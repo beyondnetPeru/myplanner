@@ -157,13 +157,13 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("SizeModelTypeItemCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SizeModelTypeItemId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SizeModelTypeSelected")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -189,16 +189,18 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SizeModelTypeCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SizeModelTypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SizeModelTypeId");
 
                     b.ToTable("sizemodels", "myplanner-plannings");
                 });
@@ -446,12 +448,6 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTable", b =>
                 {
-                    b.HasOne("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeTable", "SizeModelType")
-                        .WithMany()
-                        .HasForeignKey("SizeModelTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelTableId")
@@ -488,8 +484,6 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
                     b.Navigation("Audit")
                         .IsRequired();
-
-                    b.Navigation("SizeModelType");
                 });
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTypeItemTable", b =>

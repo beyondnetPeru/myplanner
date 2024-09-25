@@ -1,6 +1,7 @@
 ﻿using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
@@ -9,25 +10,28 @@ namespace MyPlanner.Plannings.Domain.SizeModels
     {
         public IdValueObject Id { get; private set; }
         public IdValueObject SizeModelTypeId { get; private set; } // TShirt
+        public SizeModelTypeCode SizeModelTypeCode { get; private set; } // TShirt
         public Name Name { get; private set; } // TShirt size for Squads
         public ICollection<SizeModelItem> Items { get; private set; }
         public Audit Audit { get; set; }
         public SizeModelStatus Status { get; private set; } = SizeModelStatus.Active;
 
-        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, UserId userId)
+        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeCode sizeModelTypeCode, Name name, UserId userId)
         {
             Id = id;
             SizeModelTypeId = sizeModelTypeId;
+            SizeModelTypeCode = sizeModelTypeCode;
             Name = name;
             Items = new List<SizeModelItem>();
             Audit = Audit.Create(userId.GetValue());
             Status = SizeModelStatus.Active;
         }
 
-        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Audit audit, SizeModelStatus status)
+        public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeCode sizeModelTypeCode, Name name, Audit audit, SizeModelStatus status)
         {
             Id = id;
             SizeModelTypeId = sizeModelTypeId;
+            SizeModelTypeCode = sizeModelTypeCode;
             Name = name;
             Items = new List<SizeModelItem>();
             Audit = audit;
@@ -46,14 +50,14 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         {
         }
 
-        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, UserId userId)
+        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeCode sizeModelTypeCode, Name name, UserId userId)
         {
-            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, name, userId));
+            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, sizeModelTypeCode, name, userId));
         }
 
-        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Audit audit, SizeModelStatus status)
+        public static SizeModel Create(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeCode sizeModelTypeCode, Name name, Audit audit, SizeModelStatus status)
         {
-            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, name, audit, status));
+            return new SizeModel(new SizeModelProps(id, sizeModelTypeId, sizeModelTypeCode, name, audit, status));
         }
 
         public static SizeModel Load(SizeModelProps sizeModelProps)
@@ -61,6 +65,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
             return Create(sizeModelProps.Id,
                           sizeModelProps.SizeModelTypeId,
+                          sizeModelProps.SizeModelTypeCode,
                           sizeModelProps.Name,
                           sizeModelProps.Audit,
                           sizeModelProps.Status);
