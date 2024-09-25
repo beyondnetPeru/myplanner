@@ -1,6 +1,8 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 using MyPlanner.Plannings.Shared.Infrastructure.Database;
@@ -98,6 +100,7 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<SizeModelProps, SizeModelTable>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.GetValue()))
                 .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId.GetValue()))
+                .ForMember(dest => dest.SizeModelTypeCode, opt => opt.MapFrom(src => src.SizeModelTypeCode.GetValue()))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name.GetValue()))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Id))
                 .ForMember(dest => dest.Items, opt => opt.MapFrom(new SizeModelItemPropsToTableResolver()));
@@ -124,12 +127,50 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.IsStandard, opt => opt.MapFrom(src => src.IsStandard))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelItemEnumAction>();
 
-            CreateMap<SizeModelTable, SizeModelProps>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
-                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
+            CreateMap<SizeModelTable, SizeModel>()
+            .ConstructUsing(src => SizeModel.Load(new SizeModelProps(
+                IdValueObject.Create(src.Id),
+                IdValueObject.Create(src.SizeModelTypeId),
+                SizeModelTypeCode.Create(src.SizeModelTypeCode),
+                Name.Create(src.Name),
+                Audit.Load(new AuditProps()
+                {
+                    CreatedBy = src.Audit.CreatedBy,
+                    CreatedAt = src.Audit.CreatedAt,
+                    UpdatedBy = src.Audit.UpdatedBy,
+                    UpdatedAt = src.Audit.UpdatedAt,
+                    TimeSpan = src.Audit.TimeSpan
+                }),
+                Enumeration.FromValue<SizeModelStatus>(src.Status))));
+
+
+            CreateMap<SizeModelItemTable, SizeModelItem>()
+                .ConstructUsing(src => SizeModelItem.Load(
+                    new SizeModelItemProps(
+                        IdValueObject.Create(src.Id),
+                        IdValueObject.Create(src.SizeModelId),
+                        IdValueObject.Create(src.SizeModelTypeItemId),
+                        SizeModelTypeItemCode.Create(src.SizeModelTypeItemCode),
+                        Enumeration.FromValue<FactorsEnum>(src.FactorSelected),
+                        SizeModelProfile.Create(
+                            Domain.PlanAggregate.ProfileName.Create(src.ProfileName),
+                            ProfileAvgRate.Create(
+                                Enumeration.FromValue<CurrencySymbolEnum>(src.ProfileAvgRateSymbol),
+                                src.ProfileAvgRateValue)),
+                        SizeModelTypeQuantity.Create(src.Quantity),
+                        SizeModelTotalCost.Create(src.TotalCost),
+                        SizeModelItemIsStandard.Create(src.IsStandard),
+                        Audit.Load(new AuditProps()
+                        {
+                            CreatedBy = src.Audit.CreatedBy,
+                            CreatedAt = src.Audit.CreatedAt,
+                            UpdatedBy = src.Audit.UpdatedBy,
+                            UpdatedAt = src.Audit.UpdatedAt,
+                            TimeSpan = src.Audit.TimeSpan
+                        }),
+                        Enumeration.FromValue<SizeModelItemStatus>(src.Status))));
+
         }
     }
 }

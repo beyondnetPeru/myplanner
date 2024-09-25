@@ -119,11 +119,12 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return entity;
         }
 
-        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId)
+        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
             item.SizeModelTypeItemId = sizeModelItemTypeId;
+            item.SizeModelTypeItemCode = sizeModelItemTypeCode;
         }
 
         public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected)

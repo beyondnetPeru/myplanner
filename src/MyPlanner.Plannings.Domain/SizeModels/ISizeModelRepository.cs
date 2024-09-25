@@ -13,7 +13,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         Task<SizeModelItem> GetItem(string sizeModelItemId);
         void AddItem(SizeModelItem sizeModelItem);
-        void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId);
+        void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode);
         void ChangeFactorSelected(string sizeModelItemId, int factorSelected);
         void ChangeQuantity(string sizeModelItemId, int quantity);
         void DeactiveItem(string sizeModelItemId);

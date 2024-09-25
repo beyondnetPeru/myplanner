@@ -43,7 +43,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
                 return false;
             }
 
-            sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId);
+            sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId, request.SizeModelItemTypeCode);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 
@@ -53,11 +53,10 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
 
         private void SetTotalCost(ChangeSizeModelTypeItemModelItemRequest request, SizeModelItem sizeModelItem, SizeModel sizeModel)
         {
-            var costCalculator = this.sizeModelTypeFactorCostFactory.Create(
-                            Enumeration.FromValue<FactorsEnum>(sizeModelItem.GetPropsCopy().FactorSelected.Id),
-                            sizeModel.GetPropsCopy().SizeModelTypeCode.GetValue());
+            var factor = Enumeration.FromValue<FactorsEnum>(sizeModelItem.GetPropsCopy().FactorSelected.Id);
+            var sizeModelCode = sizeModel.GetPropsCopy().SizeModelTypeCode.GetValue();
 
-
+            var costCalculator = this.sizeModelTypeFactorCostFactory.Create(factor, sizeModelCode);
 
             var totalCost = costCalculator.Calculate(sizeModelItem.GetPropsCopy().FactorSelected,
                                                                            sizeModelItem.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
