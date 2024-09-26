@@ -1,4 +1,5 @@
-﻿using MyPlanner.Plannings.Api.Services.Interfaces;
+﻿using MyPlanner.Plannings.Api.Services.Impl;
+using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
@@ -35,7 +36,9 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
                                                   sizeModelTypeItem.GetPropsCopy().Code,
                                                   UserId.Create(request.UserId));
 
-            SetTotalCost(request, sizeModelItem, sizeModel);
+            var totalCost = TotalCostCalculator.SetTotalCost(sizeModelTypeFactorCostFactory, sizeModelItem, sizeModel);
+
+            sizeModelItem.ChangeTotalCost(totalCost, UserId.Create(request.UserId));
 
             if (!sizeModelItem.IsValid())
             {
@@ -43,27 +46,12 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
                 return false;
             }
 
-            sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId, request.SizeModelItemTypeCode);
+            sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId, request.SizeModelItemTypeCode, totalCost);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 
             return true;
 
-        }
-
-        private void SetTotalCost(ChangeSizeModelTypeItemModelItemRequest request, SizeModelItem sizeModelItem, SizeModel sizeModel)
-        {
-            var factor = Enumeration.FromValue<FactorsEnum>(sizeModelItem.GetPropsCopy().FactorSelected.Id);
-            var sizeModelCode = sizeModel.GetPropsCopy().SizeModelTypeCode.GetValue();
-
-            var costCalculator = this.sizeModelTypeFactorCostFactory.Create(factor, sizeModelCode);
-
-            var totalCost = costCalculator.Calculate(sizeModelItem.GetPropsCopy().FactorSelected,
-                                                                           sizeModelItem.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
-                                                                           sizeModelItem.GetPropsCopy().Quantity.GetValue(),
-                                                                           sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value);
-
-            sizeModelItem.ChangeTotalCost(totalCost, UserId.Create(request.UserId));
         }
     }
 }

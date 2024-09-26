@@ -13,9 +13,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         Task<SizeModelItem> GetItem(string sizeModelItemId);
         void AddItem(SizeModelItem sizeModelItem);
-        void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode);
-        void ChangeFactorSelected(string sizeModelItemId, int factorSelected);
-        void ChangeQuantity(string sizeModelItemId, int quantity);
+        void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode, double totalCost);
+        void ChangeFactorSelected(string sizeModelItemId, int factorSelected, double totalCost);
+        void ChangeQuantity(string sizeModelItemId, int quantity, double totalCost);
         void DeactiveItem(string sizeModelItemId);
         void ActiveItem(string sizeModelItemId);
         void DeleteItem(string idsizeModelItemId);

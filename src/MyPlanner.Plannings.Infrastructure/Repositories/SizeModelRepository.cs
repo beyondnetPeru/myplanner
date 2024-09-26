@@ -43,7 +43,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await GetSizeModelItem(sizeModelItemId);
 
-            table.Status = 2;
+            table.Status = 1;
         }
 
         public void Add(SizeModel sizeModel)
@@ -74,7 +74,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await GetSizeModel(sizeModelId);
 
-            table.Status = 1;
+            table.Status = 2;
         }
 
         public async void DeactiveItem(string sizeModelItemId)
@@ -88,14 +88,14 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await GetSizeModel(sizeModelId);
 
-            context.SizeModels.Remove(table);
+            table.Status = 0;
         }
 
         public async void DeleteItem(string sizeModelItemId)
         {
             var table = await GetSizeModelItem(sizeModelItemId);
 
-            context.SizeModelItems.Remove(table);
+            table.Status = 0;
         }
 
         public async Task<SizeModel> Get(string sizeModelId)
@@ -119,32 +119,34 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return entity;
         }
 
-        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode)
+        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode, double totalCost)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
             item.SizeModelTypeItemId = sizeModelItemTypeId;
             item.SizeModelTypeItemCode = sizeModelItemTypeCode;
+            item.TotalCost = totalCost;
         }
 
-        public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected)
+        public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected, double totalCost)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
             item.FactorSelected = factorSelected;
+            item.TotalCost = totalCost;
         }
 
-        public async void ChangeQuantity(string sizeModelItemId, int quantity)
+        public async void ChangeQuantity(string sizeModelItemId, int quantity, double totalCost)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
 
             item.Quantity = quantity;
+            item.TotalCost = totalCost;
         }
 
         public async void ChangeTotalCost(string sizeModelItemId, double totalCost)
         {
             var item = await GetSizeModelItem(sizeModelItemId);
-
             item.TotalCost = totalCost;
         }
 

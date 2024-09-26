@@ -125,15 +125,17 @@ namespace MyPlanner.Plannings.Domain.SizeModels
             GetProps().Audit.Update(userId.GetValue());
         }
 
-        public void ChangeFactorSelected(FactorsEnum factorSelected, UserId userId)
+        public void ChangeFactorSelected(FactorsEnum factorSelected, UserId userId, double totalCost)
         {
             GetProps().FactorSelected.SetValue<FactorsEnum>(factorSelected.Id);
+            GetProps().TotalCost.SetValue(totalCost);
             GetProps().Audit.Update(userId.GetValue());
         }
 
-        public void ChangeQuantity(int quantity, UserId userId)
+        public void ChangeQuantity(int quantity, double totalCost, UserId userId)
         {
             GetProps().Quantity.SetValue(quantity);
+            GetProps().TotalCost.SetValue(totalCost);
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -164,25 +166,25 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void Deactivate(UserId userId)
         {
-            if (GetPropsCopy().Status == SizeModelItemStatus.Inactive)
+            if (GetPropsCopy().Status == SizeModelItemStatus.Deactivated)
             {
                 AddBrokenRule("Size", "SizeModelItem is already Inactive.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Inactive.Id);
+            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Deactivated.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
 
         public void Delete(UserId userId)
         {
-            if (GetPropsCopy().Status == SizeModelItemStatus.Delete)
+            if (GetPropsCopy().Status == SizeModelItemStatus.Deleted)
             {
                 AddBrokenRule("Size", "SizeModelItem is already Deleted.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Delete.Id);
+            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Deleted.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -190,9 +192,9 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
     public class SizeModelItemStatus : Enumeration
     {
-        public static SizeModelItemStatus Delete = new SizeModelItemStatus(-1, nameof(Delete).ToLowerInvariant());
+        public static SizeModelItemStatus Deleted = new SizeModelItemStatus(0, nameof(Deleted).ToLowerInvariant());
         public static SizeModelItemStatus Active = new SizeModelItemStatus(1, nameof(Active).ToLowerInvariant());
-        public static SizeModelItemStatus Inactive = new SizeModelItemStatus(0, nameof(Inactive).ToLowerInvariant());
+        public static SizeModelItemStatus Deactivated = new SizeModelItemStatus(2, nameof(Deactivated).ToLowerInvariant());
 
         public SizeModelItemStatus(int id, string name)
             : base(id, name)

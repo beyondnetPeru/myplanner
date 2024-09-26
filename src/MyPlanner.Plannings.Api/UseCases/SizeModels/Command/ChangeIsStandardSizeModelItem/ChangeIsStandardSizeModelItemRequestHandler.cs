@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySizeModelItem;
-using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSizeModelItem

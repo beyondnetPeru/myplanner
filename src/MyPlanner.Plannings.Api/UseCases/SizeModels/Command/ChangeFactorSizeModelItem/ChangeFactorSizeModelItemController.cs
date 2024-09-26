@@ -14,7 +14,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeFactorSizeMo
                                                                                                 string sizeModelItemId,
                                                                [FromBody] ChangeFactorSizeModelDto changeFactorSizeModelDto) =>
             {
-                var changeFactorSizeModelRequest = service.Mapper.Map<ChangeFactorSizeModelItemRequest>(changeFactorSizeModelDto);
+                var changeFactorSizeModelRequest = new ChangeFactorSizeModelItemRequest(sizeModelItemId, changeFactorSizeModelDto.FactorSelected, changeFactorSizeModelDto.UserId);
 
                 var result = await service.Mediator.Send(changeFactorSizeModelRequest);
 
