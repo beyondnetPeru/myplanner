@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.IntegrationEventLogEF.Services;
-using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
+using MyPlanner.IntegrationEventLogEF.Services;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Infrastructure.Repositories;
 using MyPlanner.Plannings.Domain.SizeModels;
@@ -12,7 +12,7 @@ using MyPlanner.Plannings.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Queries;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
 using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
-using MyPlanner.Plannings.Shared.Application.Behaviors;
+using MyPlanner.Shared.Application.Behaviors;
 using MyPlanner.Plannings.Api.Behaviors;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;

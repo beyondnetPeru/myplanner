@@ -12,9 +12,9 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeMod
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelTypeFactor;
-using MyPlanner.Plannings.Shared.Application.Commands;
-using MyPlanner.Plannings.Shared.Application.Extensions;
-using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
+using MyPlanner.Shared.Application.Commands;
+using MyPlanner.Shared.Application.Extensions;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases
 {

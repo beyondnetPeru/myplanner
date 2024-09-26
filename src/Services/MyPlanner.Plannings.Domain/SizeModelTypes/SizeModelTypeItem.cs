@@ -2,7 +2,7 @@
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
 using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Domain.ValueObjects;
 using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Domain.SizeModelTypes

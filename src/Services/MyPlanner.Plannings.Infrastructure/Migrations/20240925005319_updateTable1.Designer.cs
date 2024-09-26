@@ -260,7 +260,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.ToTable("sizemodeltypes", "myplanner-plannings");
                 });
 
-            modelBuilder.Entity("MyPlanner.Plannings.IntegrationEventLogEF.IntegrationEventLogEntry", b =>
+            modelBuilder.Entity("MyPlanner.IntegrationEventLogEF.IntegrationEventLogEntry", b =>
                 {
                     b.Property<Guid>("EventId")
                         .ValueGeneratedOnAdd()
@@ -291,7 +291,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.ToTable("IntegrationEventLog", "myplanner-plannings");
                 });
 
-            modelBuilder.Entity("MyPlanner.Plannings.Shared.Infrastructure.Idempotency.ClientRequest", b =>
+            modelBuilder.Entity("MyPlanner.Shared.Infrastructure.Idempotency.ClientRequest", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -317,7 +317,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("PlanItemTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -359,7 +359,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.PlanTable", b =>
                 {
-                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("PlanTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -411,7 +411,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelItemTableId")
                                 .HasColumnType("nvarchar(450)");
@@ -455,7 +455,7 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
 
             modelBuilder.Entity("MyPlanner.Plannings.Infrastructure.Database.Tables.SizeModelTable", b =>
                 {
-                    b.OwnsOne("MyPlanner.Plannings.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
+                    b.OwnsOne("MyPlanner.Shared.Infrastructure.Database.AuditTable", "Audit", b1 =>
                         {
                             b1.Property<string>("SizeModelTableId")
                                 .HasColumnType("nvarchar(450)");

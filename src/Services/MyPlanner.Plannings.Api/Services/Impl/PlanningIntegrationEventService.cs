@@ -1,5 +1,5 @@
-﻿using MyPlanner.Plannings.EventBus.Events;
-using MyPlanner.Plannings.IntegrationEventLogEF.Services;
+﻿using MyPlanner.EventBus.Events;
+using MyPlanner.IntegrationEventLogEF.Services;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Infrastructure.Database;
 

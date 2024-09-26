@@ -6,7 +6,7 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelTy
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Domain.ValueObjects;
 using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Api.Mappers

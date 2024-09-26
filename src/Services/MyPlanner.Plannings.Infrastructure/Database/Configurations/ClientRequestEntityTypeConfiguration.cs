@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Configurations

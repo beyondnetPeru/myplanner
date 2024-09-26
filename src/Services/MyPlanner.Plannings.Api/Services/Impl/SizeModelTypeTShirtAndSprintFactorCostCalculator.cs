@@ -1,6 +1,6 @@
 ﻿using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Shared.Domain;
+using MyPlanner.Shared.Domain;
 
 namespace MyPlanner.Plannings.Api.Services.Impl
 {

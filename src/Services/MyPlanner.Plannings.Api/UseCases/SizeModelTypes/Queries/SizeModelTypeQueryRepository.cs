@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 using MyPlanner.Plannings.Infrastructure.Database;
-using MyPlanner.Plannings.Shared.Application.Dtos;
+using MyPlanner.Shared.Application.Dtos;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 {

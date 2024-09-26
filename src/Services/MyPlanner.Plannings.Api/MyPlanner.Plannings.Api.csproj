@@ -35,12 +35,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\MyPlanner.EventBus.Rabbit\MyPlanner.EventBus.Rabbit.csproj" />
+		<ProjectReference Include="..\MyPlanner.EventBus\MyPlanner.EventBus.csproj" />
+		<ProjectReference Include="..\MyPlanner.IntegrationEventLogEF\MyPlanner.IntegrationEventLogEF.csproj" />
 		<ProjectReference Include="..\MyPlanner.Plannings.Domain\MyPlanner.Plannings.Domain.csproj" />
-		<ProjectReference Include="..\MyPlanner.Plannings.EventBus.Rabbit\MyPlanner.Plannings.EventBus.Rabbit.csproj" />
-		<ProjectReference Include="..\MyPlanner.Plannings.EventBus\MyPlanner.Plannings.EventBus.csproj" />
 		<ProjectReference Include="..\MyPlanner.Plannings.Infrastructure\MyPlanner.Plannings.Infrastructure.csproj" />
-		<ProjectReference Include="..\MyPlanner.Plannings.IntegrationEventLogEF\MyPlanner.Plannings.IntegrationEventLogEF.csproj" />
-		<ProjectReference Include="..\MyPlanner.Plannings.Shared\MyPlanner.Plannings.Shared.csproj" />
+		<ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
 	</ItemGroup>
 
 	<ProjectExtensions>

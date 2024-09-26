@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel
 {

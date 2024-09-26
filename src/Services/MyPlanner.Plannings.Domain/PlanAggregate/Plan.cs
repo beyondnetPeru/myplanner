@@ -1,7 +1,7 @@
 ﻿using BeyondNet.Ddd;
 using BeyondNet.Ddd.Interfaces;
 using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Domain.PlanAggregate
 {

@@ -4,8 +4,8 @@ using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
-using MyPlanner.Plannings.Shared.Infrastructure.Database;
+using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Database;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {

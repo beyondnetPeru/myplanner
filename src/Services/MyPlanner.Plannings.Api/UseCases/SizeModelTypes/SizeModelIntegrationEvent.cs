@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.EventBus.Events;
+﻿using MyPlanner.EventBus.Events;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes
 {

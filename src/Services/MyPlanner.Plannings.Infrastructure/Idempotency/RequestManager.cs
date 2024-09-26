@@ -1,6 +1,6 @@
 ﻿using MyPlanner.Plannings.Infrastructure.Database;
-using MyPlanner.Plannings.Shared.Domain;
-using MyPlanner.Plannings.Shared.Infrastructure.Idempotency;
+using MyPlanner.Shared.Domain;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Infrastructure.Idempotency;
 

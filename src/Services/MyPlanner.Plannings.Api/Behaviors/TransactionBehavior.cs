@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Api.Services.Interfaces;
-using MyPlanner.Plannings.EventBus.Extensions;
+using MyPlanner.EventBus.Extensions;
 using MyPlanner.Plannings.Infrastructure.Database;
 
 namespace MyPlanner.Plannings.Api.Behaviors

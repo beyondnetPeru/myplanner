@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 {

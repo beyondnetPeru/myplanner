@@ -25,7 +25,7 @@
 		<ProjectReference Include="..\MyPlanner.Plannings.Api\MyPlanner.Plannings.Api.csproj" />
 		<ProjectReference Include="..\MyPlanner.Plannings.Domain\MyPlanner.Plannings.Domain.csproj" />
 		<ProjectReference Include="..\MyPlanner.Plannings.Infrastructure\MyPlanner.Plannings.Infrastructure.csproj" />
-		<ProjectReference Include="..\MyPlanner.Plannings.Shared\MyPlanner.Plannings.Shared.csproj" />
+		<ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

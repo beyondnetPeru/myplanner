@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MyPlanner.Plannings.Domain\MyPlanner.Plannings.Domain.csproj" />
-    <ProjectReference Include="..\MyPlanner.Plannings.Shared\MyPlanner.Plannings.Shared.csproj" />
+    <ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
   </ItemGroup>
 
 </Project>

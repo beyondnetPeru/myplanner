@@ -2,7 +2,7 @@
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Plannings.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 {

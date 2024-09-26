@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Shared.Application.Dtos;
+﻿using MyPlanner.Shared.Application.Dtos;
 using System.Net;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetAllSizeModels

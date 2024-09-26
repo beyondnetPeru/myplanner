@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Plannings.Shared.Infrastructure.Database;
+﻿using MyPlanner.Shared.Infrastructure.Database;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

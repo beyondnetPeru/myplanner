@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Shared.Infrastructure.Database;
+﻿using MyPlanner.Shared.Infrastructure.Database;
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Tables
 {

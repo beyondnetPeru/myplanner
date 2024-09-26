@@ -6,8 +6,8 @@ using BeyondNet.Ddd.Interfaces;
 using MyPlanner.Plannings.Infrastructure.Database.Configurations;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Products.Infrastructure.Database.Configurations;
-using MyPlanner.Plannings.Shared.Extensions;
-using MyPlanner.Plannings.IntegrationEventLogEF;
+using MyPlanner.Shared.Extensions;
+using MyPlanner.IntegrationEventLogEF;
 
 namespace MyPlanner.Plannings.Infrastructure.Database
 {
