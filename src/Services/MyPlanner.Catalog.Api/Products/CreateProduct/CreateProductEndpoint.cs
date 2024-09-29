@@ -9,7 +9,7 @@ namespace MyPlanner.Catalog.Api.UseCases.CreateProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/products", async (ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
+            app.MapPost("/products/", async ([AsParameters] ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
             {
                 var command = createProductRequest.Adapt<CreateProductCommand>();
 

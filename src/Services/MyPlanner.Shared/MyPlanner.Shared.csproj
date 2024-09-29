@@ -31,8 +31,4 @@
     <ProjectReference Include="..\MyPlanner.IntegrationEventLogEF\MyPlanner.IntegrationEventLogEF.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Cqrs\" />
-  </ItemGroup>
-
 </Project>

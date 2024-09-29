@@ -2,7 +2,7 @@
 
 namespace MyPlanner.Catalog.Api.Products
 {
-    public record CreateProductCommand : IRequest<CreateProductResult>
+    public record CreateProductCommand : ICommand<CreateProductResult>
     {
         public string Name { get; set; } = default!;
         public List<string> Category { get; set; } = new();
@@ -13,12 +13,13 @@ namespace MyPlanner.Catalog.Api.Products
 
     public record CreateProductResult(string Id);
 
-    internal class CreateProductCommandHandler(IDocumentSession documentSession) : IRequestHandler<CreateProductCommand, CreateProductResult>
+    internal class CreateProductHandler(IDocumentSession documentSession) : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             var product = new Product
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = request.Name,
                 Category = request.Category,
                 Description = request.Description,
