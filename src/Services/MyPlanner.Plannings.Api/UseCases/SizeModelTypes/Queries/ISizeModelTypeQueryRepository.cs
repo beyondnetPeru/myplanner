@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
-using MyPlanner.Shared.Application.Dtos;
+using MyPlanner.Shared.Models.Pagination.Dtos;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries
 {

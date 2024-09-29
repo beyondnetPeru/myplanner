@@ -1,4 +1,4 @@
-﻿using MyPlanner.Shared.Application.Dtos;
+﻿using MyPlanner.Shared.Models.Pagination.Dtos;
 using System.Net;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetAllSizeModels

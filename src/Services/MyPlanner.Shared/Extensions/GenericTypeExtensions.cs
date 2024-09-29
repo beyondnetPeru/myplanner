@@ -1,5 +1,4 @@
-﻿
-namespace MyPlanner.Shared.Application.Extensions
+﻿namespace MyPlanner.Shared.Extensions
 {
     public static class GenericTypeExtensions
     {

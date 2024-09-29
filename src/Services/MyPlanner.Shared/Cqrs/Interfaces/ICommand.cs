@@ -1,6 +1,4 @@
-﻿
-
-namespace MyPlanner.Shared.CQRS
+﻿namespace MyPlanner.Shared.Cqrs.Interfaces
 {
     public interface ICommand : ICommand<Unit>
     {

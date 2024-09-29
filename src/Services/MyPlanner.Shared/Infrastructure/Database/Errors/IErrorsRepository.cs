@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.Application.Errors
+﻿namespace MyPlanner.Shared.Infrastructure.Database.Errors
 {
     public interface IErrorsRepository
     {

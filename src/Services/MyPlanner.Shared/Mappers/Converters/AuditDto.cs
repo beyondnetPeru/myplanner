@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.Application.Dtos
+﻿namespace MyPlanner.Shared.Mappers.Converters
 {
     public class AuditDto
     {

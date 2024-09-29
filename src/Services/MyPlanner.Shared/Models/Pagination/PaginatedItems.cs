@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.Models
+﻿namespace MyPlanner.Shared.Models.Pagination
 {
     public class PaginatedItems<TEntity>(int pageIndex, int pageSize, long count, IEnumerable<TEntity> data) where TEntity : class
     {

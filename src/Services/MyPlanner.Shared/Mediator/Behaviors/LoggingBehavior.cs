@@ -1,8 +1,7 @@
-﻿using MediatR;
-using Microsoft.Extensions.Logging;
-using MyPlanner.Shared.Application.Extensions;
+﻿using Microsoft.Extensions.Logging;
+using MyPlanner.Shared.Extensions;
 
-namespace MyPlanner.Shared.Application.Behaviors
+namespace MyPlanner.Shared.Mediator.Behaviors
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {

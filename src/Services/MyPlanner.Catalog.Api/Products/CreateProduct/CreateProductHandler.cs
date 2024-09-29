@@ -1,4 +1,6 @@
-﻿using MyPlanner.Catalog.Api.Models;
+﻿using FluentValidation;
+using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products
 {
@@ -13,18 +15,30 @@ namespace MyPlanner.Catalog.Api.Products
 
     public record CreateProductResult(string Id);
 
-    internal class CreateProductHandler(IDocumentSession documentSession) : ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
-        public async Task<CreateProductResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Category).NotEmpty();
+            RuleFor(x => x.Description).NotEmpty();
+            RuleFor(x => x.ImageFile).NotEmpty();
+            RuleFor(x => x.Price).GreaterThan(0);
+        }
+    }
+
+    internal class CreateProductCommandHandler(IDocumentSession documentSession, ILogger<CreateProductCommandHandler> logger, IValidator<CreateProductCommand> validator) : ICommandHandler<CreateProductCommand, CreateProductResult>
+    {
+        public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
             var product = new Product
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = request.Name,
-                Category = request.Category,
-                Description = request.Description,
-                ImageFile = request.ImageFile,
-                Price = request.Price
+                Name = command.Name,
+                Category = command.Category,
+                Description = command.Description,
+                ImageFile = command.ImageFile,
+                Price = command.Price
             };
 
             documentSession.Store(product);

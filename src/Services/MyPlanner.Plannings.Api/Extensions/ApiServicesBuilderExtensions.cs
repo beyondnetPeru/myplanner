@@ -12,11 +12,11 @@ using MyPlanner.Plannings.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Queries;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries;
 using MyPlanner.Plannings.Api.UseCases.Plan.Queries;
-using MyPlanner.Shared.Application.Behaviors;
 using MyPlanner.Plannings.Api.Behaviors;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
 using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
 using MyPlanner.Plannings.Api.Boostrapper;
+using MyPlanner.Shared.Mediator.Behaviors;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {

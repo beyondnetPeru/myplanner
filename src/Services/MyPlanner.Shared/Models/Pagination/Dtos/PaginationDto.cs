@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.Application.Dtos
+﻿namespace MyPlanner.Shared.Models.Pagination.Dtos
 {
     public class PaginationDto
     {

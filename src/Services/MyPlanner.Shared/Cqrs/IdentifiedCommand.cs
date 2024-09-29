@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace MyPlanner.Shared.Application.Commands
+namespace MyPlanner.Shared.Cqrs
 {
     public class IdentifiedCommand<T, R> : IRequest<R>
        where T : IRequest<R>

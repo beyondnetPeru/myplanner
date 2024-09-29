@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using MyPlanner.Shared.Services.Interfaces;
+using MyPlanner.Shared.Services.IdentityServices.Interfaces;
 
-namespace MyPlanner.Shared.Services.Impl
+namespace MyPlanner.Shared.Services.IdentityServices.Impl
 {
     public class IdentityService(IHttpContextAccessor context) : IIdentityService
     {

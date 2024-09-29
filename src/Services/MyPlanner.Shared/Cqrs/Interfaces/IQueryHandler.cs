@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.CQRS
+﻿namespace MyPlanner.Shared.Cqrs.Interfaces
 {
     public interface IQueryHandler<in TQuery, TResponse>
         : IRequestHandler<TQuery, TResponse>

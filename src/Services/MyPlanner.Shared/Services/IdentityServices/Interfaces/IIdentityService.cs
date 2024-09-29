@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.Services.Interfaces
+﻿namespace MyPlanner.Shared.Services.IdentityServices.Interfaces
 {
     public interface IIdentityService
     {

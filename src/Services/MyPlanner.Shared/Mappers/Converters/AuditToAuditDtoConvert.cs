@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MyPlanner.Shared.Application.Dtos;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Shared.Mappers.Converters

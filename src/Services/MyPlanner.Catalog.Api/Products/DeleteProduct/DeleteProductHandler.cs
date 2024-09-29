@@ -1,7 +1,8 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.DeleteProduct
-{ 
+{
     public record DeleteProductCommand(string Id) : ICommand<DeleteProductCommandResponse>;
 
     public record DeleteProductCommandResponse(bool IsSuccess);

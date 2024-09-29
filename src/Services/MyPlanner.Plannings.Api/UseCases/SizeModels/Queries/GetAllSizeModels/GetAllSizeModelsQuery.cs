@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using MyPlanner.Plannings.Api.Dtos.SizeModel;
-using MyPlanner.Shared.Application.Dtos;
+using MyPlanner.Shared.Models.Pagination.Dtos;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetAllSizeModels
 {

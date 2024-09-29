@@ -1,4 +1,4 @@
-﻿namespace MyPlanner.Shared.CQRS
+﻿namespace MyPlanner.Shared.Cqrs.Interfaces
 {
     public interface ICommandHandler<in TCommand> : ICommandHandler<TCommand, Unit>
       where TCommand : ICommand<Unit>

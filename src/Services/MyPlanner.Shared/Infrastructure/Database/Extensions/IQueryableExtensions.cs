@@ -1,4 +1,4 @@
-﻿using MyPlanner.Shared.Application.Dtos;
+﻿using MyPlanner.Shared.Models.Pagination.Dtos;
 
 namespace MyPlanner.Shared.Infrastructure.Database.Extensions
 {

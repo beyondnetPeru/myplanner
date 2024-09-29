@@ -12,8 +12,8 @@ using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeMod
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelTypeFactor;
-using MyPlanner.Shared.Application.Commands;
-using MyPlanner.Shared.Application.Extensions;
+using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Extensions;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases
