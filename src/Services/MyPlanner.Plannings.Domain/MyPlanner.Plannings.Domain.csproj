@@ -7,6 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="SizeModels\Validators\**" />
+	  <EmbeddedResource Remove="SizeModels\Validators\**" />
+	  <None Remove="SizeModels\Validators\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="BeyondNet.Ddd" Version="1.0.0" />
 		<PackageReference Include="BeyondNet.Ddd.AutoMapper" Version="1.0.0" />
 	</ItemGroup>
@@ -14,10 +20,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
 		<ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Folder Include="SizeModels\Validators\" />
 	</ItemGroup>
 
 </Project>
