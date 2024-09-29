@@ -4,5 +4,11 @@ services:
   catalogdb:
     image: "postgres"
 
+  myplanner.catalog.api:
+    image: ${DOCKER_REGISTRY-}myplannercatalogapi
+    build:
+      context: .
+      dockerfile: MyPlanner.Catalog.Api/Dockerfile
+
 volumes:
   postgres_catalog:

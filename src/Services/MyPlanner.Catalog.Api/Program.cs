@@ -1,8 +1,13 @@
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyPlanner.Catalog.API.Data;
 using MyPlanner.Shared.Exceptions.Handlers;
 using MyPlanner.Shared.Mediator.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks()
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
 
 builder.Services.AddCarter();
 
@@ -20,7 +25,7 @@ builder.Services.AddExceptionHandler<ApiCustomExceptionHandler>();
 
 builder.Services.AddMarten(options =>
 {
-    options.Connection(builder.Configuration.GetConnectionString("DefaultConnection")!);
+    options.Connection(builder.Configuration.GetConnectionString("Database")!);
 }).UseLightweightSessions().InitializeWith<CatalogInitialData>();
 
 
@@ -31,5 +36,11 @@ var app = builder.Build();
 app.UseExceptionHandler(opt => {});
 
 app.MapCarter();
+
+//TODO: Merge use of HealthChecks and HealthChecksUI into Common DefaultServiceExtensions
+app.UseHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse,
+}); 
 
 app.Run();
