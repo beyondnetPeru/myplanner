@@ -1,4 +1,5 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
@@ -17,7 +18,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
-            plan.Delete(request.PlanId);
+            plan.Delete(request.PlanId, UserId.Create(request.UserId));
 
             if (!plan.IsValid())
             {
@@ -25,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
                 return false;
             }
 
-            planRepository.Delete(plan);
+            planRepository.ChangeStatus(request.PlanId, PlanStatus.Deleted.Id);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

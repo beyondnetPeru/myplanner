@@ -27,7 +27,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
                 return false;
             }
 
-            planRepository.Close(request.PlanId);
+            planRepository.ChangeStatus(request.PlanId, PlanStatus.Closed.Id);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

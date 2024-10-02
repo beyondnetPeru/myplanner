@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Api.Dtos.Plan;
 using MyPlanner.Plannings.Infrastructure.Database;
-using MyPlanner.Shared.Models.Pagination.Dtos;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries
 {
@@ -43,7 +42,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries
             return dtos;
         }
 
-        public async Task<IEnumerable<PlanDto>> GetPlans(PaginationDto pagination)
+        public async Task<IEnumerable<PlanDto>> GetPlans(PaginationQuery pagination)
         {
             var plans = await context.Plans.Skip(pagination.RecordsPerPage).Take(pagination.Page).ToListAsync();
 

@@ -3,6 +3,7 @@
     public class PlanItemProps : IProps
     {
         public IdValueObject Id { get; private set; }
+        public IdValueObject PlanId { get; private set; }
         public IdValueObject ProductId { get; private set; }
         public IdValueObject PlanCategoryId { get; private set; }
         public BusinessFeature BusinessFeature { get; private set; }
@@ -16,7 +17,10 @@
         public PlanItemStatus Status { get; set; } = PlanItemStatus.Draft;
         public UserId UserId { get; private set; }
 
-        public PlanItemProps(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
+        public PlanItemProps(IdValueObject id, 
+                             IdValueObject planId,   
+                             IdValueObject productId, 
+                             IdValueObject planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
@@ -27,6 +31,7 @@
                              UserId userId)
         {
             Id = id;
+            PlanId = planId;
             ProductId = productId;
             PlanCategoryId = planCategoryId;
             BusinessFeature = businessFeature;
@@ -41,7 +46,10 @@
             Status = PlanItemStatus.Draft;            
         }
 
-        public PlanItemProps(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
+        public PlanItemProps(IdValueObject id,
+                             IdValueObject planId,   
+                             IdValueObject productId, 
+                             IdValueObject planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
@@ -54,6 +62,7 @@
                              UserId userId)
         {
             Id = id;
+            PlanId = planId;
             ProductId = productId;
             PlanCategoryId = planCategoryId;
             BusinessFeature = businessFeature;
@@ -80,7 +89,7 @@
         {
         }
 
-        public static PlanItem Create(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
+        public static PlanItem Create(IdValueObject id, IdValueObject planId, IdValueObject productId, IdValueObject planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
@@ -90,7 +99,8 @@
                              KeyAssumptions keyAssumptions,
                              UserId userId)
         {
-            return new PlanItem(new PlanItemProps(id,
+            return new PlanItem(new PlanItemProps(id, 
+                planId,
                 productId,
                 planCategoryId,
                 businessFeature,
@@ -103,7 +113,7 @@
                 userId));
         }
 
-        public static PlanItem Load(string id, string productId, string planCategoryId,
+        public static PlanItem Load(string id, string planId, string productId, string planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
@@ -116,6 +126,7 @@
                              string userId)
         {
             return new PlanItem(new PlanItemProps(IdValueObject.Create(id),
+                IdValueObject.Create(planId),
                 IdValueObject.Create(productId),
                 IdValueObject.Create(planCategoryId),
                 businessFeature,
@@ -161,11 +172,13 @@
             GetProps().BallParkCosts.SetValue(ballParkCost.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
+
         public void ChangeKeyAssumptions(KeyAssumptions keyAssumptions, UserId userId)
         {
             GetProps().KeyAssumptions.SetValue(keyAssumptions.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
+
         public void Draft(UserId userId)
         {
             if (GetPropsCopy().Status == PlanItemStatus.Draft)

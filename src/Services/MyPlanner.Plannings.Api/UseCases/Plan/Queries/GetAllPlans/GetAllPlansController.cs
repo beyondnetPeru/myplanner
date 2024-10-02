@@ -1,4 +1,4 @@
-﻿using MyPlanner.Shared.Models.Pagination.Dtos;
+﻿using MyPlanner.Shared.Models.Pagination;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
 {
@@ -6,13 +6,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans", async ([AsParameters] PlanServices service, int page = 0, int recordsPerPage = 10) =>
+            app.MapGet("/plans", async ([AsParameters] PlanServices service, PaginationDto paginationDto) =>
             {
-                var pagination = new PaginationDto()
-                {
-                    Page = page,
-                    RecordsPerPage = recordsPerPage
-                };
+                var pagination = new PaginationQuery(paginationDto.Page, paginationDto.RecordsPerPageMax);
 
                 var query = new GetAllPlansQuery(pagination);
 

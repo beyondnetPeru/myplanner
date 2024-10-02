@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyPlanner.Plannings.Api.Dtos.SizeModel;
 using MyPlanner.Plannings.Infrastructure.Database;
-using MyPlanner.Shared.Models.Pagination.Dtos;
+using MyPlanner.Shared.Models.Pagination;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
 {
@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
             return dto;
         }
 
-        public async Task<IEnumerable<SizeModelDto>> GetAll(PaginationDto pagination)
+        public async Task<IEnumerable<SizeModelDto>> GetAll(PaginationQuery pagination)
         {
             var data = await context.SizeModels
                 .Include(x => x.Items)

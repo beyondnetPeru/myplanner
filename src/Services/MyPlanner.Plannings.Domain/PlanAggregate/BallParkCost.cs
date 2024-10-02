@@ -2,15 +2,17 @@
 {
     public class BallParkCostProps : IProps
     {
-        public double Cost { get; private set; } = 0.00;
-        public double DependenciesCost { get; private set; } = 0.00;
-        public double TotalCost { get; private set; } = 0.00;
+        public AmountCost BallParkCost { get; private set; } = AmountCost.DefaultValue();
+        public AmountCost BallparkDependenciesCost { get; private set; } = AmountCost.DefaultValue();
+        public AmountCost BallParkTotalCost { get; private set; } = AmountCost.DefaultValue();
 
-        public BallParkCostProps(double cost, double dependenciesCost)
+        public BallParkCostProps(int symbol, double cost, double dependenciesCost)
         {
-            Cost = cost;
-            DependenciesCost = dependenciesCost;
-            TotalCost = cost + dependenciesCost;
+            var symbolValue = Enumeration.FromValue<CurrencySymbolEnum>(symbol);
+
+            BallParkCost = AmountCost.Create(symbolValue, cost);
+            BallparkDependenciesCost = AmountCost.Create(symbolValue, dependenciesCost);
+            BallParkTotalCost = AmountCost.Create(symbolValue, cost + dependenciesCost);
         }
 
         public object Clone()
@@ -24,19 +26,19 @@
         {
         }
 
-        public static BallParkCost Create(double cost, double dependenciesCost)
+        public static BallParkCost Create(int symbol, double cost, double dependenciesCost)
         {
-            return new BallParkCost(new BallParkCostProps(cost, dependenciesCost));
+            return new BallParkCost(new BallParkCostProps(symbol, cost, dependenciesCost));
         }
 
         public static BallParkCost DefaultValue()
         {
-            return new BallParkCost(new BallParkCostProps(0.00, 0.00));
+            return new BallParkCost(new BallParkCostProps(CurrencySymbolEnum.USD.Id, 0.00, 0.00));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Value.Cost.ToString() + Value.DependenciesCost.ToString() + Value.TotalCost.ToString();
+            yield return Value.BallParkCost.ToString() + Value.BallparkDependenciesCost.ToString() + Value.BallParkTotalCost.ToString();
         }
     }
 }

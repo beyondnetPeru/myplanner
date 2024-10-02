@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyPlanner.Plannings.Infrastructure.Database.Tables;
+﻿using MyPlanner.Plannings.Infrastructure.Database.Tables;
 
 
 namespace MyPlanner.Products.Infrastructure.Database.Configurations
@@ -11,9 +9,6 @@ namespace MyPlanner.Products.Infrastructure.Database.Configurations
         {
             builder.ToTable("sizemodeltypeitems");
             builder.HasKey(x => x.Id);
-
-
-    
         }
     }
 }

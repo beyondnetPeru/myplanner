@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.Infrastructure.Database.Tables;
+﻿using MyPlanner.Plannings.Infrastructure.Database.Tables;
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Configurations
 {

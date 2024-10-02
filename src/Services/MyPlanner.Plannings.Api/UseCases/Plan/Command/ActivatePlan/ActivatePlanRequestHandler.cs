@@ -26,7 +26,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 
             plan.Activate(UserId.Create(request.UserId));
 
-            planRepository.Activate(request.PlanId);
+            planRepository.ChangeStatus(request.PlanId, PlanStatus.Active.Id);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 

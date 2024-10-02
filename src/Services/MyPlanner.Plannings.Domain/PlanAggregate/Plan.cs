@@ -11,10 +11,10 @@
         public Audit Audit { get; private set; }
         public PlanStatus Status { get; private set; } = PlanStatus.Draft;
 
-        public PlanProps(IdValueObject id, ICollection<PlanCategory> categories, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
+        public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
             Id = id;
-            Categories = categories;
+            Categories = new List<PlanCategory>();
             SizeModelTypeId = sizeModelTypeId;            
             Name = name;
             Owner = owner;
@@ -48,9 +48,9 @@
         {
         }
 
-        public static Plan Create(IdValueObject id, ICollection<PlanCategory> categories,  IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
+        public static Plan Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
-            return new Plan(new PlanProps(id, categories, sizeModelTypeId, name, owner, userId));
+            return new Plan(new PlanProps(id, sizeModelTypeId, name, owner, userId));
         }
 
         public static Plan Load(PlanProps props)
@@ -194,15 +194,24 @@
             GetProps().Audit.Update(userId.GetValue());
         }
 
-        public void Delete(string PlanId)
+        public void Delete(string PlanId, UserId userId)
         {
+            if (GetPropsCopy().Status != PlanStatus.Inactive)
+            {
+                AddBrokenRule("Plan Status", "Plan is not in Inactive status.");
+                return;
+            }
 
+            GetPropsCopy().PlanItems.ToList().ForEach(x => x.Delete(userId));
+            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Deleted.Id);
+            GetProps().Audit.Update(userId.GetValue());
         }
     }
 }
 
 public class PlanStatus : Enumeration
 {
+    public static PlanStatus Deleted = new PlanStatus(0, "Deleted");
     public static PlanStatus Draft = new PlanStatus(1, "Draft");
     public static PlanStatus Active = new PlanStatus(2, "Active");
     public static PlanStatus Inactive = new PlanStatus(3, "Inactive");

@@ -1,19 +1,18 @@
 ﻿using MyPlanner.Shared.Infrastructure.Database;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Tables
 {
     public class SizeModelItemTable
     {
         public string Id { get; set; }
+        [ForeignKey("SizeModelId")]
         public string SizeModelId { get; set; }
         public SizeModelTable SizeModel { get; set; }
 
-
         [ForeignKey("SizeModelTypeItem")]
         public string SizeModelTypeItemId { get; set; }
-        public string SizeModelTypeItemCode { get; set; }
         public SizeModelTypeItemTable SizeModelTypeItem { get; set; }
+        public string SizeModelTypeItemCode { get; set; }
         public int FactorSelected { get; set; }
         public string ProfileName { get; set; }
         public int ProfileAvgRateSymbol { get; set; }
@@ -23,6 +22,5 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public bool IsStandard { get; set; }
         public int Status { get; set; }
         public AuditTable Audit { get; set; }
-
     }
 }

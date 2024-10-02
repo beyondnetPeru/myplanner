@@ -1,24 +1,28 @@
-﻿namespace MyPlanner.Plannings.Api.Dtos.Plan
+﻿using MyPlanner.Shared.Domain.ValueObjects;
+
+namespace MyPlanner.Plannings.Api.Dtos.Plan
 {
     public class AddPlanItemDto
     {
-        public string PlanId { get; set; }
-        public string CategoryName { get; internal set; }
-        public string Name { get; private set; }
-        public string BusinessDefinition { get; private set; }
-        public string ComplexityLevel { get; private set; }
-        public string BacklogName { get; private set; }
-        public int Priority { get; private set; }
-        public string MoScoW { get; set; }
-        public string SizeModelTypeFactorId { get; set; }
-        public string SizeModelTypeValueSelected { get; set; }
-        public string BusinessFeature { get; set; }
-        public string TechnicalDefinition { get; set; }
-        public string ComponentsImpacted { get; set; }
-        public string TechnicalDependencies { get; set; }
-        public double BallParkCost { get; set; }
-        public double BallParkDependenciesCost { get; set; }
-        public string KeyAssumptions { get; set; }
-        public string UserId { get; set; }
+        public string PlanId { get; set; } = default!;
+        public string ProductId { get; set; } = default!;
+        public string PlanCategoryId { get; set; } = default!;
+        public string BusinessFeatureName { get; private set; } = default!;
+        public string BusinessFeatureDefinition { get; private set; } = default!;
+        public string BusinessFeatureComplexityLevel { get; private set; } = default!;
+        public int BusinessFeaturePriority { get; private set; } = default!;
+        public string BusinessFeatureMoScoW { get; private set; } = default!;
+        public string TechnicalDefinition { get; set; } = default!;
+        public string ComponentsImpacted { get; set; } = default!;
+        public string TechnicalDependencies { get; set; } = default!;
+        public string SizeModelTypeItemId { get; set; } = default!;
+        public CurrencySymbolEnum BallParkCostSymbol { get; set; } = CurrencySymbolEnum.USD;
+        public double BallParkCostAmount { get; set; } = 0.00;
+        public CurrencySymbolEnum BallparkDependenciesCostSymbol { get; set; } = CurrencySymbolEnum.USD;
+        public double BallparkDependenciesCostAmount { get; set; } = 0.00;
+        public CurrencySymbolEnum BallParkTotalCostSymbol { get; set; } = CurrencySymbolEnum.USD;
+        public double BallParkTotalCostAmount { get; set; } = 0.00;
+        public string KeyAssumptions { get; set; } = default!;
+        public string UserId { get; set; } = default!;
     }
 }

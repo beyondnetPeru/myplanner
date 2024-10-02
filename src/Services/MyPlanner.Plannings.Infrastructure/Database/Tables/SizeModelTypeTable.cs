@@ -1,7 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
-
-namespace MyPlanner.Plannings.Infrastructure.Database.Tables
+﻿namespace MyPlanner.Plannings.Infrastructure.Database.Tables
 {
     public class SizeModelTypeTable
     {

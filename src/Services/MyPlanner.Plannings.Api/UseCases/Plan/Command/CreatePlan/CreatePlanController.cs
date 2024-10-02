@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {
@@ -7,9 +6,11 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, [AsParameters] PlanServices service, [FromBody] CreatePlanDto createPlanDto) =>
+            app.MapPost("/plans/", async ([FromHeader(Name = "x-requestid")] Guid requestId, 
+                                          [AsParameters] PlanServices service, 
+                                          [FromBody] CreatePlanDto createPlanDto) =>
             {
-                var request = service.Mapper.Map<CreatePlanRequest>(createPlanDto);
+                var request = service.Mapper.Map<AddPlanItemRequest>(createPlanDto);
 
                 var result = await service.Mediator.Send(request);
 

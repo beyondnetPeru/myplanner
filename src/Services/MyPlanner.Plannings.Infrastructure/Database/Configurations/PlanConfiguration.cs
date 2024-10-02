@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MyPlanner.Plannings.Infrastructure.Database.Tables;
+﻿using MyPlanner.Plannings.Infrastructure.Database.Tables;
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Configurations
 {
@@ -11,9 +9,9 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Configurations
             builder.ToTable("plans");
             builder.HasKey(p => p.Id);
 
-            builder.HasMany(p => p.Items)
-                   .WithOne(x => x.Plan);
-
+            builder.HasMany(x => x.Items)
+             .WithOne(x => x.Plan)
+             .HasForeignKey(x => x.PlanId);
 
             builder.OwnsOne(p => p.Audit).Property(p => p.CreatedBy).HasColumnName("CreatedBy").IsRequired();
             builder.OwnsOne(p => p.Audit).Property(p => p.CreatedAt).HasColumnName("CreatedAt").IsRequired();

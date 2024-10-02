@@ -1,30 +1,27 @@
-﻿using BeyondNet.Ddd.Interfaces;
-
-namespace MyPlanner.Plannings.Domain.PlanAggregate
+﻿namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
     public interface IPlanRepository : IRepository<Plan>
     {
         Task<Plan> GetByIdAsync(string planId);
-        void Create(Plan plan);
+        void Create(Plan plan);        
         void ChangeName(string planId, string name);
-        void ChangeOwner(string planId, string owner);
-        void Delete(Plan plan);
-        void Draft(string planId);
-        void Activate(string planId);
-        void Deactivate(string planId);
-        void Close(string planId);
+        void ChangeOwner(string planId, string owner);        
+        void ChangeStatus(string planId, int status);
+
+        Task<ICollection<PlanCategory>> GetCategories(string planId);
+        Task<PlanCategory> GetCategoryAsync(string planCategoryId);
+        void AddCategory(string planId, PlanCategory category);
+        void RemoveCategory(string planId, PlanCategory category);
+        
         Task<PlanItem> GetItemById(string planItemId);
         void AddItem(PlanItem planItem);
-        void ChangeItemSizeModelTypeValueSelected(string planItemId, string sizeModelTypeValueSelected);
+        void ChangeItemSizeModelTypeItemId(string planItemId, string sizeModelTypeItemId);
         void ChangeItemTechnicalDefinition(string planItemId, string technicalDefinition);
         void ChangeItemComponentsImpacted(string planItemId, string componentsImpacted);
         void ChangeItemTechnicalDependencies(string planItemId, string technicalDependencies);
-        void ChangeItemBallParkCost(string planItemId, double ballParkCost);
-        void ChangeItemBallParkDependenciesCost(string planItemId, double ballParkDependenciesCost);
-        void ChangeItemKeyAssumptions(string planItemId, string technicalDependencies);
-        void DraftItem(string planItemId);
-        void ActivateItem(string planItemId);
-        void DeactivateItem(string planItemId);
-        void CloseItem(string planItemId);
+        void ChangeItemBallParkCost(string planItemId, int symbol, double ballParkCost, double ballParkTotalCost);
+        void ChangeItemBallParkDependenciesCost(string planItemId, int symbol, double ballParkDependenciesCost, double ballParkTotalCost);        
+        void ChangeItemKeyAssumptions(string planItemId, string technicalAssumptions);
+        void ChangeItemStatus(string planItemId, int status);
     }
 }

@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Models.Pagination.Dtos;
-
-namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetAllSizeModelTypes
+﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetAllSizeModelTypes
 {
     public class GetAllSizeModelTypesController : ICarterModule
     {
@@ -9,11 +7,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetAllSizeMode
             app.MapGet("/sizemodeltypes", async ([AsParameters] SizeModelTypeService service, int page = 1, int recordsPerPage = 10) =>
             {
 
-                var pagination = new PaginationDto()
-                {
-                    Page = page,
-                    RecordsPerPage = recordsPerPage
-                };
+                var pagination = new PaginationQuery(page, recordsPerPage);
 
                 var query = new GetAllSizeModelTypesQuery(pagination);
 

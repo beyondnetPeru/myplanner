@@ -2,9 +2,11 @@
 {
     public class CreatePlanDto
     {
-        public string Name { get; set; }
-        public string Owner { get; set; }
-        public string SizeModelTypeId { get; set; }
-        public string UserId { get; set; }
+        public string Name { get; set; } = default!;
+        public ICollection<PlanCategoryDto> Categories { get; set; } = default!;
+        public string Owner { get; set; } = default!;
+        public string SizeModelTypeId { get; set; } = default!;
+        public ICollection<CreatePlanItemDto> Items { get; set; } = default!;
+        public string UserId { get; set; } = default!;
     }
 }

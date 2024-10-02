@@ -16,6 +16,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
 
         public DbSet<ErrorTable> Errors { get; set; }
         public DbSet<PlanTable> Plans { get; set; }
+        public DbSet<PlanCategoryTable> PlanCategories { get; set; }
         public DbSet<PlanItemTable> PlanItems { get; set; }
         public DbSet<SizeModelTypeTable> SizeModelTypes { get; set; }
         public DbSet<SizeModelTypeItemTable> SizeModelTypeItems { get; set; }
@@ -48,6 +49,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
             modelBuilder.ApplyConfiguration(new SizeModelTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PlanConfiguration());
             modelBuilder.ApplyConfiguration(new PlanItemConfiguration());
+            modelBuilder.ApplyConfiguration(new PlanCategoryConfiguration());
 
             modelBuilder.UseIntegrationEventLogs();
         }

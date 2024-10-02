@@ -1,6 +1,4 @@
 ﻿using MyPlanner.Shared.Infrastructure.Database;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyPlanner.Plannings.Infrastructure.Database.Tables
 {
