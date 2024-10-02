@@ -1,32 +1,40 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Shared.Domain.ValueObjects;
-
-namespace MyPlanner.Plannings.Domain.PlanAggregate
+﻿namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
     public class PlanProps : IProps
     {
         public IdValueObject Id { get; private set; }
+        public ICollection<PlanCategory> Categories { get; private set; }
         public Name Name { get; private set; }
         public Owner Owner { get; private set; }
         public IdValueObject SizeModelTypeId { get; private set; }
-        public Name SizeModelTypeName { get; private set; }
         public ICollection<PlanItem> PlanItems { get; private set; }
         public Audit Audit { get; private set; }
         public PlanStatus Status { get; private set; } = PlanStatus.Draft;
 
-        public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, Name sizeModelTypeName, Name name, Owner owner, UserId userId)
+        public PlanProps(IdValueObject id, ICollection<PlanCategory> categories, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
             Id = id;
-            SizeModelTypeId = sizeModelTypeId;
-            SizeModelTypeName = sizeModelTypeName;
+            Categories = categories;
+            SizeModelTypeId = sizeModelTypeId;            
             Name = name;
             Owner = owner;
             PlanItems = new List<PlanItem>();
             Audit = Audit.Create(userId.GetValue());
             Status = PlanStatus.Draft;
         }
+
+        public PlanProps(IdValueObject id, ICollection<PlanCategory> categories, IdValueObject sizeModelTypeId, Name name, Owner owner, ICollection<PlanItem> planItems, Audit audit, PlanStatus status)
+        {
+            Id = id;
+            Categories = categories;
+            SizeModelTypeId = sizeModelTypeId;
+            Name = name;
+            Owner = owner;
+            PlanItems = planItems;
+            Audit = audit;
+            Status = status;
+        }
+
 
         public object Clone()
         {
@@ -40,9 +48,14 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         {
         }
 
-        public static Plan Create(IdValueObject id, IdValueObject sizeModelTypeId, Name sizeModelTypeName, Name name, Owner owner, UserId userId)
+        public static Plan Create(IdValueObject id, ICollection<PlanCategory> categories,  IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
-            return new Plan(new PlanProps(id, sizeModelTypeId, sizeModelTypeName, name, owner, userId));
+            return new Plan(new PlanProps(id, categories, sizeModelTypeId, name, owner, userId));
+        }
+
+        public static Plan Load(PlanProps props)
+        {
+            return new Plan(new PlanProps(props.Id, props.Categories, props.SizeModelTypeId, props.Name, props.Owner, props.PlanItems, props.Audit, props.Status));
         }
 
         public void ChangeName(Name name, UserId userId)
@@ -57,11 +70,41 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
             GetProps().Audit.Update(userId.GetValue());
         }
 
+        public void AddCategory(PlanCategory category, UserId userId)
+        {
+            if (GetProps().Categories.Contains(category))
+            {
+                AddBrokenRule("Category", "Category already exists in the plan.");
+                return;
+            }
+
+            GetProps().Categories.Add(category);
+            GetProps().Audit.Update(userId.GetValue());
+        }
+
+        public void ChangeSizeModelTypeId(IdValueObject sizeModelTypeId, UserId userId)
+        {
+            GetProps().SizeModelTypeId.SetValue(sizeModelTypeId.GetValue());
+            GetProps().Audit.Update(userId.GetValue());
+        }
+
+        public void RemoveCategory(PlanCategory category, UserId userId)
+        {
+            if (!GetPropsCopy().Categories.Contains(category))
+            {
+                AddBrokenRule("Category", "Category does not exist in the plan.");
+                return;
+            }
+
+            GetProps().Categories.Remove(category);
+            GetProps().Audit.Update(userId.GetValue());
+        }
+
         public void AddPlanItem(PlanItem planItem, UserId userId)
         {
-            if (GetProps().PlanItems.Contains(planItem))
+            if (!GetPropsCopy().PlanItems.Contains(planItem))
             {
-                AddBrokenRule("Plan Item", "Plan Item already exists in the plan.");
+                AddBrokenRule("Plan Item", "Plan Item do not exists in the plan.");
                 return;
             }
 

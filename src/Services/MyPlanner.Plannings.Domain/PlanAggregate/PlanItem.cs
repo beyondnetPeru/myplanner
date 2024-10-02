@@ -1,56 +1,73 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Shared.Domain.ValueObjects;
-
-namespace MyPlanner.Plannings.Domain.PlanAggregate
+﻿namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
     public class PlanItemProps : IProps
     {
         public IdValueObject Id { get; private set; }
+        public IdValueObject ProductId { get; private set; }
+        public IdValueObject PlanCategoryId { get; private set; }
         public BusinessFeature BusinessFeature { get; private set; }
         public TechnicalDefinition TechnicalDefinition { get; private set; } = TechnicalDefinition.DefaultValue();
         public ComponentsImpacted ComponentsImpacted { get; private set; } = ComponentsImpacted.DefaultValue();
         public TechnicalDependencies TechnicalDependencies { get; private set; } = TechnicalDependencies.DefaultValue();
-        public SizeModelTypeItem SizeModelTypeFactor { get; private set; }
-        public SizeModelTypeValueSelected SizeModelTypeValueSelected { get; set; }
-        public BallParkCost BallParkCost { get; private set; }
-        public BallParkDependenciesCost BallParkDependenciesCost { get; private set; } = BallParkDependenciesCost.DefaultValue();
-        public BallParkTotalCost BallParkTotalCost { get; private set; } = BallParkTotalCost.DefaultValue();
+        public IdValueObject SizeModelTypeItemId { get; private set; }
+        public BallParkCost BallParkCosts { get; private set; }
         public KeyAssumptions KeyAssumptions { get; private set; } = KeyAssumptions.DefaultValue();
         public Audit Audit { get; private set; }
         public PlanItemStatus Status { get; set; } = PlanItemStatus.Draft;
+        public UserId UserId { get; private set; }
 
-        public PlanItemProps(IdValueObject id,
-                             SizeModelTypeItem sizeModelTypeFactor,
-                             SizeModelTypeValueSelected sizeModelTypeValueSelected,
+        public PlanItemProps(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
                              TechnicalDependencies technicalDependencies,
+                             IdValueObject sizeModelTypeItemId,
                              BallParkCost ballParkCost,
-                             BallParkDependenciesCost ballParkDependenciesCost,
-                             BallParkTotalCost ballParkTotalCost,
                              KeyAssumptions keyAssumptions,
                              UserId userId)
         {
             Id = id;
-            SizeModelTypeFactor = sizeModelTypeFactor;
-            SizeModelTypeValueSelected = sizeModelTypeValueSelected;
+            ProductId = productId;
+            PlanCategoryId = planCategoryId;
             BusinessFeature = businessFeature;
             TechnicalDefinition = technicalDefinition;
             ComponentsImpacted = componentsImpacted;
             TechnicalDependencies = technicalDependencies;
-            BallParkCost = ballParkCost;
-            BallParkDependenciesCost = ballParkDependenciesCost;
-            BallParkTotalCost = ballParkTotalCost;
+            SizeModelTypeItemId = sizeModelTypeItemId;
+            BallParkCosts = ballParkCost;
             KeyAssumptions = keyAssumptions;
+            UserId = userId;
             Audit = Audit.Create(userId.GetValue());
-            Status = PlanItemStatus.Draft;
+            Status = PlanItemStatus.Draft;            
         }
 
+        public PlanItemProps(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
+                             BusinessFeature businessFeature,
+                             TechnicalDefinition technicalDefinition,
+                             ComponentsImpacted componentsImpacted,
+                             TechnicalDependencies technicalDependencies,
+                             IdValueObject sizeModelTypeItemId,
+                             BallParkCost ballParkCost,
+                             KeyAssumptions keyAssumptions,                             
+                             Audit audit,
+                             PlanItemStatus status,
+                             UserId userId)
+        {
+            Id = id;
+            ProductId = productId;
+            PlanCategoryId = planCategoryId;
+            BusinessFeature = businessFeature;
+            TechnicalDefinition = technicalDefinition;
+            ComponentsImpacted = componentsImpacted;
+            TechnicalDependencies = technicalDependencies;
+            SizeModelTypeItemId = sizeModelTypeItemId;
+            BallParkCosts = ballParkCost;
+            KeyAssumptions = keyAssumptions;
+            Audit = audit;
+            Status = status;
+            UserId = userId;
+        }
+        
         public object Clone()
         {
             return MemberwiseClone();
@@ -63,36 +80,59 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         {
         }
 
-        public static PlanItem Create(IdValueObject id,
-                             SizeModelTypeItem sizeModelTypeFactor,
-                             SizeModelTypeValueSelected sizeModelTypeValueSelected,
+        public static PlanItem Create(IdValueObject id, IdValueObject productId, IdValueObject planCategoryId,
                              BusinessFeature businessFeature,
                              TechnicalDefinition technicalDefinition,
                              ComponentsImpacted componentsImpacted,
                              TechnicalDependencies technicalDependencies,
+                             IdValueObject sizeModelTypeItemId,
                              BallParkCost ballParkCost,
-                             BallParkDependenciesCost ballParkDependenciesCost,
-                             BallParkTotalCost ballParkTotalCost,
                              KeyAssumptions keyAssumptions,
                              UserId userId)
         {
             return new PlanItem(new PlanItemProps(id,
-                                               sizeModelTypeFactor,
-                                               sizeModelTypeValueSelected,
-                                               businessFeature,
-                                               technicalDefinition,
-                                               componentsImpacted,
-                                               technicalDependencies,
-                                               ballParkCost,
-                                               ballParkDependenciesCost,
-                                               ballParkTotalCost,
-                                               keyAssumptions,
-                                               userId));
+                productId,
+                planCategoryId,
+                businessFeature,
+                technicalDefinition,
+                componentsImpacted,
+                technicalDependencies,
+                sizeModelTypeItemId,
+                ballParkCost,
+                keyAssumptions,
+                userId));
         }
 
-        public void ChangeSizeModelTypeValueSelected(SizeModelTypeValueSelected sizeModelTypeValueSelected, UserId userId)
+        public static PlanItem Load(string id, string productId, string planCategoryId,
+                             BusinessFeature businessFeature,
+                             TechnicalDefinition technicalDefinition,
+                             ComponentsImpacted componentsImpacted,
+                             TechnicalDependencies technicalDependencies,
+                             string sizeModelTypeItemId,
+                             BallParkCost ballParkCost,
+                             KeyAssumptions keyAssumptions,
+                             Audit audit,
+                             int status,
+                             string userId)
         {
-            GetProps().SizeModelTypeValueSelected = sizeModelTypeValueSelected;
+            return new PlanItem(new PlanItemProps(IdValueObject.Create(id),
+                IdValueObject.Create(productId),
+                IdValueObject.Create(planCategoryId),
+                businessFeature,
+                technicalDefinition,
+                componentsImpacted,
+                technicalDependencies,
+                IdValueObject.Create(sizeModelTypeItemId),
+                ballParkCost,
+                keyAssumptions,
+                audit,
+                Enumeration.FromValue<PlanItemStatus>(status),
+                UserId.Create(userId)));
+        }
+
+        public void ChangeSizeModelTypeItemId(IdValueObject sizeModelTypeItemId, UserId userId)
+        {
+            GetProps().SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -116,24 +156,16 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
         }
 
 
-        public void ChangeBallParkCost(BallParkCost ballParkCost, UserId userId)
+        public void ChangeBallParkCosts(BallParkCost ballParkCost, UserId userId)
         {
-            GetProps().BallParkCost.SetValue(ballParkCost.GetValue());
+            GetProps().BallParkCosts.SetValue(ballParkCost.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
-
-        public void ChangeBallParkDependenciesCost(BallParkDependenciesCost ballParkDependenciesCost, UserId userId)
-        {
-            GetProps().BallParkDependenciesCost.SetValue(ballParkDependenciesCost.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
-        }
-
         public void ChangeKeyAssumptions(KeyAssumptions keyAssumptions, UserId userId)
         {
             GetProps().KeyAssumptions.SetValue(keyAssumptions.GetValue());
             GetProps().Audit.Update(userId.GetValue());
         }
-
         public void Draft(UserId userId)
         {
             if (GetPropsCopy().Status == PlanItemStatus.Draft)
@@ -200,10 +232,22 @@ namespace MyPlanner.Plannings.Domain.PlanAggregate
             GetProps().Audit.Update(userId.GetValue());
         }
 
+        public void Delete(UserId userId)
+        {
+            if (GetPropsCopy().Status != PlanItemStatus.Inactive)
+            {
+                AddBrokenRule("Plan Item", "Plan Item is not inactive.");
+                return;
+            }
+
+            GetProps().Status = PlanItemStatus.Deleted;
+            GetProps().Audit.Update(userId.GetValue());
+        }
     }
 
     public class PlanItemStatus : Enumeration
     {
+        public static PlanItemStatus Deleted = new PlanItemStatus(0, "Deleted");
         public static PlanItemStatus Draft = new PlanItemStatus(1, "Draft");
         public static PlanItemStatus Active = new PlanItemStatus(2, "Active");
         public static PlanItemStatus Inactive = new PlanItemStatus(3, "Inactive");
