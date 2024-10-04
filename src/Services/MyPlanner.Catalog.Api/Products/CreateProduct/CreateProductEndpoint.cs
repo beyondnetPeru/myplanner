@@ -19,11 +19,13 @@ namespace MyPlanner.Catalog.Api.UseCases.CreateProduct
 
                 return Results.Created($"/products/{response.Id}", response);
 
-            }).WithName("CreateProduct")
-            .Produces<CreateProductResponse>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithSummary("Create Product")
-            .WithDescription("Create a new product.");
+            })
+                .WithTags("Products")
+                .WithName("CreateProduct")
+                .Produces<CreateProductResponse>(StatusCodes.Status201Created)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .WithSummary("Create Product")
+                .WithDescription("Create a new product.");            
         }
     }
 }

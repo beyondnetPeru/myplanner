@@ -18,7 +18,12 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
                 var response = result.Adapt<GetproductsByCategoryResponse>();
 
                 return Results.Ok(response);
-            });
+            })
+                .WithTags("Products")
+                .WithName("GetProductsByCategory")
+                .Produces<IEnumerable<Product>>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .WithSummary("Get Products by Category");
         }
     }
 }

@@ -18,11 +18,13 @@ namespace MyPlanner.Catalog.Api.Products.GetProducts
                 var response = result.Adapt<GetProductResponse>();
 
                 return Results.Ok(response);
-            }).WithName("GetProducts")
-            .Produces<IEnumerable<Product>>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithSummary("Get Products")
-            .WithDescription("Get all products.");
+            })
+                .WithTags("Products")
+                .WithName("GetProducts")
+                .Produces<IEnumerable<Product>>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .WithSummary("Get Products")
+                .WithDescription("Get all products.");
         }
     }
 }

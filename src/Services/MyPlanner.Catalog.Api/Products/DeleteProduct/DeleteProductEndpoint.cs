@@ -19,13 +19,14 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
 
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
 
-            }).WithName("DeleteProduct")
-            .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
+            })
+                .WithTags("Products")
+                .WithName("DeleteProduct")
+                .Produces<DeleteProductResponse>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .ProducesValidationProblem()
-                .WithSummary("Delete a product")
-                ;
+                .WithSummary("Delete a product");
         }
     }
 }

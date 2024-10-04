@@ -19,11 +19,14 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
                 var response = result.Adapt<GetProductByIdResponse>();
 
                 return Results.Ok(response);
-            }).Produces<Product>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithSummary("Get Product by Id")
-            .WithDescription("Get a product by its id.");
+            })
+                .WithTags("Products")
+                .WithName("GetProductById")
+                .Produces<Product>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .WithSummary("Get Product by Id")
+                .WithDescription("Get a product by its id.");
         }
     }
 }

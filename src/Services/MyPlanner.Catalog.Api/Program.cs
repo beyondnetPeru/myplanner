@@ -1,10 +1,11 @@
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MyPlanner.Catalog.API.Data;
 using MyPlanner.Shared.Exceptions.Handlers;
 using MyPlanner.Shared.Mediator.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks()
     .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
@@ -32,6 +33,12 @@ builder.Services.AddMarten(options =>
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseExceptionHandler(opt => {});
 

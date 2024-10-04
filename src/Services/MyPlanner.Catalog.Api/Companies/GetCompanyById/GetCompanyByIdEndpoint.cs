@@ -17,11 +17,13 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
                 var response = result.Adapt<GetCompanyByIdResponse>();
 
                 return Results.Ok(response);
-            }).Produces<Company>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .ProducesProblem(StatusCodes.Status404NotFound)
-            .WithSummary("Get Company by Id")
-            .WithDescription("Get a company by its id.");
+            })
+                .WithTags("Companies")
+                .Produces<Company>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .WithSummary("Get Company by Id")
+                .WithDescription("Get a company by its id.");
         }
     }
 }

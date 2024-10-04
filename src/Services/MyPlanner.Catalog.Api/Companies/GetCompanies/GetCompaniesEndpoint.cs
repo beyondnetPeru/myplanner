@@ -18,11 +18,13 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanies
                 var response = result.Adapt<GetCompanyResponse>();
 
                 return Results.Ok(response);
-            }).WithName("GetCompanies")
-            .Produces<IEnumerable<Company>>(StatusCodes.Status200OK)
-            .ProducesProblem(StatusCodes.Status400BadRequest)
-            .WithSummary("Get Companies")
-            .WithDescription("Get all companies.");
+            })
+                .WithTags("Companies")
+                .WithName("GetCompanies")
+                .Produces<IEnumerable<Company>>(StatusCodes.Status200OK)
+                .ProducesProblem(StatusCodes.Status400BadRequest)
+                .WithSummary("Get Companies")
+                .WithDescription("Get all companies.");
         }
     }
 }

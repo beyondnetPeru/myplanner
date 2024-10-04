@@ -17,11 +17,13 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
                 var response = await services.Mediator.Send(command);
 
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
-            }).WithName("UpdateProduct")
-            .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
-            .Produces<UpdateProductResponse>(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
-            .WithSummary("Update a product");
+            })
+                .WithTags("Products")
+                .WithName("UpdateProduct")
+                .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
+                .Produces<UpdateProductResponse>(StatusCodes.Status404NotFound)
+                .ProducesValidationProblem()
+                .WithSummary("Update a product");
         }
     }
 }
