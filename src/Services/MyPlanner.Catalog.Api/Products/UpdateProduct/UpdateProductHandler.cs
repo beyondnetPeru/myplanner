@@ -3,7 +3,7 @@ using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.UpdateProduct
 {
-    public record UpdateProductCommand(string Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<UpdateProductCommandResponse>;
+    public record UpdateProductCommand(string companyId, string Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<UpdateProductCommandResponse>;
 
     public record UpdateProductCommandResponse(bool IsSuccess);
 
@@ -12,6 +12,7 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
         public UpdateProductCommandValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.companyId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
@@ -31,6 +32,7 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
                     return new UpdateProductCommandResponse(false);
                 }
 
+                product.CompanyId = request.companyId;
                 product.Name = request.Name;
                 product.Category = request.Category;
                 product.Description = request.Description;

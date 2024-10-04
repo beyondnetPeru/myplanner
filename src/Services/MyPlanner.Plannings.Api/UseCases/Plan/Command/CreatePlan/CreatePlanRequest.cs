@@ -6,17 +6,17 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
     public class CreatePlanRequest : IRequest<bool>
     {
         public string Name { get; set; } = default!;
-        public ICollection<PlanCategoryDto> Categories { get; set; } = default!;
+        public ICollection<CreatePlanCategoryRequest> Categories { get; set; } = default!;
         public string Owner { get; set; } = default!;
         public string SizeModelTypeId { get; set; } = default!;
-        public ICollection<CreatePlanItemDto> Items { get; set; } = default!;
+        public ICollection<CreatePlanItemRequest> Items { get; set; } = default!;
         public string UserId { get; set; } = default!;
 
         public CreatePlanRequest(string name, 
-                                 ICollection<PlanCategoryDto> categories,
+                                 ICollection<CreatePlanCategoryRequest> categories,
                                  string owner, 
                                  string sizeModelTypeId,
-                                 ICollection<CreatePlanItemDto> items,
+                                 ICollection<CreatePlanItemRequest> items,
                                  string userid)
         {
             Name = name;
@@ -26,6 +26,12 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
             Items = items;
             UserId = userid;
         }
+    }
+
+    public class CreatePlanCategoryRequest : IRequest<bool>
+    {
+        public string Name { get; set; } = default!;
+        public string UserId { get; set; } = default!;
     }
 
     public class CreatePlanItemRequest : IRequest<bool>
@@ -42,11 +48,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
         public string ComponentsImpacted { get; set; } = default!;
         public string TechnicalDependencies { get; set; } = default!;
         public string SizeModelTypeItemId { get; set; } = default!;
-        public CurrencySymbolEnum BallParkCostSymbol { get; set; } = CurrencySymbolEnum.USD;
+        public int BallParkCostSymbol { get; set; } = 1;
         public double BallParkCostAmount { get; set; } = 0.00;
-        public CurrencySymbolEnum BallparkDependenciesCostSymbol { get; set; } = CurrencySymbolEnum.USD;
         public double BallparkDependenciesCostAmount { get; set; } = 0.00;
-        public CurrencySymbolEnum BallParkTotalCostSymbol { get; set; } = CurrencySymbolEnum.USD;
         public double BallParkTotalCostAmount { get; set; } = 0.00;
         public string KeyAssumptions { get; set; } = default!;
         public string UserId { get; set; } = default!;

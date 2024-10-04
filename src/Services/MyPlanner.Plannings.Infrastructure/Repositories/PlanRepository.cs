@@ -149,8 +149,9 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             var table = await GetPlanItemTable(planItemId);
 
             table.BallParkCostAmount = ballParkCost;
+            table.BallParkTotalCostAmount = ballParkTotalCost;
             table.BallParkCostSymbol = symbol;
-            table.BallParkTotalCostSymbol = symbol;
+            
         }
 
         public async void ChangeItemBallParkDependenciesCost(string planItemId, int symbol, double ballParkDependenciesCost, double ballParkTotalCost)
@@ -158,8 +159,8 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             var table = await GetPlanItemTable(planItemId);
 
             table.BallparkDependenciesCostAmount = ballParkDependenciesCost;
-            table.BallparkDependenciesCostSymbol = symbol;
-            table.BallParkTotalCostSymbol = symbol;
+            table.BallParkTotalCostAmount = ballParkTotalCost;
+            table.BallParkCostSymbol = symbol;
         }
 
         public async void ChangeItemKeyAssumptions(string planItemId, string technicalDependencies)

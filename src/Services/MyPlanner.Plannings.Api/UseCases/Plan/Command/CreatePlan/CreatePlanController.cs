@@ -10,7 +10,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                                           [AsParameters] PlanServices service, 
                                           [FromBody] CreatePlanDto createPlanDto) =>
             {
-                var request = service.Mapper.Map<AddPlanItemRequest>(createPlanDto);
+                var request = service.Mapper.Map<CreatePlanRequest>(createPlanDto);
 
                 var result = await service.Mediator.Send(request);
 

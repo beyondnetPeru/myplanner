@@ -29,7 +29,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
                                                 ComponentsImpacted.Create(request.ComponentsImpacted),
                                                 TechnicalDependencies.Create(request.TechnicalDependencies),
                                                 IdValueObject.Create(request.SizeModelTypeItemId),
-                                                BallParkCost.Create(request.BallParkCostSymbol.Id, request.BallParkCostAmount, request.BallparkDependenciesCostAmount),
+                                                BallParkCost.Create(request.BallParkCostSymbol, request.BallParkCostAmount, request.BallparkDependenciesCostAmount),
                                                 KeyAssumptions.Create(request.KeyAssumptions),
                                                 UserId.Create(request.UserId));
 

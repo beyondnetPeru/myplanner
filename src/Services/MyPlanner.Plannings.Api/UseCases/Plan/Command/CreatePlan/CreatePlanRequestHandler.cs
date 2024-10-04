@@ -47,7 +47,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
             foreach (var i in request.Items)
             {
                 var planItem = PlanItem.Create(IdValueObject.Create(),
-                                               IdValueObject.Create(i.PlanId),
+                                               planId,
                                                IdValueObject.Create(i.ProductId),
                                                IdValueObject.Create(i.PlanCategoryId),
                                                BusinessFeature.Create(i.BusinessFeatureName, i.BusinessFeatureDefinition, i.BusinessFeatureComplexityLevel, i.BusinessFeaturePriority, i.BusinessFeatureMoScoW),
@@ -55,7 +55,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                                                ComponentsImpacted.Create(i.ComponentsImpacted),
                                                TechnicalDependencies.Create(i.TechnicalDependencies),
                                                IdValueObject.Create(i.SizeModelTypeItemId),
-                                               BallParkCost.Create(i.BallParkCostSymbol.Id, i.BallParkCostAmount, i.BallparkDependenciesCostAmount),
+                                               BallParkCost.Create(i.BallParkCostSymbol, i.BallParkCostAmount, i.BallparkDependenciesCostAmount),
                                                KeyAssumptions.Create(i.KeyAssumptions),
                                                userId);
                 if (!planItem.IsValid())

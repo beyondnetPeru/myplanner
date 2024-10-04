@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Catalog.Api.Models;
+﻿using MyPlanner.Catalog.Api.Models;
 using MyPlanner.Catalog.Api.UseCases;
-using MyPlanner.Shared.Infrastructure.Marten.Pagination;
 
 namespace MyPlanner.Catalog.Api.Products.GetProducts
 {
+    public record GetProductsRequest(int? PageNumber, int? PageSize, string CompanyId); 
     public record GetProductResponse(IEnumerable<Product> Products);
     public class GetProductsEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/products/", async ([FromBody] GetPaginationRequest paginationRequest, [AsParameters] ProductServices services) =>
+            app.MapGet("/companies/{companyId}/products/", async ([FromBody] GetProductsRequest getProductsRequest, [AsParameters] ProductServices services) =>
             {
-                var query = paginationRequest.Adapt<GetProductsQuery>();
-
+                var query = getProductsRequest.Adapt<GetProductsQuery>();
+                
                 var result = await services.Mediator.Send(query);
 
                 var response = result.Adapt<GetProductResponse>();

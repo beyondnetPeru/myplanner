@@ -44,7 +44,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries
 
         public async Task<IEnumerable<PlanDto>> GetPlans(PaginationQuery pagination)
         {
-            var plans = await context.Plans.Skip(pagination.RecordsPerPage).Take(pagination.Page).ToListAsync();
+            var plans = await context.Plans.Skip(pagination.RecordsPerPage).Include(x => x.SizeModelType).Take(pagination.Page).ToListAsync();
 
             var dtos = mapper.Map<IEnumerable<PlanDto>>(plans);
 

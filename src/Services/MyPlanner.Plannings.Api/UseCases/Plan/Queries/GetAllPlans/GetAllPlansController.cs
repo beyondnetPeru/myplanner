@@ -6,7 +6,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans", async ([AsParameters] PlanServices service, PaginationDto paginationDto) =>
+            app.MapGet("/plans", async ([AsParameters] PlanServices service, [FromBody] PaginationDto paginationDto) =>
             {
                 var pagination = new PaginationQuery(paginationDto.Page, paginationDto.RecordsPerPageMax);
 

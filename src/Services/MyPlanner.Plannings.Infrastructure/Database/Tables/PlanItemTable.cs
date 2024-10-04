@@ -24,9 +24,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public string SizeModelTypeItemId { get; set; } = default!;
         public int BallParkCostSymbol { get; set; } = default!;
         public double BallParkCostAmount { get; set; } = 0.00;
-        public int BallparkDependenciesCostSymbol { get; set; } = default!;
         public double BallparkDependenciesCostAmount { get; set; } = 0.00;
-        public int BallParkTotalCostSymbol { get; set; } = default!;
         public double BallParkTotalCostAmount { get; set; } = 0.00;
         public string KeyAssumptions { get; set; } = default!;
         public string UserId { get; set; } = default!;

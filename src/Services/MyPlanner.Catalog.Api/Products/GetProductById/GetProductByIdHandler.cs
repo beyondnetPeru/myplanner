@@ -3,7 +3,7 @@ using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.GetProductById
 {
-    public record GetProductByIdQuery(string Id) : IQuery<GetProductByIdResult>;
+    public record GetProductByIdQuery(string companyId, string Id) : IQuery<GetProductByIdResult>;
 
     public record GetProductByIdResult(Product Product);
 
@@ -20,7 +20,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
 
         public async Task<GetProductByIdResult> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            var product = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.companyId && x.Id == request.Id, cancellationToken);
 
             if (product == null)
             {

@@ -1,5 +1,4 @@
 ﻿using MyPlanner.Plannings.Api.Dtos.Plan;
-using MyPlanner.Shared.Models.Pagination;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
 {

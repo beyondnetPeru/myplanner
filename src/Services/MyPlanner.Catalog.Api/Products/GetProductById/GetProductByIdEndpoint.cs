@@ -3,15 +3,16 @@ using MyPlanner.Catalog.Api.UseCases;
 
 namespace MyPlanner.Catalog.Api.Products.GetProductById
 {
+    
     public record GetProductByIdResponse(Product product);
 
     public class GetProductIdByQueryEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/products/byid/{id}", async (string id, [AsParameters] ProductServices service)  =>
+            app.MapGet("/companies{companyId}/products/byid/{id}", async (string companyId, string id, [AsParameters] ProductServices service)  =>
             {
-                var query = new GetProductByIdQuery(id);
+                var query = new GetProductByIdQuery(companyId, id);
                 
                 var result = await service.Mediator.Send(query);
 

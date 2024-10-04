@@ -9,9 +9,9 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/products/bycat/{category}", async (string category, [AsParameters] ProductServices services) =>
+            app.MapGet("/companies/{companyId}/products/bycat/{category}", async (string companyId, string category, [AsParameters] ProductServices services) =>
             {
-                var query = new GetProductsByCategoryQuery(category);
+                var query = new GetProductsByCategoryQuery(companyId, category);
 
                 var result = await services.Mediator.Send(query);
 

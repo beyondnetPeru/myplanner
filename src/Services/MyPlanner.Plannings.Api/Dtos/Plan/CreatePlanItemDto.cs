@@ -2,9 +2,12 @@
 
 namespace MyPlanner.Plannings.Api.Dtos.Plan
 {
-    public class CreatePlanItemDto
+    public class CreatePlanItemDto : AbstractUserDto
     {
-        public string PlanId { get; set; } = default!;
+        public CreatePlanItemDto(string userId) : base(userId)
+        {
+        }
+
         public string ProductId { get; set; } = default!;
         public string PlanCategoryId { get; set; } = default!;
         public string BusinessFeatureName { get; private set; } = default!;
@@ -16,13 +19,10 @@ namespace MyPlanner.Plannings.Api.Dtos.Plan
         public string ComponentsImpacted { get; set; } = default!;
         public string TechnicalDependencies { get; set; } = default!;
         public string SizeModelTypeItemId { get; set; } = default!;
-        public CurrencySymbolEnum BallParkCostSymbol { get; set; } = CurrencySymbolEnum.USD;
+        public int BallParkCostSymbol { get; set; } = 1;
         public double BallParkCostAmount { get; set; } = 0.00;
-        public CurrencySymbolEnum BallparkDependenciesCostSymbol { get; set; } = CurrencySymbolEnum.USD;
         public double BallparkDependenciesCostAmount { get; set; } = 0.00;
-        public CurrencySymbolEnum BallParkTotalCostSymbol { get; set; } = CurrencySymbolEnum.USD;
         public double BallParkTotalCostAmount { get; set; } = 0.00;
         public string KeyAssumptions { get; set; } = default!;
-        public string UserId { get; set; } = default!;
     }
 }

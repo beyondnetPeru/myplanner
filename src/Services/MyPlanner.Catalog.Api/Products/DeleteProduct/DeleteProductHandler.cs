@@ -3,7 +3,7 @@ using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.DeleteProduct
 {
-    public record DeleteProductCommand(string Id) : ICommand<DeleteProductCommandResponse>;
+    public record DeleteProductCommand(string companyId, string Id) : ICommand<DeleteProductCommandResponse>;
 
     public record DeleteProductCommandResponse(bool IsSuccess);
 

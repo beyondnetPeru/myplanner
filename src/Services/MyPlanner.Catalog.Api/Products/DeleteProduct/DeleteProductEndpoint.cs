@@ -9,9 +9,9 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/products/{id}", async (string id, [AsParameters] ProductServices services) =>
+            app.MapDelete("/companies/{companyId}/products/{id}", async (string companyId, string id, [AsParameters] ProductServices services) =>
             {
-                var command = new DeleteProductCommand(id);
+                var command = new DeleteProductCommand(companyId, id);
 
                 var result = await services.Mediator.Send(command);
 

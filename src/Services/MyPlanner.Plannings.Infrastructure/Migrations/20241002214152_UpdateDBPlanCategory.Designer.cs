@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyPlanner.Plannings.Infrastructure.Database;
 
@@ -11,9 +12,11 @@ using MyPlanner.Plannings.Infrastructure.Database;
 namespace MyPlanner.Plannings.Infrastructure.Migrations
 {
     [DbContext(typeof(PlanningDbContext))]
-    partial class PlanningDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241002214152_UpdateDBPlanCategory")]
+    partial class UpdateDBPlanCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -109,8 +112,14 @@ namespace MyPlanner.Plannings.Infrastructure.Migrations
                     b.Property<double>("BallParkTotalCostAmount")
                         .HasColumnType("float");
 
+                    b.Property<int>("BallParkTotalCostSymbol")
+                        .HasColumnType("int");
+
                     b.Property<double>("BallparkDependenciesCostAmount")
                         .HasColumnType("float");
+
+                    b.Property<int>("BallparkDependenciesCostSymbol")
+                        .HasColumnType("int");
 
                     b.Property<string>("BusinessFeatureComplexityLevel")
                         .IsRequired()
