@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
+﻿using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Products
 {

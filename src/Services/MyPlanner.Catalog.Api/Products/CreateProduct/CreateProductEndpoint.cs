@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Catalog.Api.Products;
+﻿using MyPlanner.Catalog.Api.Products;
 
 namespace MyPlanner.Catalog.Api.UseCases.CreateProduct
 {

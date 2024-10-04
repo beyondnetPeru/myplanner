@@ -1,5 +1,4 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.UpdateProduct
 {
@@ -19,32 +18,32 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
             RuleFor(x => x.ImageFile).NotEmpty();
             RuleFor(x => x.Price).GreaterThan(0);
         }
-
-        internal class UpdateProductCommandHandler(IDocumentSession documentSession, ILogger<UpdateProductCommandHandler> logger) : ICommandHandler<UpdateProductCommand, UpdateProductCommandResponse>
+    }
+    internal class UpdateProductCommandHandler(IDocumentSession documentSession, ILogger<UpdateProductCommandHandler> logger) : ICommandHandler<UpdateProductCommand, UpdateProductCommandResponse>
+    {
+        public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+            var product = await documentSession.LoadAsync<Product>(request.Id, cancellationToken);
+
+            if (product == null)
             {
-                var product = await documentSession.LoadAsync<Product>(request.Id, cancellationToken);
-
-                if (product == null)
-                {
-                    logger.LogError("Product {ProductId} was not found", request.Id);
-                    return new UpdateProductCommandResponse(false);
-                }
-
-                product.CompanyId = request.companyId;
-                product.Name = request.Name;
-                product.Category = request.Category;
-                product.Description = request.Description;
-                product.ImageFile = request.ImageFile;
-                product.Price = request.Price;
-
-                documentSession.Update(product);
-
-                await documentSession.SaveChangesAsync(cancellationToken);
-
-                return new UpdateProductCommandResponse(true);
+                logger.LogError("Product {ProductId} was not found", request.Id);
+                return new UpdateProductCommandResponse(false);
             }
+
+            product.CompanyId = request.companyId;
+            product.Name = request.Name;
+            product.Category = request.Category;
+            product.Description = request.Description;
+            product.ImageFile = request.ImageFile;
+            product.Price = request.Price;
+
+            documentSession.Update(product);
+
+            await documentSession.SaveChangesAsync(cancellationToken);
+
+            return new UpdateProductCommandResponse(true);
         }
     }
+
 }
