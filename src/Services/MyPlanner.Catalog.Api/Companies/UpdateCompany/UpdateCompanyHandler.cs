@@ -1,9 +1,9 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Companies.UpdateCompany
 {
-    public record UpdateCompanyCommand(string id, string Name) : ICommand<UpdateCommandResponse>;
-    public record UpdateCommandResponse(bool IsSuccess);
+    public record UpdateCompanyCommand(string id, string Name) : ICommand<ResultSet>;
 
     public class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
     {
@@ -14,16 +14,24 @@ namespace MyPlanner.Catalog.Api.Companies.UpdateCompany
     }
 
 
-    internal class UpdateCompanyCompanyHandler(IDocumentSession documentSession, ILogger<UpdateCompanyCompanyHandler> logger) : ICommandHandler<UpdateCompanyCommand, UpdateCommandResponse>
+    public class UpdateCompanyCompanyHandler: AbstractCommandHandler<UpdateCompanyCommand, ResultSet>
     {
-        public async Task<UpdateCommandResponse> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<UpdateCompanyCompanyHandler> logger;
+
+        public UpdateCompanyCompanyHandler(IDocumentSession documentSession, ILogger<UpdateCompanyCompanyHandler> logger): base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            
+        }
+        public override async Task<ResultSet> HandleCommand(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
             var company = await documentSession.LoadAsync<Company>(request.id, cancellationToken);
 
             if (company == null)
             {
-                logger.LogError("Company {CompanyId} was not found", request.id);
-                return new UpdateCommandResponse(false);
+               return ResultSet.Error("Company {CompanyId} was not found", request.id);
             }
 
             company.Name = request.Name;
@@ -32,7 +40,7 @@ namespace MyPlanner.Catalog.Api.Companies.UpdateCompany
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return new UpdateCommandResponse(true);
+            return ResultSet.Success("Company updated successfully");
         }
     } 
 }

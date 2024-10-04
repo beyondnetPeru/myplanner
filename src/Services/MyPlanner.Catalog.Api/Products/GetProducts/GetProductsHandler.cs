@@ -1,18 +1,25 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Products.GetProducts;
 
-public record GetProductsQuery(int? PageNumber, int? PageSize, string CompanyId): IQuery<GetProductsResult>;
+public record GetProductsQuery(int? PageNumber, int? PageSize, string CompanyId): IQuery<ResultSet>;
 
-public record GetProductsResult(IEnumerable<Product> Products);
-
-internal class GetProductsQueryHandler(IDocumentSession documentSession) : IQueryHandler<GetProductsQuery, GetProductsResult>
+public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, ResultSet>
 {
-    public async Task<GetProductsResult> Handle(GetProductsQuery query, CancellationToken cancellationToken)
+    private readonly IDocumentSession documentSession;
+    private readonly ILogger<GetProductsQueryHandler> logger;
+
+    public GetProductsQueryHandler(IDocumentSession documentSession, ILogger<GetProductsQueryHandler> logger) : base(logger)
+    {
+        this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+    }
+
+    public override async Task<ResultSet> HandleQuery(GetProductsQuery query, CancellationToken cancellationToken)
     {
         var products = await documentSession.Query<Product>().Where(p => p.CompanyId == query.CompanyId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
-        return new GetProductsResult(products);
+        return ResultSet.Success("Products found", products);
     }
 }

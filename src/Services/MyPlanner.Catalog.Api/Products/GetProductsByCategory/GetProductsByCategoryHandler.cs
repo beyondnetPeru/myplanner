@@ -1,21 +1,28 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
 {
-    public record GetProductsByCategoryQuery(string companyId, string Category) : IQuery<GetProductsByCategoryResult>;
+    public record GetProductsByCategoryQuery(string companyId, string Category) : IQuery<ResultSet>;
 
-    public record GetProductsByCategoryResult(IEnumerable<Product> Products);
-
-    public class GetProductsByCategoryHandler(IDocumentSession documentSession, ILogger<GetProductsByCategoryHandler> logger) : IQueryHandler<GetProductsByCategoryQuery, GetProductsByCategoryResult>
+    public class GetProductsByCategoryHandler : AbstractQueryHandler<GetProductsByCategoryQuery, ResultSet>
     {
-        public async Task<GetProductsByCategoryResult> Handle(GetProductsByCategoryQuery request, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<GetProductsByCategoryHandler> logger;
+
+        public GetProductsByCategoryHandler(IDocumentSession documentSession, ILogger<GetProductsByCategoryHandler> logger):base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public override async Task<ResultSet> HandleQuery(GetProductsByCategoryQuery request, CancellationToken cancellationToken)
         {
             var products = await documentSession.Query<Product>()
                 .Where(x => x.CompanyId == request.companyId && x.CompanyId == request.companyId)
                 .ToListAsync(cancellationToken);
 
-            return new GetProductsByCategoryResult(products);
+            return ResultSet.Success("Products found", products);
         }
     }
 }

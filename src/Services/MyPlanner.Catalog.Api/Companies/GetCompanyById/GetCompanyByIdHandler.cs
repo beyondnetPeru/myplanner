@@ -1,33 +1,31 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
 {
-    public record GetCompanyByIdQuery(string Id) : IQuery<GetCompanyByIdResult>;
+    public record GetCompanyByIdQuery(string Id) : IQuery<ResultSet>;
 
-    public record GetCompanyByIdResult(Company Company);
 
-    internal class GetCompanyByIdQueryHandler : IQueryHandler<GetCompanyByIdQuery, GetCompanyByIdResult>
+    public class GetCompanyByIdQueryHandler : AbstractQueryHandler<GetCompanyByIdQuery, ResultSet>
     {
         private readonly IDocumentSession _documentSession;
         private readonly ILogger<GetCompanyByIdQueryHandler> logger;
 
-        public GetCompanyByIdQueryHandler(IDocumentSession documentSession, ILogger<GetCompanyByIdQueryHandler> logger)
+        public GetCompanyByIdQueryHandler(IDocumentSession documentSession, ILogger<GetCompanyByIdQueryHandler> logger):base(logger)
         {
             _documentSession = documentSession;
             this.logger = logger;
         }
 
-        public async Task<GetCompanyByIdResult> Handle(GetCompanyByIdQuery request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleQuery(GetCompanyByIdQuery request, CancellationToken cancellationToken)
         {
             var company = await _documentSession.Query<Company>().FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
             
             if (company == null) {
-                logger.LogWarning("Company with id {Id} not found", request.Id);
-                return null;
+                return ResultSet.Error($"Company with id {request.Id} not found");
             }
 
-            return new GetCompanyByIdResult(company);
+            return ResultSet.Success("Company found sucessfully", company);
         }
     }
 }

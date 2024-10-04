@@ -1,7 +1,4 @@
-﻿using MediatR;
-using System.Collections;
-
-namespace MyPlanner.Shared.Extensions
+﻿namespace MyPlanner.Shared.Extensions
 {
     public static class MediatorExtension
     {

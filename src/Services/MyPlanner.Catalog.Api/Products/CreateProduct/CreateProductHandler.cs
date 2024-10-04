@@ -1,8 +1,10 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs;
+
 
 namespace MyPlanner.Catalog.Api.Products
 {
-    public record CreateProductCommand : ICommand<CreateProductResult>
+    public record CreateProductCommand : ICommand<ResultSet>
     {
         public string CompanyId { get; set; } = default!;
         public string Name { get; set; } = default!;
@@ -11,9 +13,6 @@ namespace MyPlanner.Catalog.Api.Products
         public string ImageFile { get; set; } = default!;
         public decimal Price { get; set; } = default!;
     }
-
-    public record CreateProductResult(string Id);
-
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {
         public CreateProductCommandValidator()
@@ -27,36 +26,36 @@ namespace MyPlanner.Catalog.Api.Products
         }
     }
 
-    internal class CreateProductCommandHandler(IDocumentSession documentSession, 
-                                               ILogger<CreateProductCommandHandler> logger, 
-                                               IValidator<CreateProductCommand> validator) : ICommandHandler<CreateProductCommand, CreateProductResult>
+    public class CreateProductCommandHandler : AbstractCommandHandler<CreateProductCommand, ResultSet>
     {
-        public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
+        private readonly IDocumentSession _documentSession;
+        private readonly ILogger<CreateProductCommandHandler> _logger;
+        private readonly IValidator<CreateProductCommand> _validator;
+
+        public CreateProductCommandHandler(IDocumentSession documentSession,
+                                           ILogger<CreateProductCommandHandler> logger,
+                                           IValidator<CreateProductCommand> validator): base(logger)
         {
-            var errors = validator.Validate(command);
+            _documentSession = documentSession;
+            _logger = logger;
+            _validator = validator;
+        }
+
+        public override async Task<ResultSet> HandleCommand(CreateProductCommand command, CancellationToken cancellationToken)
+        {
+
+            var errors = _validator.Validate(command);
 
             if (errors != null)
-            {
-                logger.LogError($"Error trying create a product. Errors:{errors.ToString()}");
-                return null;
-            }
+                return ResultSet.Error($"Error trying create a product. Errors:{errors.ToString()}", JsonSerializer.Serialize(command));
 
-            var product = new Product
-            {
-                Id = Guid.NewGuid().ToString(),
-                CompanyId = command.CompanyId,
-                Name = command.Name,
-                Category = command.Category,
-                Description = command.Description,
-                ImageFile = command.ImageFile,
-                Price = command.Price
-            };
+            var product = command.Adapt<Product>();
 
-            documentSession.Store(product);
+            _documentSession.Store(product);
 
-            await documentSession.SaveChangesAsync(cancellationToken);
+            await _documentSession.SaveChangesAsync(cancellationToken);
 
-            return new CreateProductResult(product.Id);
+            return ResultSet.Success($"Product created successfully", JsonSerializer.Serialize(product));
         }
     }
 }

@@ -1,14 +1,19 @@
 using MyPlanner.Catalog.API.Data;
 using MyPlanner.Shared.Exceptions.Handlers;
+using MyPlanner.Shared.Extensions;
 using MyPlanner.Shared.Mediator.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var databseConnectionString = builder.Configuration.GetConnectionString("Database")!;
+
+builder.AddServicesDefaults();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddHealthChecks()
-    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+    .AddNpgSql(databseConnectionString);
 
 builder.Services.AddCarter();
 
@@ -26,7 +31,7 @@ builder.Services.AddExceptionHandler<ApiCustomExceptionHandler>();
 
 builder.Services.AddMarten(options =>
 {
-    options.Connection(builder.Configuration.GetConnectionString("Database")!);
+    options.Connection(databseConnectionString);
 }).UseLightweightSessions().InitializeWith<CatalogInitialData>();
 
 

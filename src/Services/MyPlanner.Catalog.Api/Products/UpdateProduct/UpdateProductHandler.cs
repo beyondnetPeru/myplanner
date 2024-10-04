@@ -1,10 +1,9 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Products.UpdateProduct
 {
-    public record UpdateProductCommand(string companyId, string Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<UpdateProductCommandResponse>;
-
-    public record UpdateProductCommandResponse(bool IsSuccess);
+    public record UpdateProductCommand(string companyId, string Id, string Name, List<string> Category, string Description, string ImageFile, decimal Price) : ICommand<ResultSet>;
 
     public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
     {
@@ -19,16 +18,24 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
             RuleFor(x => x.Price).GreaterThan(0);
         }
     }
-    internal class UpdateProductCommandHandler(IDocumentSession documentSession, ILogger<UpdateProductCommandHandler> logger) : ICommandHandler<UpdateProductCommand, UpdateProductCommandResponse>
+    public class UpdateProductCommandHandler : AbstractCommandHandler<UpdateProductCommand, ResultSet>
     {
-        public async Task<UpdateProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<UpdateProductCommandHandler> logger;
+
+        public UpdateProductCommandHandler(IDocumentSession documentSession, ILogger<UpdateProductCommandHandler> logger) : base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public override async Task<ResultSet> HandleCommand(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await documentSession.LoadAsync<Product>(request.Id, cancellationToken);
 
             if (product == null)
             {
-                logger.LogError("Product {ProductId} was not found", request.Id);
-                return new UpdateProductCommandResponse(false);
+                return ResultSet.Error($"Product {request.Id} was not found");
             }
 
             product.CompanyId = request.companyId;
@@ -42,8 +49,7 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return new UpdateProductCommandResponse(true);
+            return ResultSet.Success("Product updated sucessfully");
         }
     }
-
 }

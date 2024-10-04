@@ -1,27 +1,35 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Companies.DeleteCompany
 {
-    public record DeleteCompanyCommand(string Id) : ICommand<DeleteCompanyCommandResponse>;
+    public record DeleteCompanyCommand(string Id) : ICommand<ResultSet>;
 
-    public record DeleteCompanyCommandResponse(bool IsSuccess);
-
-    internal class DeleteCompanyCommandHandler(IDocumentSession documentSession, ILogger<DeleteCompanyCommandHandler> logger) : ICommandHandler<DeleteCompanyCommand, DeleteCompanyCommandResponse>
+    public class DeleteCompanyCommandHandler : AbstractCommandHandler<DeleteCompanyCommand, ResultSet>
     {
-        public async Task<DeleteCompanyCommandResponse> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<DeleteCompanyCommandHandler> logger;
+
+        public DeleteCompanyCommandHandler(IDocumentSession documentSession, ILogger<DeleteCompanyCommandHandler> logger) : base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public override async Task<ResultSet> HandleCommand(DeleteCompanyCommand request, CancellationToken cancellationToken)
         {
             var company = await documentSession.LoadAsync<Company>(request.Id, cancellationToken);
+            
             if (company == null)
             {
-                logger.LogWarning("Company with id {id} not found", request.Id);
-                return new DeleteCompanyCommandResponse(false);
+                return ResultSet.Error("Company with id {id} not found.", request.Id);
             }
 
             documentSession.Delete(company);
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return new DeleteCompanyCommandResponse(true);
+            return ResultSet.Success("Company deleted successfully.");
         }
     }
 }

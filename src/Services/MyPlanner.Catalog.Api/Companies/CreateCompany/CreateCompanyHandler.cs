@@ -1,10 +1,9 @@
 ﻿using MyPlanner.Catalog.Api.Models;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 {
-    public record CreateCompanyCommad(string Name): ICommand<CreateCompanyResult>;
-
-    public record CreateCompanyResult(string Id);
+    public record CreateCompanyCommad(string Name): ICommand<ResultSet>;
 
     public class CreateCompanyCommandValidator: AbstractValidator<CreateCompanyCommad>
     {
@@ -14,18 +13,28 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
         }
     }
 
-    internal class CreateCompanyCommandHandler(IDocumentSession documentSession,
-                                               ILogger<CreateCompanyCommandHandler> logger,
-                                               IValidator<CreateCompanyCommad> validator) : ICommandHandler<CreateCompanyCommad, CreateCompanyResult>
+    public class CreateCompanyCommandHandler : AbstractCommandHandler<CreateCompanyCommad, ResultSet>
     {
-        public async Task<CreateCompanyResult> Handle(CreateCompanyCommad command, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<CreateCompanyCommandHandler> logger;
+        private readonly IValidator<CreateCompanyCommad> validator;
+
+        public CreateCompanyCommandHandler(IDocumentSession documentSession,
+                                               ILogger<CreateCompanyCommandHandler> logger,
+                                               IValidator<CreateCompanyCommad> validator) : base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.validator = validator ?? throw new ArgumentNullException(nameof(validator));
+        }
+
+        public override async Task<ResultSet> HandleCommand(CreateCompanyCommad command, CancellationToken cancellationToken)
         {
             var errors = validator.Validate(command);
 
             if (errors != null)
             {
-                logger.LogError($"Error trying create a company. Errors:{errors.ToString()}");
-                return null;
+                return ResultSet.Error($"Error trying create a company. Errors:{errors.ToString()}");
             }
 
             var company = new Company
@@ -38,7 +47,7 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return new CreateCompanyResult(company.Id);
+            return ResultSet.Success($"Company created successfully: {company}");
         }
     }
 }

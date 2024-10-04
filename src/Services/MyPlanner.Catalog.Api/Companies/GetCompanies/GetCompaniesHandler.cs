@@ -1,19 +1,26 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Catalog.Api.Companies.GetCompanies
 {
+    public record GetCompaniesQuery(int? PageNumber, int? PageSize) : IQuery<ResultSet>;
 
-    public record GetCompaniesQuery(int? PageNumber, int? PageSize) : IQuery<GetCompaniesResult>;
-    public record GetCompaniesResult(IEnumerable<Company> Companies);
-
-    internal class GetCompaniesHandler(IDocumentSession documentSession) : IQueryHandler<GetCompaniesQuery, GetCompaniesResult>
+    public class GetCompaniesQueryHandler : AbstractQueryHandler<GetCompaniesQuery, ResultSet>
     {
-        public async Task<GetCompaniesResult> Handle(GetCompaniesQuery query, CancellationToken cancellationToken)
+        private readonly IDocumentSession documentSession;
+        private readonly ILogger<GetCompaniesQueryHandler> logger;
+
+        public GetCompaniesQueryHandler(IDocumentSession documentSession, ILogger<GetCompaniesQueryHandler> logger) : base(logger)
+        {
+            this.documentSession = documentSession ?? throw new ArgumentNullException(nameof(documentSession));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
+        public override async Task<ResultSet> HandleQuery(GetCompaniesQuery query, CancellationToken cancellationToken)
         {
             var companies = await documentSession.Query<Company>().ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
-            return new GetCompaniesResult(companies);
+            return ResultSet.Success($"Companies found sucessfully {companies}");
         }
     }
 }
