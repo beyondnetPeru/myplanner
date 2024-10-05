@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModel
 {
-    public class DeactivateSizeModelRequest : IRequest<bool>
+    public class DeactivateSizeModelRequest : ICommand<ResultSet>
     {
         public DeactivateSizeModelRequest(string sizeModelId, string userId)
         {

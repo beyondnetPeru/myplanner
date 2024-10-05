@@ -2,29 +2,28 @@
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTypeItem
 {
-    public class ChangeSizeModelTypeItemModelItemRequestHandler : IRequestHandler<ChangeSizeModelTypeItemModelItemRequest, bool>
+    public class ChangeSizeModelTypeItemModelItemRequestHandler : AbstractCommandHandler<ChangeSizeModelTypeItemModelItemRequest, ResultSet>
     {
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<ChangeSizeModelTypeItemModelItemRequestHandler> logger;
         private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory;
 
         public ChangeSizeModelTypeItemModelItemRequestHandler(ISizeModelRepository sizeModelRepository,
                                                      ISizeModelTypeRepository sizeModelTypeRepository,
                                                      ILogger<ChangeSizeModelTypeItemModelItemRequestHandler> logger,
-                                                     ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory)
+                                                     ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory) : base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.sizeModelTypeFactorCostFactory = sizeModelTypeFactorCostFactory ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostFactory));
         }
 
-        public async Task<bool> Handle(ChangeSizeModelTypeItemModelItemRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ChangeSizeModelTypeItemModelItemRequest request, CancellationToken cancellationToken)
         {
             var sizeModelItem = await sizeModelRepository.GetItem(request.SizeModelItemId);
 
@@ -42,16 +41,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
 
             if (!sizeModelItem.IsValid())
             {
-                logger.LogError($"SizeModelItem is not valid. Errors: {sizeModelItem.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"SizeModelItem is not valid. Errors: {sizeModelItem.GetBrokenRules().ToString()}");
             }
 
             sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId, request.SizeModelItemTypeCode, totalCost);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 
-            return true;
-
+            return ResultSet.Success();
         }
     }
 }

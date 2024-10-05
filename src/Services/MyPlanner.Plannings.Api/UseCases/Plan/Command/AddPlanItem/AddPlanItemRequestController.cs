@@ -13,7 +13,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 
                 var result = await service.Mediator.Send(request);
 
-                return result ? Results.Ok() : Results.BadRequest();
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
 
             }).WithTags(Tags.Plan);
         }

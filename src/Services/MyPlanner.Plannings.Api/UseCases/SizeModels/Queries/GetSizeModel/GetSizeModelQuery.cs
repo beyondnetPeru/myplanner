@@ -1,9 +1,9 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
 {
-    public class GetSizeModelQuery : IRequest<SizeModelDto>
+    public class GetSizeModelQuery : IQuery<ResultSet>
     {
         public string SizeModelId { get; set; }
 

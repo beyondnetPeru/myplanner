@@ -1,5 +1,4 @@
 ﻿
-using Microsoft.EntityFrameworkCore;
 using MyPlanner.IntegrationEventLogEF.Services;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 using MyPlanner.Plannings.Infrastructure.Database;
@@ -22,9 +21,12 @@ namespace MyPlanner.Plannings.Api.Extensions
 {
     public static partial class ApiServicesBuilderExtensions
     {
+        /// <summary>
+        /// Adds application services to the host application builder.
+        /// </summary>
+        /// <param name="builder">The host application builder.</param>
         public static void AddApplicationServices(this IHostApplicationBuilder builder)
         {
-
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 

@@ -1,9 +1,9 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
-using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {
-    public class CreatePlanRequest : IRequest<bool>
+    public class CreatePlanRequest : ICommand<ResultSet>
     {
         public string Name { get; set; } = default!;
         public ICollection<CreatePlanCategoryRequest> Categories { get; set; } = default!;
@@ -28,13 +28,13 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
         }
     }
 
-    public class CreatePlanCategoryRequest : IRequest<bool>
+    public class CreatePlanCategoryRequest : ICommand<ResultSet>
     {
         public string Name { get; set; } = default!;
         public string UserId { get; set; } = default!;
     }
 
-    public class CreatePlanItemRequest : IRequest<bool>
+    public class CreatePlanItemRequest : ICommand<ResultSet>
     {
         public string PlanId { get; set; } = default!;
         public string ProductId { get; set; } = default!;

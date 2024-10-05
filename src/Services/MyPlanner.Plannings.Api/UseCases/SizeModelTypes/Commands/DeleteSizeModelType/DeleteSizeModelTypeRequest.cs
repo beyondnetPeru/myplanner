@@ -1,18 +1,12 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeleteSizeModelType
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
+namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeleteSizeModelType
 {
-    public class DeleteSizeModelTypeRequest : IRequest<bool>
+    public class DeleteSizeModelTypeRequest : ICommand<ResultSet>
     {
         public DeleteSizeModelTypeRequest(string sizeModelTypeId, string userId)
         {
-            if (string.IsNullOrEmpty(sizeModelTypeId))
-            {
-                throw new ArgumentException($"'{nameof(sizeModelTypeId)}' cannot be null or empty.", nameof(sizeModelTypeId));
-            }
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                throw new ArgumentException($"'{nameof(userId)}' cannot be null or empty.", nameof(userId));
-            }
             SizeModelTypeId = sizeModelTypeId;
             UserId = userId;
         }

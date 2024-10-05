@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Plannings.Api.Dtos.Plan;
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangePlanName

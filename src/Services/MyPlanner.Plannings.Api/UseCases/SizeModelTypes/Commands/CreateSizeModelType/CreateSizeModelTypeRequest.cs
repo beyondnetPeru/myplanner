@@ -1,7 +1,10 @@
 ﻿
+using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType
 {
-    public class CreateSizeModelTypeRequest : IRequest<bool>
+    public class CreateSizeModelTypeRequest : ICommand<ResultSet>
     {
         public string Code { get; private set; }
         public string Name { get; private set; }

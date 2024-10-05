@@ -1,20 +1,19 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelTypeItem
 {
-    public class ChangeCodeSizeModelTypeItemRequestHandler : IRequestHandler<ChangeCodeSizeModelTypeItemRequest, bool>
+    public class ChangeCodeSizeModelTypeItemRequestHandler : AbstractCommandHandler<ChangeCodeSizeModelTypeItemRequest, ResultSet>
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<ChangeCodeSizeModelTypeItemRequestHandler> logger;
 
         public ChangeCodeSizeModelTypeItemRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository,
-                                                         ILogger<ChangeCodeSizeModelTypeItemRequestHandler> logger)
+                                                         ILogger<ChangeCodeSizeModelTypeItemRequestHandler> logger) : base(logger)
         {
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(ChangeCodeSizeModelTypeItemRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ChangeCodeSizeModelTypeItemRequest request, CancellationToken cancellationToken)
         {
             var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
 
@@ -22,15 +21,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSiz
 
             if (!sizeModelTypeItem.IsValid())
             {
-                logger.LogError($"Invalid size model type item. Errors: {sizeModelTypeItem.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"Invalid size model type item. Errors: {sizeModelTypeItem.GetBrokenRules().ToString()}");
             }
 
             sizeModelTypeRepository.ChangeItemCode(request.SizeModelTypeItemId, request.Code);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelTypeItem, cancellationToken);
 
-            return true;
+            return ResultSet.Success();
         }
     }
 }

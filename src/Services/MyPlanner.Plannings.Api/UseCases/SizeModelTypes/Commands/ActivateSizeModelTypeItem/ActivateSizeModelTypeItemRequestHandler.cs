@@ -1,20 +1,18 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelTypeFactor
 {
-    public class ActivateSizeModelTypeItemRequestHandler : IRequestHandler<ActivateSizeModelTypeItemRequest, bool>
+    public class ActivateSizeModelTypeItemRequestHandler : AbstractCommandHandler<ActivateSizeModelTypeItemRequest, ResultSet>
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<ActivateSizeModelTypeItemRequestHandler> logger;
 
-        public ActivateSizeModelTypeItemRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository, ILogger<ActivateSizeModelTypeItemRequestHandler> logger)
+        public ActivateSizeModelTypeItemRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository, ILogger<ActivateSizeModelTypeItemRequestHandler> logger):base(logger)
         {
-
             this.sizeModelTypeRepository = sizeModelTypeRepository;
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(ActivateSizeModelTypeItemRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ActivateSizeModelTypeItemRequest request, CancellationToken cancellationToken)
         {
             var entity = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
 
@@ -22,15 +20,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeM
 
             if (!entity.IsValid())
             {
-                logger.LogError("Error activating SizeModelTypeItem: {0}", entity.GetBrokenRules());
-                return false;
+                return ResultSet.Error($"Error activating SizeModelTypeItem: {entity.GetBrokenRules()}" );
             }
 
             sizeModelTypeRepository.Activate(request.SizeModelTypeItemId);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 
-            return true;
+            return ResultSet.Success();
         }
     }
 }

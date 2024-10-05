@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType
 {
-    public class ActivateSizeModelTypeRequest : IRequest<bool>
+    public class ActivateSizeModelTypeRequest : ICommand<ResultSet>
     {
         public ActivateSizeModelTypeRequest(string sizeModelTypeId, string userId)
         {

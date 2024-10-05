@@ -10,7 +10,7 @@
 
                 var request = await service.Mediator.Send(query);
 
-                return request is null
+                return !request.IsSuccess
                         ? Results.NotFound()
                         : Results.Ok(request);
 

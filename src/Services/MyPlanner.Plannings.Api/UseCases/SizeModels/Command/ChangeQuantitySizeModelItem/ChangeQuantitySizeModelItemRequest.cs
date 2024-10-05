@@ -1,6 +1,9 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySizeModelItem
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
+namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySizeModelItem
 {
-    public class ChangeQuantitySizeModelItemRequest : IRequest<bool>
+    public class ChangeQuantitySizeModelItemRequest : ICommand<ResultSet>
     {
         public ChangeQuantitySizeModelItemRequest(string sizeModelItemId, int quantity, string userId)
         {

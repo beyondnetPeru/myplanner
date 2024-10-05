@@ -1,9 +1,9 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlanItems
 {
-    public class GetAllPlanItemsQuery : IRequest<IEnumerable<PlanItemDto>>
+    public class GetAllPlanItemsQuery : IQuery<ResultSet>
     {
         public string PlanId { get; set; }
 

@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Plannings.Api.Dtos.Plan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
 {
@@ -14,7 +12,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
 
                 var result = await service.Mediator.Send(request);
 
-                return result ? Results.Ok() : Results.BadRequest();
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
 
             }).WithTags(Tags.Plan);
         }

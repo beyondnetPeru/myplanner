@@ -1,20 +1,19 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {
-    public class CreatePlanRequestHandler : IRequestHandler<CreatePlanRequest, bool>
+    public class CreatePlanRequestHandler : AbstractCommandHandler<CreatePlanRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
-        private readonly ILogger<CreatePlanRequestHandler> logger;
 
-        public CreatePlanRequestHandler(IPlanRepository planRepository, ILogger<CreatePlanRequestHandler> logger)
+        public CreatePlanRequestHandler(IPlanRepository planRepository, ILogger<CreatePlanRequestHandler> logger) : base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(CreatePlanRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(CreatePlanRequest request, CancellationToken cancellationToken)
         {
             var userId = UserId.Create(request.UserId);
 
@@ -25,11 +24,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                                                         Name.Create(request.Name),
                                                         Owner.Create(request.Owner),
                                                         userId);
-
             if (!plan.IsValid())
             {
-                logger.LogError($"Invalid plan. Errors: {plan.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"Invalid plan. Errors: {plan.GetBrokenRules()}");                
             }
 
             foreach (var item in request.Categories)
@@ -38,11 +35,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 
                 if (!planCategory.IsValid())
                 {
-                    logger.LogError($"Invalid plan category. Errors: {planCategory.GetBrokenRules()}");
-                    return false;
+                    return ResultSet.Error($"Invalid plan category. Errors: {planCategory.GetBrokenRules()}");
                 }                
             }
-           
 
             foreach (var i in request.Items)
             {
@@ -60,8 +55,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                                                userId);
                 if (!planItem.IsValid())
                 {
-                    logger.LogError($"Invalid plan item. Errors: {planItem.GetBrokenRules()}");
-                    return false;
+                    return ResultSet.Error($"Invalid plan item. Errors: {planItem.GetBrokenRules()}");
                 }
 
                 plan.AddPlanItem(planItem, userId);
@@ -71,7 +65,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 
-            return true;
+            return ResultSet.Success("Plan created successfully.");
         }
     }
 }

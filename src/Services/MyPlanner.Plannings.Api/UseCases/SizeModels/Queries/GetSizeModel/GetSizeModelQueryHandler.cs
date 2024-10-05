@@ -1,20 +1,22 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Shared.Cqrs;
 
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
 {
-    public class GetSizeModelQueryHandler : IRequestHandler<GetSizeModelQuery, SizeModelDto>
+    public class GetSizeModelQueryHandler : AbstractQueryHandler<GetSizeModelQuery, ResultSet>
     {
         private readonly ISizeModelQueryRepository sizeModelQueryRepository;
 
-        public GetSizeModelQueryHandler(ISizeModelQueryRepository sizeModelQueryRepository)
+        public GetSizeModelQueryHandler(ISizeModelQueryRepository sizeModelQueryRepository, ILogger<GetSizeModelQueryHandler> logger): base(logger) 
         {
             this.sizeModelQueryRepository = sizeModelQueryRepository ?? throw new ArgumentNullException(nameof(sizeModelQueryRepository));
         }
 
-        public async Task<SizeModelDto> Handle(GetSizeModelQuery request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleQuery(GetSizeModelQuery request, CancellationToken cancellationToken)
         {
-            return await sizeModelQueryRepository.Get(request.SizeModelId);
+            var data = await sizeModelQueryRepository.Get(request.SizeModelId);
+
+            return ResultSet.Success(data);
         }
     }
 }

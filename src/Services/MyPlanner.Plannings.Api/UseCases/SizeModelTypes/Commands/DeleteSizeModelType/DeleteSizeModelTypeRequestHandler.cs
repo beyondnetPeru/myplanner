@@ -1,40 +1,33 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeleteSizeModelType
 {
-    public class DeleteSizeModelTypeRequestHandler : IRequestHandler<DeleteSizeModelTypeRequest, bool>
+    public class DeleteSizeModelTypeRequestHandler : AbstractCommandHandler<DeleteSizeModelTypeRequest, ResultSet>
     {
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<DeleteSizeModelTypeRequestHandler> logger;
 
-        public DeleteSizeModelTypeRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository, ILogger<DeleteSizeModelTypeRequestHandler> logger)
+        public DeleteSizeModelTypeRequestHandler(ISizeModelTypeRepository sizeModelTypeRepository, ILogger<DeleteSizeModelTypeRequestHandler> logger) : base(logger)
         {
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(DeleteSizeModelTypeRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(DeleteSizeModelTypeRequest request, CancellationToken cancellationToken)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
             var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
 
             sizeModelType.Delete();
 
             if (!sizeModelType.IsValid())
             {
-                logger.LogError($"SizeModelType cannot be deleted. Errors: {sizeModelType.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"SizeModelType cannot be deleted. Errors: {sizeModelType.GetBrokenRules().ToString()}");
             }
 
             sizeModelTypeRepository.Delete(request.SizeModelTypeId);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelType, cancellationToken);
 
-            return true;
+            return ResultSet.Success();
         }
     }
 }

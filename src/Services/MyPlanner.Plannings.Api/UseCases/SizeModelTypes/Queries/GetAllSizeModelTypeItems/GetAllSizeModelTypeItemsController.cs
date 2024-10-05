@@ -10,7 +10,7 @@
 
                 var result = await service.Mediator.Send(query);
 
-                return result != null ? Results.Ok(result) : Results.NotFound();
+                return result.IsSuccess ? Results.Ok(result) : Results.NotFound();
 
             }).WithTags(Tags.SizeModelTypes);
         }

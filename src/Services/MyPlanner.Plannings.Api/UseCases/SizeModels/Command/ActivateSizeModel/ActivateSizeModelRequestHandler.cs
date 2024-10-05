@@ -1,20 +1,19 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel
 {
-    public class ActivateSizeModelRequestHandler : IRequestHandler<ActivateSizeModelRequest, bool>
+    public class ActivateSizeModelRequestHandler : AbstractCommandHandler<ActivateSizeModelRequest, ResultSet>
     {
         private readonly ISizeModelRepository sizeModelRepository;
-        private readonly ILogger<ActivateSizeModelRequestHandler> logger;
 
-        public ActivateSizeModelRequestHandler(ISizeModelRepository sizeModelRepository, ILogger<ActivateSizeModelRequestHandler> logger)
+        public ActivateSizeModelRequestHandler(ISizeModelRepository sizeModelRepository, ILogger<ActivateSizeModelRequestHandler> logger):base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public async Task<bool> Handle(ActivateSizeModelRequest request, CancellationToken cancellationToken)
+
+        public override async Task<ResultSet> HandleCommand(ActivateSizeModelRequest request, CancellationToken cancellationToken)
         {
             var sizeModel = await sizeModelRepository.Get(request.SizeModelId);
 
@@ -22,15 +21,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel
 
             if (!sizeModel.IsValid())
             {
-                logger.LogError($"SizeModel with id {request.SizeModelId} is not valid. Errors: {sizeModel.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"SizeModel with id {request.SizeModelId} is not valid. Errors: {sizeModel.GetBrokenRules()}");
             }
 
             sizeModelRepository.Activate(sizeModel.GetPropsCopy().Id.GetValue());
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
-            return true;
+            return ResultSet.Success("SizeModel activated successfully");
 
         }
     }

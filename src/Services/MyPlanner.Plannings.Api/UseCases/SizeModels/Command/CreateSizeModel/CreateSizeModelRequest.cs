@@ -1,8 +1,9 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 {
-    public class CreateSizeModelRequest : IRequest<bool>
+    public class CreateSizeModelRequest : ICommand<ResultSet>
     {
         public string SizeModelTypeId { get; set; }
         public string SizeModelTypeCode { get; set; }

@@ -1,20 +1,19 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
-    public class DeletePlanRequestHandler : IRequestHandler<DeletePlanRequest, bool>
+    public class DeletePlanRequestHandler : AbstractCommandHandler<DeletePlanRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
-        private readonly ILogger<DeletePlanRequestHandler> logger;
 
-        public DeletePlanRequestHandler(IPlanRepository planRepository, ILogger<DeletePlanRequestHandler> logger)
+        public DeletePlanRequestHandler(IPlanRepository planRepository, ILogger<DeletePlanRequestHandler> logger): base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(DeletePlanRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(DeletePlanRequest request, CancellationToken cancellationToken)
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
@@ -22,15 +21,12 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 
             if (!plan.IsValid())
             {
-                logger.LogError($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
             }
-
-            planRepository.ChangeStatus(request.PlanId, PlanStatus.Deleted.Id);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return true;
+            return ResultSet.Success("Plan deleted successfully.");
         }
     }
 }

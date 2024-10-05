@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelName
 {
-    public class ChangeNameSizeModelRequest : IRequest<bool>
+    public class ChangeNameSizeModelRequest : ICommand<ResultSet>
     {
         public ChangeNameSizeModelRequest(string sizeModelId, string name, string userId)
         {

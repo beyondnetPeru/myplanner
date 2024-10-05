@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelName
 {
@@ -16,13 +15,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelNam
 
                 var result = await service.Mediator.Send(request);
 
-                if (!result)
-                {
-                    Results.BadRequest();
-                }
-
-                return Results.Ok(result);
-
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
             }).WithTags(Tags.SizeModels);
         }
     }

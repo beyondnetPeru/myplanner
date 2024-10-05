@@ -1,8 +1,9 @@
-﻿using MediatR;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType
 {
-    public class ChangeCodeSizeModelTypeRequest : IRequest<bool>
+    public class ChangeCodeSizeModelTypeRequest : ICommand<ResultSet>
     {
         public ChangeCodeSizeModelTypeRequest(string sizeModelTypeId, string code, string userId)
         {

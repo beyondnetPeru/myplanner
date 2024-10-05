@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 {
@@ -13,7 +12,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 
                 var result = await service.Mediator.Send(createSizeModelRequest);
 
-                return result ? Results.Created() : Results.BadRequest();
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
 
             }).WithTags(Tags.SizeModels);
         }

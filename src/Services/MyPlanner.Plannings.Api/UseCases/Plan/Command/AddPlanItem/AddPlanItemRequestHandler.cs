@@ -1,24 +1,24 @@
 ﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 {
-    public class AddPlanItemRequestHandler : IRequestHandler<CreatePlanItemRequest, bool>
+    public class AddPlanItemRequestHandler : AbstractCommandHandler<CreatePlanItemRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<CreatePlanItemRequest> logger;
 
-        public AddPlanItemRequestHandler(IPlanRepository planRepository, ILogger<CreatePlanItemRequest> logger)
+        public AddPlanItemRequestHandler(IPlanRepository planRepository, ILogger<AddPlanItemRequestHandler> logger):base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        
         }
 
-        public async Task<bool> Handle(CreatePlanItemRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(CreatePlanItemRequest request, CancellationToken cancellationToken)
         {
             var planItem = PlanItem.Create(IdValueObject.Create(),
                                                 IdValueObject.Create(request.PlanId),
@@ -36,8 +36,8 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 
             if (!planItem.IsValid())
             {
-                logger.LogError($"PlanItem is not valid. Errros:{planItem.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"PlanItem is not valid. Errros:{planItem.GetBrokenRules()}");
+                
             }
 
             var plan = await planRepository.GetByIdAsync(request.PlanId);
@@ -46,15 +46,15 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 
             if (!plan.IsValid())
             {
-                logger.LogError($"Plan is not valid. Errros:{plan.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"Plan is not valid. Errros:{plan.GetBrokenRules()}");
+                
             }
 
             planRepository.AddItem(planItem);
 
             await planRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return true;
+            return ResultSet.Success("Plan created sucessfully.");
         }
     }
 }

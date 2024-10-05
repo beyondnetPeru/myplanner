@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Models.Pagination;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
 {
     public class GetAllPlansController : ICarterModule
     {
@@ -14,7 +12,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
 
                 var result = await service.Mediator.Send(query);
 
-                return result != null ? Results.Ok(result) : Results.NotFound();
+                return result.IsSuccess ? Results.Ok(result) : Results.NotFound(result);
 
             }).WithTags(Tags.Plan);
         }

@@ -1,20 +1,19 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
 {
-    public class DraftPlanRequestHandler : IRequestHandler<DraftPlanRequest, bool>
+    public class DraftPlanRequestHandler : AbstractCommandHandler<DraftPlanRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
-        private readonly ILogger<DraftPlanRequestHandler> logger;
-
-        public DraftPlanRequestHandler(IPlanRepository planRepository, ILogger<DraftPlanRequestHandler> logger)
+        
+        public DraftPlanRequestHandler(IPlanRepository planRepository, ILogger<DraftPlanRequestHandler> logger) : base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(DraftPlanRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(DraftPlanRequest request, CancellationToken cancellationToken)
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
@@ -22,15 +21,14 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
 
             if (!plan.IsValid())
             {
-                logger.LogError($"Plan is not valid. Error: {plan.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"Plan is not valid. Error: {plan.GetBrokenRules().ToString()}");
             }
 
             planRepository.ChangeStatus(request.PlanId, PlanStatus.Draft.Id);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return true;
+            return ResultSet.Success("Plan is drafted successfully.");
         }
     }
 }

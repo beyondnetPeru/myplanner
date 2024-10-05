@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-namespace MyPlanner.Plannings.Api.Extensions
+﻿namespace MyPlanner.Plannings.Api.Extensions
 {
     public static partial class ApiDefaultsExtensions
     {
+        /// <summary>
+        /// Adds the default services and configurations for the API.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> instance.</param>
+        /// <returns>The updated <see cref="IHostApplicationBuilder"/> instance.</returns>
         public static IHostApplicationBuilder AddServicesDefaults(this IHostApplicationBuilder builder)
         {
             // Enable Semantic Kernel OpenTelemetry
@@ -27,8 +29,10 @@ namespace MyPlanner.Plannings.Api.Extensions
         }
 
         /// <summary>
-        /// Adds the services except for making outgoing HTTP calls.
+        /// Adds the basic services and configurations for the API except for making outgoing HTTP calls.
         /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> instance.</param>
+        /// <returns>The updated <see cref="IHostApplicationBuilder"/> instance.</returns>
         /// <remarks>
         /// This allows for things like Polly to be trimmed out of the app if it isn't used.
         /// </remarks>
@@ -40,6 +44,11 @@ namespace MyPlanner.Plannings.Api.Extensions
             return builder;
         }
 
+        /// <summary>
+        /// Adds the default health checks for the API.
+        /// </summary>
+        /// <param name="builder">The <see cref="IHostApplicationBuilder"/> instance.</param>
+        /// <returns>The updated <see cref="IHostApplicationBuilder"/> instance.</returns>
         public static IHostApplicationBuilder AddDefaultHealthChecks(this IHostApplicationBuilder builder)
         {
             builder.Services.AddHealthChecks()
@@ -49,6 +58,11 @@ namespace MyPlanner.Plannings.Api.Extensions
             return builder;
         }
 
+        /// <summary>
+        /// Maps the default endpoints for the API.
+        /// </summary>
+        /// <param name="app">The <see cref="WebApplication"/> instance.</param>
+        /// <returns>The updated <see cref="WebApplication"/> instance.</returns>
         public static WebApplication MapDefaultsEndpoints(this WebApplication app)
         {
             // Uncomment the following line to enable the Prometheus endpoint (requires the OpenTelemetry.Exporter.Prometheus.AspNetCore package)

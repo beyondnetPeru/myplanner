@@ -1,6 +1,6 @@
 ﻿namespace MyPlanner.Shared.Cqrs
 {
-    public class ResultSet 
+    public class ResultSet
     {
         public bool IsError { get; set; } = false;
         public bool IsSuccess { get; private set; } = false;
@@ -45,6 +45,16 @@
         public static ResultSet Error()
         {
             return new ResultSet(true, false, string.Empty, null);
+        }
+
+        public static ResultSet Error(object data)
+        {
+            return new ResultSet(true, false, string.Empty, data);
+        }
+
+        public static ResultSet Success(object data)
+        {
+            return new ResultSet(false, true, string.Empty, data);
         }
     }
 }

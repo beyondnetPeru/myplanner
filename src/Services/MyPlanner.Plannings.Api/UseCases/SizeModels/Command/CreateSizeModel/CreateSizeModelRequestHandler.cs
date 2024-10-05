@@ -2,29 +2,28 @@
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Domain.SizeModelTypes;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 {
-    public class CreateSizeModelRequestHandler : IRequestHandler<CreateSizeModelRequest, bool>
+    public class CreateSizeModelRequestHandler : AbstractCommandHandler<CreateSizeModelRequest, ResultSet>
     {
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ILogger<CreateSizeModelRequestHandler> logger;
         private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory;
 
         public CreateSizeModelRequestHandler(ISizeModelRepository sizeModelRepository,
                                              ISizeModelTypeRepository sizeModelTypeRepository,
-                                             ILogger<CreateSizeModelRequestHandler> logger,
-                                             ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory)
+                                             ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory,
+                                             ILogger<CreateSizeModelRequestHandler> logger) : base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
             this.sizeModelTypeRepository = sizeModelTypeRepository ?? throw new ArgumentNullException(nameof(sizeModelTypeRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.sizeModelTypeFactorCostCalculatorFactory = sizeModelTypeFactorCostCalculatorFactory ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostCalculatorFactory));
         }
 
-        public async Task<bool> Handle(CreateSizeModelRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(CreateSizeModelRequest request, CancellationToken cancellationToken)
         {
             var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
 
@@ -33,8 +32,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 
             if (!sizeModel.IsValid())
             {
-                logger.LogInformation($"SizeModel is not valid: {sizeModel.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"SizeModel is not valid: {sizeModel.GetBrokenRules()}");
             }
 
             if (request.Items.Any())
@@ -59,8 +57,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 
                     if (!sizeModelItem.IsValid())
                     {
-                        logger.LogInformation($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules()}");
-                        return false;
+                        return ResultSet.Error($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules()}");
                     }
 
                     sizeModel.AddItem(sizeModelItem, UserId.Create(request.UserId));
@@ -72,7 +69,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
-            return true;
+            return ResultSet.Success();
         }
 
         private void SetTotalCost(CreateSizeModelRequest request, CreateSizeModelItemRequest item)

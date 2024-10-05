@@ -1,8 +1,10 @@
-﻿using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 { 
-    public class AddPlanItemRequest : IRequest<bool>
+    public class AddPlanItemRequest : ICommand<ResultSet>
     {
         public string PlanId { get; set; } = default!;
         public string ProductId { get; set; } = default!;

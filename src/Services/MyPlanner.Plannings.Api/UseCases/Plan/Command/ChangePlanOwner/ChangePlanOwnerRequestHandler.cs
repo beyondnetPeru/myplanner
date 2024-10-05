@@ -1,21 +1,19 @@
-﻿
-using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 {
-    public class ChangePlanOwnerRequestHandler : IRequestHandler<ChangePlanOwnerRequest, bool>
+    public class ChangePlanOwnerRequestHandler : AbstractCommandHandler<ChangePlanOwnerRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
-        private readonly ILogger<ChangePlanOwnerRequest> logger;
 
-        public ChangePlanOwnerRequestHandler(IPlanRepository planRepository, ILogger<ChangePlanOwnerRequest> logger)
+        public ChangePlanOwnerRequestHandler(IPlanRepository planRepository, ILogger<ChangePlanOwnerRequestHandler> logger):base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+                }
 
-        public async Task<bool> Handle(ChangePlanOwnerRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ChangePlanOwnerRequest request, CancellationToken cancellationToken)
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
@@ -23,16 +21,14 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 
             if (!plan.IsValid())
             {
-                logger.LogError($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
-                return false;
+                ResultSet.Error($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
             }
 
             planRepository.ChangeOwner(request.PlanId, request.Owner);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return true;
-
+            return ResultSet.Success("Plan owner updated successfully.");
         }
     }
 }

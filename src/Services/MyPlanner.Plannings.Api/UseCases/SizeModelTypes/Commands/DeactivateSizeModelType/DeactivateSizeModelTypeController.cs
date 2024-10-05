@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType
 {
@@ -16,11 +15,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
 
                 var result = await service.Mediator.Send(request);
 
-                {
-                    Results.BadRequest();
-                }
-
-                return Results.Ok(result);
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
 
             }).WithTags(Tags.SizeModelTypes);
         }

@@ -1,8 +1,9 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetPlan
 {
-    public class GetPlanQuery : IRequest<PlanDto>
+    public class GetPlanQuery : IQuery<ResultSet>
     {
         public GetPlanQuery(string planId)
         {

@@ -1,21 +1,19 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Domain.SizeModels;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelName
 {
-    public class ChangeNameSizeModelRequestHandler : IRequestHandler<ChangeNameSizeModelRequest, bool>
+    public class ChangeNameSizeModelRequestHandler : AbstractCommandHandler<ChangeNameSizeModelRequest, ResultSet>
     {
         private readonly ISizeModelRepository sizeModelRepository;
-        private readonly ILogger<ChangeNameSizeModelRequestHandler> logger;
 
-        public ChangeNameSizeModelRequestHandler(ISizeModelRepository sizeModelRepository, ILogger<ChangeNameSizeModelRequestHandler> logger)
+        public ChangeNameSizeModelRequestHandler(ISizeModelRepository sizeModelRepository, ILogger<ChangeNameSizeModelRequestHandler> logger):base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(ChangeNameSizeModelRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ChangeNameSizeModelRequest request, CancellationToken cancellationToken)
         {
             var sizeModel = await sizeModelRepository.Get(request.SizeModelId);
 
@@ -23,15 +21,14 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelNam
 
             if (!sizeModel.IsValid())
             {
-                logger.LogError($"SizeModel name cannot be changed. Errors:{sizeModel.GetBrokenRules()}");
-                return false;
+                return ResultSet.Error($"SizeModel name cannot be changed. Errors:{sizeModel.GetBrokenRules()}");
             }
 
             sizeModelRepository.ChangeName(request.SizeModelId, request.Name);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
-            return true;
+            return ResultSet.Success();
         }
     }
 }

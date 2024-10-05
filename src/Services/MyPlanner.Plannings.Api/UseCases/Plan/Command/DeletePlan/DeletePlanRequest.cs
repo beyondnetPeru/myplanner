@@ -1,6 +1,9 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
+namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
-    public class DeletePlanRequest : IRequest<bool>
+    public class DeletePlanRequest : ICommand<ResultSet>
     {
         public string PlanId { get; }
         public string UserId { get; }

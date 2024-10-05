@@ -1,8 +1,9 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetAllSizeModelTypes
 {
-    public class GetAllSizeModelTypesQuery : IRequest<IEnumerable<SizeModelTypeDto>>
+    public class GetAllSizeModelTypesQuery : IQuery<ResultSet>
     {
         public GetAllSizeModelTypesQuery(PaginationQuery pagination)
         {

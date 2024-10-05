@@ -1,6 +1,9 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSizeModelItem
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
+namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSizeModelItem
 {
-    public class ChangeIsStandardSizeModelItemRequest : IRequest<bool>
+    public class ChangeIsStandardSizeModelItemRequest : ICommand<ResultSet>
     {
         public string SizeModelItemId { get; set; }
         public bool IsStandard { get; set; }

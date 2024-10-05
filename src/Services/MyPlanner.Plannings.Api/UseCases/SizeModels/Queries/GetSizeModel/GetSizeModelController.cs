@@ -1,6 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
-
-namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
+﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
 {
     public class GetSizeModelController : ICarterModule
     {
@@ -12,7 +10,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel
 
                 var request = await service.Mediator.Send(query);
 
-                return request is null
+                return !request.IsSuccess
                         ? Results.NotFound()
                         : Results.Ok(request);
 

@@ -1,6 +1,9 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelTypeItem
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
+
+namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelTypeItem
 {
-    public class ChangeCodeSizeModelTypeItemRequest : IRequest<bool>
+    public class ChangeCodeSizeModelTypeItemRequest : ICommand<ResultSet>
     {
         public string SizeModelTypeItemId { get; set; }
         public string Code { get; set; }

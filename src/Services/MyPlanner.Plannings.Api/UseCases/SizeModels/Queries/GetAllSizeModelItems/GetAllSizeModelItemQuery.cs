@@ -1,8 +1,9 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetAllSizeModelItems
 {
-    public class GetAllSizeModelItemQuery : IRequest<IEnumerable<SizeModelItemDto>>
+    public class GetAllSizeModelItemQuery : IQuery<ResultSet>
     {
         public GetAllSizeModelItemQuery(string sizeModelId)
         {

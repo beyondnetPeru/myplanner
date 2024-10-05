@@ -1,27 +1,25 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 {
-    public class ActivatePlanRequestHandler : IRequestHandler<ActivatePlanRequest, bool>
+    public class ActivatePlanRequestHandler : AbstractCommandHandler<ActivatePlanRequest, ResultSet>
     {
         private readonly IPlanRepository planRepository;
-        private readonly ILogger<ActivatePlanRequestHandler> logger;
 
-        public ActivatePlanRequestHandler(IPlanRepository planRepository, ILogger<ActivatePlanRequestHandler> logger)
+        public ActivatePlanRequestHandler(IPlanRepository planRepository, ILogger<ActivatePlanRequestHandler> logger):base(logger)
         {
             this.planRepository = planRepository ?? throw new ArgumentNullException(nameof(planRepository));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<bool> Handle(ActivatePlanRequest request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(ActivatePlanRequest request, CancellationToken cancellationToken)
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
             if (!plan.IsValid())
             {
-                logger.LogError($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
-                return false;
+                return ResultSet.Error($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
             }
 
             plan.Activate(UserId.Create(request.UserId));
@@ -30,7 +28,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return true;
+            return ResultSet.Success("Plan activated sucessfully.");
         }
     }
 }

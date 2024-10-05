@@ -4,3 +4,7 @@ global using BeyondNet.Ddd.ValueObjects;
 global using BeyondNet.Ddd;
 global using BeyondNet.Ddd.AutoMapper.Impl;
 global using MyPlanner.Shared.Models.Pagination;
+global using Microsoft.EntityFrameworkCore;
+global using Jal.Factory;
+global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;

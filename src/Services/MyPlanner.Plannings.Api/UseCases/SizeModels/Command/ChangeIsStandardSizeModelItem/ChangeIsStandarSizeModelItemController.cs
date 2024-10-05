@@ -1,6 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
-using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSizeModelItem
 {
@@ -18,7 +16,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSi
 
                 var result = await service.Mediator.Send(changeIsStandardSizeModelItemRequest);
 
-                return result ? Results.Created() : Results.BadRequest();
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
             });
         }
     }
