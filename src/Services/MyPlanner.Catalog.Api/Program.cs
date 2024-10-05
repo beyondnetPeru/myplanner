@@ -20,7 +20,6 @@ builder.Services.AddCarter();
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
-
     cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
     cfg.AddOpenBehavior(typeof(ValidatorBehavior<,>));
 });

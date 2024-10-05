@@ -39,7 +39,6 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 
             var company = new Company
             {
-                Id = Guid.NewGuid().ToString(),
                 Name = command.Name
             };
 
