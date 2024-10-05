@@ -17,13 +17,14 @@
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
 
             })
-                .WithTags("Companies")
-                .WithName("DeleteCompany")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.DELETE.Name)
                 .Produces<DeleteCompanyResponse>(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status500InternalServerError)
                 .ProducesValidationProblem()
-                .WithSummary("Delete a company");
+                .WithSummary(ENDPOINT.DELETE.Summary)
+                .WithDescription(ENDPOINT.DELETE.Description);
         }
     }
 }

@@ -7,7 +7,7 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/companies/", async ([AsParameters] CompanyServices services, [FromBody] CreateCompanyRequest createCompanyRequest) =>
+            app.MapPost("/companies", async ([AsParameters] CompanyServices services, [FromBody] CreateCompanyRequest createCompanyRequest) =>
             {
                 var command = createCompanyRequest.Adapt<CreateCompanyCommad>();
 
@@ -18,12 +18,12 @@
                 return Results.Created($"/companies/{response.Id}", response);
 
             })
-                .WithTags("Companies")
-                .WithName("CreateCompany")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.CREATE.Name)
                 .Produces<CreateCompanyResponse>(StatusCodes.Status201Created)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
-                .WithSummary("Create Company")
-                .WithDescription("Create a new company.");
+                .WithSummary(ENDPOINT.CREATE.Summary)
+                .WithDescription(ENDPOINT.CREATE.Description);
         }
     }
 }

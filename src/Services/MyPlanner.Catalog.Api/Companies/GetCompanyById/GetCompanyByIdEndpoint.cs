@@ -18,12 +18,13 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
 
                 return Results.Ok(response);
             })
-                .WithTags("Companies")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.GET.Name)
                 .Produces<Company>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
-                .WithSummary("Get Company by Id")
-                .WithDescription("Get a company by its id.");
+                .WithSummary(ENDPOINT.GET.Summary)
+                .WithDescription(ENDPOINT.GET.Description);
         }
     }
 }

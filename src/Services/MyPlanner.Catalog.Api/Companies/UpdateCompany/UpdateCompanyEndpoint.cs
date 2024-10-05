@@ -15,12 +15,13 @@
 
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
             })
-                .WithTags("Companies")
-                .WithName("UpdateCompany")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.UPDATE.Name)
                 .Produces<UpdateCompanyResponse>(StatusCodes.Status200OK)
                 .Produces<UpdateCompanyResponse>(StatusCodes.Status404NotFound)
                 .ProducesValidationProblem()
-                .WithSummary("Update a company");
+                .WithSummary(ENDPOINT.UPDATE.Summary)
+                .WithDescription(ENDPOINT.UPDATE.Description);
         }
     }
 }

@@ -20,13 +20,13 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
 
                 return Results.Ok(response);
             })
-                .WithTags("Products")
-                .WithName("GetProductById")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.GET.Name)
                 .Produces<Product>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
                 .ProducesProblem(StatusCodes.Status404NotFound)
-                .WithSummary("Get Product by Id")
-                .WithDescription("Get a product by its id.");
+                .WithSummary(ENDPOINT.GET.Summary)
+                .WithDescription(ENDPOINT.GET.Description);
         }
     }
 }

@@ -18,12 +18,13 @@ namespace MyPlanner.Catalog.Api.Products.UpdateProduct
 
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
             })
-                .WithTags("Products")
-                .WithName("UpdateProduct")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.UPDATE.Name)
                 .Produces<UpdateProductResponse>(StatusCodes.Status200OK)
                 .Produces<UpdateProductResponse>(StatusCodes.Status404NotFound)
                 .ProducesValidationProblem()
-                .WithSummary("Update a product");
+                .WithSummary(ENDPOINT.UPDATE.Summary)
+                .WithDescription(ENDPOINT.UPDATE.Description);
         }
     }
 }

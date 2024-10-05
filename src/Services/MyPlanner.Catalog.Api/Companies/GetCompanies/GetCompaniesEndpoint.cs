@@ -19,12 +19,12 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanies
 
                 return Results.Ok(response);
             })
-                .WithTags("Companies")
-                .WithName("GetCompanies")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.LIST.Name)
                 .Produces<IEnumerable<Company>>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
-                .WithSummary("Get Companies")
-                .WithDescription("Get all companies.");
+                .WithSummary(ENDPOINT.LIST.Summary)
+                .WithDescription(ENDPOINT.LIST.Description);
         }
     }
 }

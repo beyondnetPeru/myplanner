@@ -19,11 +19,12 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
 
                 return Results.Ok(response);
             })
-                .WithTags("Products")
-                .WithName("GetProductsByCategory")
+                .WithTags(ENDPOINT.Tag)
+                .WithName(ENDPOINT.GETCAT.Name)
                 .Produces<IEnumerable<Product>>(StatusCodes.Status200OK)
                 .ProducesProblem(StatusCodes.Status400BadRequest)
-                .WithSummary("Get Products by Category");
+                .WithSummary(ENDPOINT.GETCAT.Summary)
+                .WithDescription(ENDPOINT.GETCAT.Description);
         }
     }
 }
