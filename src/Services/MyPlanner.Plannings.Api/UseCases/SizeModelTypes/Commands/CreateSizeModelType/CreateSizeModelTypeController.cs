@@ -8,7 +8,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
         {
             app.MapPost("/sizemodeltypes/", async ([FromHeader(Name = "x-requestid")] Guid requestId,
                                                    [AsParameters] SizeModelTypeService service,
-                                                   [FromBody] CreateSizeModelTypeDto createSizeModelTypeDto) =>
+                                                   [FromBody] CreateSizeModelTypeDto createSizeModelTypeDto)=>
             {
                 var request = service.Mapper.Map<CreateSizeModelTypeRequest>(createSizeModelTypeDto);
 
