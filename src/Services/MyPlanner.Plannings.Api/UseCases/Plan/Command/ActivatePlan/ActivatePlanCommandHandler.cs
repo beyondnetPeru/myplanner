@@ -21,7 +21,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
             {
                 return ResultSet.Error($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
             }
-
+            
             plan.Activate(UserId.Create(request.UserId));
 
             planRepository.ChangeStatus(request.PlanId, PlanStatus.Active.Id);
