@@ -1,24 +1,10 @@
-﻿using MediatR;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModelItem;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelName;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModel;
-using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModelItem;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelTypeFactor;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelType;
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSizeModelTypeFactor;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Extensions;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases
 {
-
     /// <summary>
     /// Provides a base implementation for handling duplicate request and ensuring idempotent updates, in the cases where
     /// a requestid sent by client is used to detect duplicate requests.
@@ -27,6 +13,7 @@ namespace MyPlanner.Plannings.Api.UseCases
     /// <typeparam name="R">Return value of the inner command handler</typeparam>
     public abstract class IdentifiedCommandHandler<T, R> : IRequestHandler<IdentifiedCommand<T, R>, R>
         where T : IRequest<R>
+        where R : ResultSet
     {
         private readonly IMediator mediator;
         private readonly IRequestManager requestManager;
@@ -74,74 +61,9 @@ namespace MyPlanner.Plannings.Api.UseCases
 
                     switch (command)
                     {
-                        case CreateSizeModelTypeRequest createSizeModelTypeRequest:
-                            idProperty = nameof(createSizeModelTypeRequest.UserId);
-                            commandId = createSizeModelTypeRequest.UserId;
-                            break;
-
-                        case ChangeCodeSizeModelTypeRequest changeCodeSizeModelTypeRequest:
-                            idProperty = nameof(changeCodeSizeModelTypeRequest.UserId);
-                            commandId = changeCodeSizeModelTypeRequest.UserId;
-                            break;
-
-                        case ChangeNameSizeModelTypeRequest changeNameSizeModelTypeRequest:
-                            idProperty = nameof(changeNameSizeModelTypeRequest.UserId);
-                            commandId = changeNameSizeModelTypeRequest.UserId;
-                            break;
-
-                        case ActivateSizeModelTypeRequest activateSizeModelTypeRequest:
-                            idProperty = nameof(activateSizeModelTypeRequest.UserId);
-                            commandId = activateSizeModelTypeRequest.UserId;
-                            break;
-
-                        case DeactivateSizeModelTypeRequest deactivateSizeModelTypeRequest:
-                            idProperty = nameof(deactivateSizeModelTypeRequest.UserId);
-                            commandId = deactivateSizeModelTypeRequest.UserId;
-                            break;
-
-                        case ActivateSizeModelTypeItemRequest activateSizeModelTypeFactorRequest:
-                            idProperty = nameof(activateSizeModelTypeFactorRequest.UserId);
-                            commandId = activateSizeModelTypeFactorRequest.UserId;
-                            break;
-
-                        case DeactivateSizeModelTypeItemRequest deactivateSizeModelTypeFactorRequest:
-                            idProperty = nameof(deactivateSizeModelTypeFactorRequest.UserId);
-                            commandId = deactivateSizeModelTypeFactorRequest.UserId;
-                            break;
-
-                        case ActivateSizeModelRequest activateSizeModelRequest:
-                            idProperty = nameof(activateSizeModelRequest.UserId);
-                            commandId = activateSizeModelRequest.UserId;
-                            break;
-
-                        case DeactivateSizeModelRequest deactivateSizeModelRequest:
-                            idProperty = nameof(deactivateSizeModelRequest.UserId);
-                            commandId = deactivateSizeModelRequest.UserId;
-                            break;
-
-                        case CreateSizeModelRequest createSizeModelRequest:
-                            idProperty = nameof(createSizeModelRequest.UserId);
-                            commandId = createSizeModelRequest.UserId;
-                            break;
-
-                        case ChangeNameSizeModelRequest changeSizeModelNameRequest:
-                            idProperty = nameof(changeSizeModelNameRequest.UserId);
-                            commandId = changeSizeModelNameRequest.UserId;
-                            break;
-
-                        case CreateSizeModelItemRequest createSizeModelItemRequest:
-                            idProperty = nameof(createSizeModelItemRequest.UserId);
-                            commandId = createSizeModelItemRequest.UserId;
-                            break;
-
-                        case DeactivateSizeModelItemRequest deactivateSizeModelItemRequest:
-                            idProperty = nameof(deactivateSizeModelItemRequest.UserId);
-                            commandId = deactivateSizeModelItemRequest.UserId;
-                            break;
-
-                        case ActivateSizeModelItemRequest activateSizeModelItemRequest:
-                            idProperty = nameof(activateSizeModelItemRequest.UserId);
-                            commandId = activateSizeModelItemRequest.UserId;
+                        case CreatePlanRequest createPlanRequest:
+                            idProperty = nameof(createPlanRequest.UserId);
+                            commandId = createPlanRequest.UserId;
                             break;
 
                         default:

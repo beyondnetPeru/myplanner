@@ -7,11 +7,13 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan
         IMediator mediator,
         IPlanRepository planRepository,
         IPlanQueryRepository planQueryRepository,
+        ILogger<PlanServices> logger,
         IMapper mapper)
     {
         public IMediator Mediator { get; } = mediator;
         public IPlanRepository PlanRepository { get; } = planRepository;
-        public IPlanQueryRepository PlanQueryRepository { get; } = planQueryRepository;
+        public IPlanQueryRepository PlanQueryRepository { get; } = planQueryRepository;        
+        public ILogger<PlanServices> Logger { get; }  = logger;
         public IMapper Mapper { get; } = mapper;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Jal.Factory;
-using MyPlanner.Plannings.Api.Models;
+﻿using MyPlanner.Plannings.Api.Models;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 

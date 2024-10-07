@@ -1,6 +1,7 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {
@@ -66,6 +67,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
             await planRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 
             return ResultSet.Success("Plan created successfully.");
+        }
+    }
+
+    public class CreatePlanIdentifiedRequestHandler : IdentifiedCommandHandler<CreatePlanRequest, ResultSet>
+    {
+        public CreatePlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<CreatePlanRequest, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

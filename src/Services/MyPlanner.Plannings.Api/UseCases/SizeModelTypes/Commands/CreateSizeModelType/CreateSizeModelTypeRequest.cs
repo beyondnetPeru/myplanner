@@ -9,7 +9,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
         public string Code { get; private set; }
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public ICollection<CreateSizeModelTypeItemsRequest> Items { get; set; }
+        public ICollection<CreateSizeModelTypeItemsRequest> Items { get; private set; }
         public string UserId { get; private set; }
 
         public CreateSizeModelTypeRequest(string code,

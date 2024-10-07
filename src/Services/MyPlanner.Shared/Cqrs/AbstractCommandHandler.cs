@@ -1,4 +1,5 @@
 ﻿using MyPlanner.Shared.Cqrs.Interfaces;
+using MyPlanner.Shared.Extensions;
 
 namespace MyPlanner.Shared.Cqrs
 {
@@ -17,11 +18,13 @@ namespace MyPlanner.Shared.Cqrs
         {
             try
             {
-                logger.LogInformation($"Handling command {request.GetType().Name} with request: {JsonSerializer.Serialize(request)}");
+                var handlingCommand = request.GetGenericTypeName();
+
+                logger.LogInformation($"Start handling command {handlingCommand} with request: {JsonSerializer.Serialize(request)}");
 
                 var result = await HandleCommand(request, cancellationToken);
 
-                logger.LogInformation($"Command {request.GetType().Name} handled with response: {JsonSerializer.Serialize(result)}");
+                logger.LogInformation($"End handling Command {handlingCommand} handled with response: {JsonSerializer.Serialize(result)}");
 
                 return result;
             }

@@ -1,9 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using System.Data;
-using BeyondNet.Ddd.Interfaces;
-using MyPlanner.Plannings.Infrastructure.Database.Configurations;
+﻿using MyPlanner.Plannings.Infrastructure.Database.Configurations;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Products.Infrastructure.Database.Configurations;
 using MyPlanner.Shared.Extensions;
@@ -13,6 +8,8 @@ namespace MyPlanner.Plannings.Infrastructure.Database
 {
     public class PlanningDbContext : DbContext, IUnitOfWork
     {
+        private readonly IMediator mediator;
+        private IDbContextTransaction currentTransaction;
 
         public DbSet<ErrorTable> Errors { get; set; }
         public DbSet<PlanTable> Plans { get; set; }
@@ -22,19 +19,17 @@ namespace MyPlanner.Plannings.Infrastructure.Database
         public DbSet<SizeModelTypeItemTable> SizeModelTypeItems { get; set; }
         public DbSet<SizeModelTable> SizeModels { get; set; }
         public DbSet<SizeModelItemTable> SizeModelItems { get; set; }
-
-        private readonly IMediator mediator;
-
-        private IDbContextTransaction? currentTransaction;
-        public IDbContextTransaction GetCurrentTransaction() => currentTransaction!;
         public bool HasActiveTransaction => currentTransaction != null;
 
+        public PlanningDbContext(DbContextOptions<PlanningDbContext> options) : base(options) { }
         public PlanningDbContext(DbContextOptions<PlanningDbContext> options, IMediator mediator) : base(options)
         {
-            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-
-            System.Diagnostics.Debug.WriteLine("PlanningDbContext::ctor ->" + this.GetHashCode());
+            mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            
+            System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
+
+        public IDbContextTransaction GetCurrentTransaction() => currentTransaction;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

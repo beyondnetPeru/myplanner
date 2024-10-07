@@ -37,12 +37,13 @@ namespace MyPlanner.Plannings.Api.Extensions
 
             var assembly = typeof(Program).Assembly;
 
-            builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(assembly));
+            builder.Services.AddCarter();
+            
+            builder.Services.AddAutoMapper(assembly);
 
             builder.Services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssemblyContaining(typeof(Program));
-
                 cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
                 cfg.AddOpenBehavior(typeof(TransactionBehavior<,>));
             });
@@ -53,22 +54,20 @@ namespace MyPlanner.Plannings.Api.Extensions
                 c.AddTransient<ISizeModelTypeFactorCostFactory, SizeModelTypeFactorCostFactory>();
                 c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeTShirtAndSprintFactorCostCalculator>();
                 c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorDefaultCostCalculator>();
-
             });
 
-            builder.Services.AddCarter();
-
-            builder.Services.AddAutoMapper(assembly);
-
             builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<PlanningDbContext>>();
-            builder.Services.AddTransient<IPlanningIntegrationEventService, PlanningIntegrationEventService>();
+            builder.Services.AddTransient<IPlanningIntegrationEventService, PlanningIntegrationEventService>(); 
+
             builder.Services.AddScoped<ISizeModelTypeRepository, SizeModelTypeRepository>();
             builder.Services.AddScoped<ISizeModelTypeQueryRepository, SizeModelTypeQueryRepository>();
             builder.Services.AddScoped<ISizeModelRepository, SizeModelRepository>();
             builder.Services.AddScoped<ISizeModelQueryRepository, SizeModelQueryRepository>();
             builder.Services.AddTransient<IPlanRepository, PlanRepository>();
             builder.Services.AddTransient<IPlanQueryRepository, PlanQueryRepository>();
+            
             builder.Services.AddScoped<IRequestManager, RequestManager>();
+
 
             //builder.AddRabbitMqEventBus("eventbus")
             //       .AddEventBusSubscriptions();

@@ -4,3 +4,6 @@ global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
 global using AutoMapper;
 global using BeyondNet.Ddd.Interfaces;
+global using Microsoft.EntityFrameworkCore.Storage;
+global using System.Data;
+global using MediatR;
