@@ -40,9 +40,9 @@ namespace MyPlanner.Plannings.Api.Mappers
         }
     }
 
-    public class SizeModelTypeItemRequestToPropsResolver : IValueResolver<CreateSizeModelTypeRequest, SizeModelTypeProps, ICollection<SizeModelTypeItem>>
+    public class SizeModelTypeItemRequestToPropsResolver : IValueResolver<CreateSizeModelTypeCommand, SizeModelTypeProps, ICollection<SizeModelTypeItem>>
     {
-        public ICollection<SizeModelTypeItem> Resolve(CreateSizeModelTypeRequest source, SizeModelTypeProps destination, ICollection<SizeModelTypeItem> destMember, ResolutionContext context)
+        public ICollection<SizeModelTypeItem> Resolve(CreateSizeModelTypeCommand source, SizeModelTypeProps destination, ICollection<SizeModelTypeItem> destMember, ResolutionContext context)
         {
             var items = new List<SizeModelTypeItem>();
 
@@ -84,12 +84,12 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<int, SizeModelTypeStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeStatus>>();
             CreateMap<int, SizeModelTypeItemStatus>().ConvertUsing<EnumerationConverter<SizeModelTypeItemStatus>>();
 
-            CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeRequest>();
+            CreateMap<CreateSizeModelTypeDto, CreateSizeModelTypeCommand>();
             CreateMap<CreateSizeModelTypeItemDto, CreateSizeModelTypeItemsRequest>();
-            CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeRequest>();
-            CreateMap<ActivateSizeModelTypeDto, ActivateSizeModelTypeRequest>();
-            CreateMap<DeactivateSizeModelTypeDto, DeactivateSizeModelTypeRequest>();
-            CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeRequest>();
+            CreateMap<ChangeNameSizeModelTypeDto, ChangeNameSizeModelTypeCommand>();
+            CreateMap<ActivateSizeModelTypeDto, ActivateSizeModelTypeCommand>();
+            CreateMap<DeactivateSizeModelTypeDto, DeactivateSizeModelTypeCommand>();
+            CreateMap<ChangeCodeSizeModelTypeDto, ChangeCodeSizeModelTypeCommand>();
 
             CreateMap<SizeModelTypeTable, SizeModelTypeDto>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
@@ -98,7 +98,7 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status)).AfterMap<SizeModelTypeEnumAction>();
 
 
-            CreateMap<CreateSizeModelTypeRequest, SizeModelTypeProps>()
+            CreateMap<CreateSizeModelTypeCommand, SizeModelTypeProps>()
                 .ConstructUsing(src =>
                         new SizeModelTypeProps(IdValueObject.DefaultValue,
                                                SizeModelTypeCode.Create(src.Code),

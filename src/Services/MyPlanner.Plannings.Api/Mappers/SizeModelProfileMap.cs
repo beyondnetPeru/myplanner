@@ -94,7 +94,7 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<Audit, AuditTable>().ConvertUsing(new AuditToAuditTableConvert());
 
             // SizeModel
-            CreateMap<CreateSizeModelDto, CreateSizeModelRequest>();
+            CreateMap<CreateSizeModelDto, CreateSizeModelCommand>();
             CreateMap<CreateSizeModelItemDto, CreateSizeModelItemRequest>();
 
             CreateMap<SizeModelProps, SizeModelTable>()

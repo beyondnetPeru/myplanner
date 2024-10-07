@@ -61,7 +61,7 @@ namespace MyPlanner.Plannings.Api.UseCases
 
                     switch (command)
                     {
-                        case CreatePlanRequest createPlanRequest:
+                        case CreatePlanCommand createPlanRequest:
                             idProperty = nameof(createPlanRequest.UserId);
                             commandId = createPlanRequest.UserId;
                             break;
