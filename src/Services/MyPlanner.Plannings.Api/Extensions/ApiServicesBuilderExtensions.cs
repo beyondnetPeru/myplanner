@@ -16,6 +16,7 @@ using MyPlanner.Plannings.Domain.SizeModelTypes;
 using Jal.Factory.Microsoft.Extensions.DependencyInjection.Installer;
 using MyPlanner.Plannings.Api.Boostrapper;
 using MyPlanner.Shared.Mediator.Behaviors;
+using Mapster;
 
 namespace MyPlanner.Plannings.Api.Extensions
 {
@@ -38,6 +39,8 @@ namespace MyPlanner.Plannings.Api.Extensions
             var assembly = typeof(Program).Assembly;
 
             builder.Services.AddCarter();
+
+            builder.Services.AddMapster();
             
             builder.Services.AddAutoMapper(assembly);
 

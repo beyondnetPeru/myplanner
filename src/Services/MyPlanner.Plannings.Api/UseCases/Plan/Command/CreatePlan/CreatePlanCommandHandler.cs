@@ -37,7 +37,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                 if (!planCategory.IsValid())
                 {
                     return ResultSet.Error($"Invalid plan category. Errors: {planCategory.GetBrokenRules()}");
-                }                
+                }
+
+                plan.AddCategory(planCategory, userId);
             }
 
             foreach (var i in request.Items)
@@ -45,7 +47,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
                 var planItem = PlanItem.Create(IdValueObject.Create(),
                                                planId,
                                                IdValueObject.Create(i.ProductId),
-                                               IdValueObject.Create(i.PlanCategoryId),
+                                               IdValueObject.Create(plan.GetCategoryIdByName(i.PlanCategoryName)),
                                                BusinessFeature.Create(i.BusinessFeatureName, i.BusinessFeatureDefinition, i.BusinessFeatureComplexityLevel, i.BusinessFeaturePriority, i.BusinessFeatureMoScoW),
                                                TechnicalDefinition.Create(i.TechnicalDefinition),
                                                ComponentsImpacted.Create(i.ComponentsImpacted),

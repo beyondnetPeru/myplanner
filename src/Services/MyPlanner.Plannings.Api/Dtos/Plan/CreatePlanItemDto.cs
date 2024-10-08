@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Domain.ValueObjects;
-
-namespace MyPlanner.Plannings.Api.Dtos.Plan
+﻿namespace MyPlanner.Plannings.Api.Dtos.Plan
 {
     public class CreatePlanItemDto : AbstractUserDto
     {
@@ -9,12 +7,12 @@ namespace MyPlanner.Plannings.Api.Dtos.Plan
         }
 
         public string ProductId { get; set; } = default!;
-        public string PlanCategoryId { get; set; } = default!;
-        public string BusinessFeatureName { get; private set; } = default!;
-        public string BusinessFeatureDefinition { get; private set; } = default!;
-        public string BusinessFeatureComplexityLevel { get; private set; } = default!;
-        public int BusinessFeaturePriority { get; private set; } = default!;
-        public string BusinessFeatureMoScoW { get; private set; } = default!;
+        public string PlanCategoryName { get; set; } = default!;
+        public string BusinessFeatureName { get; set; } = default!;
+        public string BusinessFeatureDefinition { get; set; } = default!;
+        public int BusinessFeatureComplexityLevel { get; set; } = default!;
+        public int BusinessFeaturePriority { get;  set; } = default!;
+        public int BusinessFeatureMoScoW { get; set; } = default!;
         public string TechnicalDefinition { get; set; } = default!;
         public string ComponentsImpacted { get; set; } = default!;
         public string TechnicalDependencies { get; set; } = default!;

@@ -2,9 +2,9 @@
 
 namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
-    public class ComponentsImpacted : StringLongValueObject
+    public class ComponentsImpacted : StringValueObject
     {
-        protected ComponentsImpacted(string value, int minLenght = 10, int maxLenght = 1000) : base(value, minLenght, maxLenght)
+        protected ComponentsImpacted(string value) : base(value)
         {
         }
 

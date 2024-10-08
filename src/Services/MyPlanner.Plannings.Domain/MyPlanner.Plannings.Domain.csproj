@@ -14,7 +14,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="BeyondNet.Ddd" Version="1.0.0" />
-		<PackageReference Include="BeyondNet.Ddd.AutoMapper" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

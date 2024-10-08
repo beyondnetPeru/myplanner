@@ -11,9 +11,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
         public string PlanCategoryId { get; set; } = default!;
         public string BusinessFeatureName { get; private set; } = default!;
         public string BusinessFeatureDefinition { get; private set; } = default!;
-        public string BusinessFeatureComplexityLevel { get; private set; } = default!;
-        public int BusinessFeaturePriority { get; private set; } = default!;
-        public string BusinessFeatureMoScoW { get; private set; } = default!;
+        public ComplexityLevelEnum BusinessFeatureComplexityLevel { get; private set; } = ComplexityLevelEnum.Low;
+        public PriorityOrder BusinessFeaturePriority { get; private set; } = default!;
+        public MoScoWEnum BusinessFeatureMoScoW { get; private set; } = MoScoWEnum.NiceToHave;
         public string TechnicalDefinition { get; set; } = default!;
         public string ComponentsImpacted { get; set; } = default!;
         public string TechnicalDependencies { get; set; } = default!;

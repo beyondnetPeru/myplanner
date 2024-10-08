@@ -6,7 +6,7 @@ using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 {
-    public class AddPlanItemCommandHandler : AbstractCommandHandler<CreatePlanItemCommand, ResultSet>
+    public class AddPlanItemCommandHandler : AbstractCommandHandler<AddPlanItemCommand, ResultSet>
     {
         private readonly IPlanRepository planRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
@@ -18,12 +18,12 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
         
         }
 
-        public override async Task<ResultSet> HandleCommand(CreatePlanItemCommand request, CancellationToken cancellationToken)
+        public override async Task<ResultSet> HandleCommand(AddPlanItemCommand request, CancellationToken cancellationToken)
         {
             var planItem = PlanItem.Create(IdValueObject.Create(),
                                                 IdValueObject.Create(request.PlanId),
                                                 IdValueObject.Create(request.ProductId),
-                                                IdValueObject.Create(request.PlanCategoryId),
+                                                IdValueObject.Create(""),
                                                 BusinessFeature.Create(request.BusinessFeatureName, request.BusinessFeatureDefinition, request.BusinessFeatureComplexityLevel, request.BusinessFeaturePriority, request.BusinessFeatureMoScoW),
                                                 TechnicalDefinition.Create(request.TechnicalDefinition),
                                                 ComponentsImpacted.Create(request.ComponentsImpacted),

@@ -6,13 +6,11 @@
         public AmountCost BallparkDependenciesCost { get; private set; } = AmountCost.DefaultValue();
         public AmountCost BallParkTotalCost { get; private set; } = AmountCost.DefaultValue();
 
-        public BallParkCostProps(int symbol, double cost, double dependenciesCost)
+        public BallParkCostProps(CurrencySymbolEnum symbol, double cost, double dependenciesCost)
         {
-            var symbolValue = Enumeration.FromValue<CurrencySymbolEnum>(symbol);
-
-            BallParkCost = AmountCost.Create(symbolValue, cost);
-            BallparkDependenciesCost = AmountCost.Create(symbolValue, dependenciesCost);
-            BallParkTotalCost = AmountCost.Create(symbolValue, cost + dependenciesCost);
+            BallParkCost = AmountCost.Create(symbol, cost);
+            BallparkDependenciesCost = AmountCost.Create(symbol, dependenciesCost);
+            BallParkTotalCost = AmountCost.Create(symbol, cost + dependenciesCost);
         }
 
         public object Clone()
@@ -26,14 +24,14 @@
         {
         }
 
-        public static BallParkCost Create(int symbol, double cost, double dependenciesCost)
+        public static BallParkCost Create(CurrencySymbolEnum symbol, double cost, double dependenciesCost)
         {
             return new BallParkCost(new BallParkCostProps(symbol, cost, dependenciesCost));
         }
 
         public static BallParkCost DefaultValue()
         {
-            return new BallParkCost(new BallParkCostProps(CurrencySymbolEnum.USD.Id, 0.00, 0.00));
+            return new BallParkCost(new BallParkCostProps(CurrencySymbolEnum.USD, 0.00, 0.00));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()

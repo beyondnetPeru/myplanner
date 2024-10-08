@@ -4,16 +4,16 @@
     {
         public string Name { get; private set; }
         public string BusinessDefinition { get; private set; }
-        public string ComplexityLevel { get; private set; }
-        public int Priority { get; private set; }
-        public string MoScoW { get; private set; }
+        public ComplexityLevelEnum ComplexityLevel { get; private set; }
+        public PriorityOrder PriorityOrder { get; private set; }
+        public MoScoWEnum MoScoW { get; private set; }
 
-        public BusinessFeatureProps(string name, string businessDefinition, string complexityLevel, int priority, string moScoW)
+        public BusinessFeatureProps(string name, string businessDefinition, ComplexityLevelEnum complexityLevel, PriorityOrder priorityOrder, MoScoWEnum moScoW)
         {
             Name = name;
             BusinessDefinition = businessDefinition;
             ComplexityLevel = complexityLevel;
-            Priority = priority;
+            PriorityOrder = priorityOrder;
             MoScoW = moScoW;
         }
 
@@ -29,14 +29,14 @@
         {
         }
 
-        public static BusinessFeature Create(string name, string businessDefinition, string complexityLevel, int priority, string moScoW)
+        public static BusinessFeature Create(string name, string businessDefinition, ComplexityLevelEnum complexityLevel, PriorityOrder priorityOrder, MoScoWEnum moScoW)
         {
-            return new BusinessFeature(new BusinessFeatureProps(name, businessDefinition, complexityLevel, priority, moScoW));
+            return new BusinessFeature(new BusinessFeatureProps(name, businessDefinition, complexityLevel, priorityOrder, moScoW));
         }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return string.Concat(GetValue().Name, GetValue().BusinessDefinition, GetValue().ComplexityLevel, GetValue().Priority, GetValue().MoScoW);
+            yield return string.Concat(GetValue().Name, GetValue().BusinessDefinition, GetValue().ComplexityLevel, GetValue().PriorityOrder, GetValue().MoScoW);
         }
     }
 }

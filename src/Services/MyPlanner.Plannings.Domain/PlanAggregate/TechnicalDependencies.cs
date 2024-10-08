@@ -2,9 +2,9 @@
 
 namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
-    public class TechnicalDependencies : StringLongValueObject
+    public class TechnicalDependencies : StringValueObject
     {
-        protected TechnicalDependencies(string value, int minLenght = 10, int maxLenght = 1000) : base(value, minLenght, maxLenght)
+        protected TechnicalDependencies(string value) : base(value)
         {
         }
 

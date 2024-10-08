@@ -7,7 +7,7 @@
         public Name Name { get; private set; }
         public Owner Owner { get; private set; }
         public IdValueObject SizeModelTypeId { get; private set; }
-        public ICollection<PlanItem> PlanItems { get; private set; }
+        public ICollection<PlanItem> Items{ get; private set; }
         public Audit Audit { get; private set; }
         public PlanStatus Status { get; private set; } = PlanStatus.Draft;
 
@@ -18,19 +18,19 @@
             SizeModelTypeId = sizeModelTypeId;            
             Name = name;
             Owner = owner;
-            PlanItems = new List<PlanItem>();
+            Items = new List<PlanItem>();
             Audit = Audit.Create(userId.GetValue());
             Status = PlanStatus.Draft;
         }
 
-        public PlanProps(IdValueObject id, ICollection<PlanCategory> categories, IdValueObject sizeModelTypeId, Name name, Owner owner, ICollection<PlanItem> planItems, Audit audit, PlanStatus status)
+        public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, ICollection<PlanCategory> categories, Name name, Owner owner, ICollection<PlanItem> planItems, Audit audit, PlanStatus status)
         {
             Id = id;
             Categories = categories;
             SizeModelTypeId = sizeModelTypeId;
             Name = name;
             Owner = owner;
-            PlanItems = planItems;
+            Items = planItems;
             Audit = audit;
             Status = status;
         }
@@ -55,7 +55,20 @@
 
         public static Plan Load(PlanProps props)
         {
-            return new Plan(new PlanProps(props.Id, props.Categories, props.SizeModelTypeId, props.Name, props.Owner, props.PlanItems, props.Audit, props.Status));
+            return new Plan(new PlanProps(props.Id, props.SizeModelTypeId, props.Categories, props.Name, props.Owner, props.Items, props.Audit, props.Status));
+        }
+
+        public string GetCategoryIdByName(string name)
+        {
+            var id = this.GetPropsCopy().Categories.FirstOrDefault(c => c.GetPropsCopy().Name.GetValue() == name)?.GetPropsCopy().Id.GetValue();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                AddBrokenRule("Category", "Category does not exist in the plan.");
+                return string.Empty;
+            }
+
+            return id;
         }
 
         public void ChangeName(Name name, UserId userId)
@@ -102,25 +115,25 @@
 
         public void AddPlanItem(PlanItem planItem, UserId userId)
         {
-            if (!GetPropsCopy().PlanItems.Contains(planItem))
+            if (GetPropsCopy().Items.Where(x => x.GetPropsCopy().Id.GetValue() == planItem.GetPropsCopy().Id.GetValue()).Any())
             {
-                AddBrokenRule("Plan Item", "Plan Item do not exists in the plan.");
+                AddBrokenRule("Plan Item", "Plan Item exists in the plan.");
                 return;
             }
 
-            GetProps().PlanItems.Add(planItem);
+            GetProps().Items.Add(planItem);
             GetProps().Audit.Update(userId.GetValue());
         }
 
         public void RemovePlanItem(PlanItem planItem, UserId userId)
         {
-            if (!GetPropsCopy().PlanItems.Contains(planItem))
+            if (!GetPropsCopy().Items.Where(x => x.GetPropsCopy().Id.GetValue() == planItem.GetPropsCopy().Id.GetValue()).Any())
             {
                 AddBrokenRule("Plan Item", "Plan Item does not exist in the plan.");
                 return;
             }
 
-            GetProps().PlanItems.Remove(planItem);
+            GetProps().Items.Remove(planItem);
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -138,7 +151,7 @@
                 return;
             }
 
-            GetProps().PlanItems.ToList().ForEach(x => x.Draft(userId));
+            GetProps().Items.ToList().ForEach(x => x.Draft(userId));
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Draft.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
@@ -157,7 +170,7 @@
                 return;
             }
 
-            GetProps().PlanItems.ToList().ForEach(x => x.Activate(userId));
+            GetProps().Items.ToList().ForEach(x => x.Activate(userId));
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Active.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
@@ -176,7 +189,7 @@
                 return;
             }
 
-            GetProps().PlanItems.ToList().ForEach(x => x.Deactivate(userId));
+            GetProps().Items.ToList().ForEach(x => x.Deactivate(userId));
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Inactive.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
@@ -189,7 +202,7 @@
                 return;
             }
 
-            GetProps().PlanItems.ToList().ForEach(x => x.Close(userId));
+            GetProps().Items.ToList().ForEach(x => x.Close(userId));
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Closed.Id);
             GetProps().Audit.Update(userId.GetValue());
         }
@@ -202,7 +215,7 @@
                 return;
             }
 
-            GetPropsCopy().PlanItems.ToList().ForEach(x => x.Delete(userId));
+            GetPropsCopy().Items.ToList().ForEach(x => x.Delete(userId));
             GetProps().Status.SetValue<PlanStatus>(PlanStatus.Deleted.Id);
             GetProps().Audit.Update(userId.GetValue());
         }

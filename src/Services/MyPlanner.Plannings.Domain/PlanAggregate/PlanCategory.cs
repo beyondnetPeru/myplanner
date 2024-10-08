@@ -33,5 +33,5 @@
         {
             GetProps().Name.SetValue(name.GetValue());
         }
-    }
+    }   
 }
