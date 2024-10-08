@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Shared.Models.Pagination;
 

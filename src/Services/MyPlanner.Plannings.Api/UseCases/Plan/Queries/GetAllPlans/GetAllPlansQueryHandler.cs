@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿
 using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans

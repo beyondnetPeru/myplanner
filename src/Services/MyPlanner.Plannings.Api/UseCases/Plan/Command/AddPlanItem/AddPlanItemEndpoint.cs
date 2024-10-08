@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem

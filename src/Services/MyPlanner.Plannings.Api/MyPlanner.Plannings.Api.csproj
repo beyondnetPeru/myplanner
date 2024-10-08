@@ -36,6 +36,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\MyPlanners.Planning.Models\MyPlanner.Planning.Models.csproj" />
 		<ProjectReference Include="..\MyPlanner.EventBus.Rabbit\MyPlanner.EventBus.Rabbit.csproj" />
 		<ProjectReference Include="..\MyPlanner.EventBus\MyPlanner.EventBus.csproj" />
 		<ProjectReference Include="..\MyPlanner.IntegrationEventLogEF\MyPlanner.IntegrationEventLogEF.csproj" />

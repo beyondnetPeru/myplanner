@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Models;
+﻿using MyPlanner.Plannings.Api.Boostrapper;
 using MyPlanner.Plannings.Api.Services.Interfaces;
 using MyPlanner.Plannings.Domain.SizeModels;
 
@@ -18,9 +18,9 @@ namespace MyPlanner.Plannings.Api.Services.Impl
         {
             try
             {
-                var criteria = new SizeModelTypeFactorCostCriteria(factor.Name.ToLower().Trim(), sizeModelTypeCodeSelected.ToLower().Trim());
+                var criteria = new FactorCostCriteria(factor.Name.ToLower().Trim(), sizeModelTypeCodeSelected.ToLower().Trim());
 
-                var factorCostCalculator = objectFactory.Create<SizeModelTypeFactorCostCriteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
+                var factorCostCalculator = objectFactory.Create<FactorCostCriteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
 
                 if (factorCostCalculator == null)
                 {

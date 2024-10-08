@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+﻿
 using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeFactor

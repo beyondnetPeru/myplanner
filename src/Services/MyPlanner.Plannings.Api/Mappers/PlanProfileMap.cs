@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
@@ -31,6 +31,7 @@ namespace MyPlanner.Plannings.Api.Mappers
     }
 
     #region Resolvers
+
     internal class PlanCategoriesDtoToCommandResolver : IValueResolver<CreatePlanDto, CreatePlanCommand, ICollection<CreatePlanCategoryCommand>>
     {
         public ICollection<CreatePlanCategoryCommand> Resolve(CreatePlanDto source, CreatePlanCommand destination, ICollection<CreatePlanCategoryCommand> destMember, ResolutionContext context)

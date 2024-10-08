@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+﻿
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType
 {

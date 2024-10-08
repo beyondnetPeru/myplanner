@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeModel
 {

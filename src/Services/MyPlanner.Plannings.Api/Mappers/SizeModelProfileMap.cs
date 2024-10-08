@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModel;
+﻿
 using MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Domain.SizeModels;
@@ -9,84 +9,6 @@ using MyPlanner.Shared.Infrastructure.Database;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {
-    public class SizeModelItemEnumAction : IMappingAction<SizeModelItemTable, SizeModelItemDto>
-    {
-        public void Process(SizeModelItemTable source, SizeModelItemDto destination, ResolutionContext context)
-        {
-            destination.Status = Enumeration.FromValue<SizeModelItemStatus>(source.Status).Name.ToUpper();
-        }
-    }
-
-    public class SizeModelEnumAction : IMappingAction<SizeModelTable, SizeModelDto>
-    {
-        public void Process(SizeModelTable source, SizeModelDto destination, ResolutionContext context)
-        {
-            destination.Status = Enumeration.FromValue<SizeModelStatus>(source.Status).Name.ToUpper();
-        }
-    }
-
-    public class SizeModelItemPropsToTableResolver : IValueResolver<SizeModelProps, SizeModelTable, ICollection<SizeModelItemTable>>
-    {
-        public ICollection<SizeModelItemTable> Resolve(SizeModelProps source, SizeModelTable destination, ICollection<SizeModelItemTable> destMember, ResolutionContext context)
-        {
-            var items = new List<SizeModelItemTable>();
-
-            if (destination.Items == null)
-            {
-                destination.Items = new List<SizeModelItemTable>();
-            }
-
-            source.Items.ToList().ForEach(item =>
-            {
-                var sizeModelItemTable = new SizeModelItemTable()
-                {
-                    Id = item.GetPropsCopy().Id.GetValue(),
-                    SizeModelId = item.GetPropsCopy().Id.GetValue(),
-                    SizeModel = destination,
-                    SizeModelTypeItemId = item.GetPropsCopy().SizeModelTypeItemId.GetValue(),
-                    SizeModelTypeItemCode = item.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
-                    FactorSelected = item.GetPropsCopy().FactorSelected.Id,
-                    ProfileName = item.GetPropsCopy().Profile.GetValue().ProfileName.GetValue(),
-                    ProfileAvgRateSymbol = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Symbol.Id,
-                    ProfileAvgRateValue = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value,
-                    Quantity = item.GetPropsCopy().Quantity.GetValue(),
-                    TotalCost = item.GetPropsCopy().TotalCost.GetValue(),
-                    IsStandard = item.GetPropsCopy().IsStandard.GetValue(),
-                    Status = item.GetPropsCopy().Status.Id,
-                    Audit = new AuditTable()
-                    {
-                        CreatedBy = item.GetPropsCopy().Audit.GetValue().CreatedBy,
-                        CreatedAt = item.GetPropsCopy().Audit.GetValue().CreatedAt,
-                        UpdatedBy = item.GetPropsCopy().Audit.GetValue().UpdatedBy!,
-                        UpdatedAt = item.GetPropsCopy().Audit.GetValue().UpdatedAt,
-                        TimeSpan = item.GetPropsCopy().Audit.GetValue().TimeSpan
-                    }
-                };
-
-                destination.Items.Add(sizeModelItemTable);
-            });
-
-            return destination.Items;
-        }
-    }
-
-    public class AuditToAuditTableConvert : ITypeConverter<Audit, AuditTable>
-    {
-        public AuditTable Convert(Audit source, AuditTable destination, ResolutionContext context)
-        {
-            var dto = new AuditTable
-            {
-                CreatedBy = source.GetValue().CreatedBy,
-                CreatedAt = source.GetValue().CreatedAt,
-                UpdatedBy = source.GetValue().UpdatedBy!,
-                UpdatedAt = source.GetValue().UpdatedAt,
-                TimeSpan = source.GetValue().TimeSpan
-            };
-
-            return dto;
-        }
-    }
-
     public class SizeModelProfileMap : Profile
     {
         public SizeModelProfileMap()
@@ -173,4 +95,95 @@ namespace MyPlanner.Plannings.Api.Mappers
 
         }
     }
+
+    #region Actions
+
+    internal class SizeModelItemEnumAction : IMappingAction<SizeModelItemTable, SizeModelItemDto>
+    {
+        public void Process(SizeModelItemTable source, SizeModelItemDto destination, ResolutionContext context)
+        {
+            destination.Status = Enumeration.FromValue<SizeModelItemStatus>(source.Status).Name.ToUpper();
+        }
+    }
+
+    internal class SizeModelEnumAction : IMappingAction<SizeModelTable, SizeModelDto>
+    {
+        public void Process(SizeModelTable source, SizeModelDto destination, ResolutionContext context)
+        {
+            destination.Status = Enumeration.FromValue<SizeModelStatus>(source.Status).Name.ToUpper();
+        }
+    }
+
+    #endregion
+
+    #region Resolvers
+
+    internal class SizeModelItemPropsToTableResolver : IValueResolver<SizeModelProps, SizeModelTable, ICollection<SizeModelItemTable>>
+    {
+        public ICollection<SizeModelItemTable> Resolve(SizeModelProps source, SizeModelTable destination, ICollection<SizeModelItemTable> destMember, ResolutionContext context)
+        {
+            var items = new List<SizeModelItemTable>();
+
+            if (destination.Items == null)
+            {
+                destination.Items = new List<SizeModelItemTable>();
+            }
+
+            source.Items.ToList().ForEach(item =>
+            {
+                var sizeModelItemTable = new SizeModelItemTable()
+                {
+                    Id = item.GetPropsCopy().Id.GetValue(),
+                    SizeModelId = item.GetPropsCopy().Id.GetValue(),
+                    SizeModel = destination,
+                    SizeModelTypeItemId = item.GetPropsCopy().SizeModelTypeItemId.GetValue(),
+                    SizeModelTypeItemCode = item.GetPropsCopy().SizeModelTypeItemCode.GetValue(),
+                    FactorSelected = item.GetPropsCopy().FactorSelected.Id,
+                    ProfileName = item.GetPropsCopy().Profile.GetValue().ProfileName.GetValue(),
+                    ProfileAvgRateSymbol = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Symbol.Id,
+                    ProfileAvgRateValue = item.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value,
+                    Quantity = item.GetPropsCopy().Quantity.GetValue(),
+                    TotalCost = item.GetPropsCopy().TotalCost.GetValue(),
+                    IsStandard = item.GetPropsCopy().IsStandard.GetValue(),
+                    Status = item.GetPropsCopy().Status.Id,
+                    Audit = new AuditTable()
+                    {
+                        CreatedBy = item.GetPropsCopy().Audit.GetValue().CreatedBy,
+                        CreatedAt = item.GetPropsCopy().Audit.GetValue().CreatedAt,
+                        UpdatedBy = item.GetPropsCopy().Audit.GetValue().UpdatedBy!,
+                        UpdatedAt = item.GetPropsCopy().Audit.GetValue().UpdatedAt,
+                        TimeSpan = item.GetPropsCopy().Audit.GetValue().TimeSpan
+                    }
+                };
+
+                destination.Items.Add(sizeModelItemTable);
+            });
+
+            return destination.Items;
+        }
+    }
+
+    #endregion
+
+    #region Converters
+
+
+    internal class AuditToAuditTableConvert : ITypeConverter<Audit, AuditTable>
+    {
+        public AuditTable Convert(Audit source, AuditTable destination, ResolutionContext context)
+        {
+            var dto = new AuditTable
+            {
+                CreatedBy = source.GetValue().CreatedBy,
+                CreatedAt = source.GetValue().CreatedAt,
+                UpdatedBy = source.GetValue().UpdatedBy!,
+                UpdatedAt = source.GetValue().UpdatedAt,
+                TimeSpan = source.GetValue().TimeSpan
+            };
+
+            return dto;
+        }
+    }
+
+    #endregion
 }

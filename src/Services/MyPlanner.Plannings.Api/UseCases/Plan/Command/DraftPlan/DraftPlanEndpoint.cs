@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.Plan;
+﻿
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
 {

@@ -1,4 +1,4 @@
-﻿using MyPlanner.Plannings.Api.Dtos.SizeModelType;
+﻿
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelType;
 using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType;
@@ -11,71 +11,6 @@ using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {
-    public class SizeModelTypeItemPropsToTableResolver : IValueResolver<SizeModelTypeProps, SizeModelTypeTable, ICollection<SizeModelTypeItemTable>>
-    {
-        public ICollection<SizeModelTypeItemTable> Resolve(SizeModelTypeProps source, SizeModelTypeTable destination, ICollection<SizeModelTypeItemTable> destMember, ResolutionContext context)
-        {
-            var items = new List<SizeModelTypeItemTable>();
-
-            if (destination.Items == null)
-            {
-                destination.Items = new List<SizeModelTypeItemTable>();
-            }
-
-            source.Items.ToList().ForEach(item =>
-            {
-                var factor = new SizeModelTypeItemTable
-                {
-                    Id = item.GetPropsCopy().Id.GetValue(),
-                    Code = item.GetPropsCopy().Code.GetValue(),
-                    Name = item.GetPropsCopy().Name.GetValue(),
-                    Status = item.GetPropsCopy().Status.Id,
-                    SizeModelType = null
-                };
-
-                destination.Items.Add(factor);
-            });
-
-            return destination.Items;
-        }
-    }
-
-    public class SizeModelTypeItemRequestToPropsResolver : IValueResolver<CreateSizeModelTypeCommand, SizeModelTypeProps, ICollection<SizeModelTypeItem>>
-    {
-        public ICollection<SizeModelTypeItem> Resolve(CreateSizeModelTypeCommand source, SizeModelTypeProps destination, ICollection<SizeModelTypeItem> destMember, ResolutionContext context)
-        {
-            var items = new List<SizeModelTypeItem>();
-
-            source.Items.ToList().ForEach(item =>
-            {
-                var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
-                                                        SizeModelTypeItemCode.Create(item.Code),
-                                                        Name.Create(item.Name),
-                                                        null);
-
-                items.Add(factor);
-            });
-
-            return items;
-        }
-    }
-
-    public class SizeModelTypeEnumAction : IMappingAction<SizeModelTypeTable, SizeModelTypeDto>
-    {
-        public void Process(SizeModelTypeTable source, SizeModelTypeDto destination, ResolutionContext context)
-        {
-            destination.Status = Enumeration.FromValue<SizeModelTypeStatus>(source.Status).Name.ToUpper();
-        }
-    }
-
-    public class SizeModelTypeItemEnumAction : IMappingAction<SizeModelTypeItemTable, SizeModelTypeItemDto>
-    {
-        public void Process(SizeModelTypeItemTable source, SizeModelTypeItemDto destination, ResolutionContext context)
-        {
-            destination.Status = Enumeration.FromValue<SizeModelTypeItemStatus>(source.Status).Name.ToUpper();
-        }
-    }
-
     public class SizeModelTypeProfileMap : Profile
     {
         public SizeModelTypeProfileMap()
@@ -154,4 +89,78 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
         }
     }
+
+    #region Resolvers
+
+    internal class SizeModelTypeItemPropsToTableResolver : IValueResolver<SizeModelTypeProps, SizeModelTypeTable, ICollection<SizeModelTypeItemTable>>
+    {
+        public ICollection<SizeModelTypeItemTable> Resolve(SizeModelTypeProps source, SizeModelTypeTable destination, ICollection<SizeModelTypeItemTable> destMember, ResolutionContext context)
+        {
+            var items = new List<SizeModelTypeItemTable>();
+
+            if (destination.Items == null)
+            {
+                destination.Items = new List<SizeModelTypeItemTable>();
+            }
+
+            source.Items.ToList().ForEach(item =>
+            {
+                var factor = new SizeModelTypeItemTable
+                {
+                    Id = item.GetPropsCopy().Id.GetValue(),
+                    Code = item.GetPropsCopy().Code.GetValue(),
+                    Name = item.GetPropsCopy().Name.GetValue(),
+                    Status = item.GetPropsCopy().Status.Id,
+                    SizeModelType = null
+                };
+
+                destination.Items.Add(factor);
+            });
+
+            return destination.Items;
+        }
+    }
+
+    internal class SizeModelTypeItemRequestToPropsResolver : IValueResolver<CreateSizeModelTypeCommand, SizeModelTypeProps, ICollection<SizeModelTypeItem>>
+    {
+        public ICollection<SizeModelTypeItem> Resolve(CreateSizeModelTypeCommand source, SizeModelTypeProps destination, ICollection<SizeModelTypeItem> destMember, ResolutionContext context)
+        {
+            var items = new List<SizeModelTypeItem>();
+
+            source.Items.ToList().ForEach(item =>
+            {
+                var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
+                                                        SizeModelTypeItemCode.Create(item.Code),
+                                                        Name.Create(item.Name),
+                                                        null);
+
+                items.Add(factor);
+            });
+
+            return items;
+        }
+    }
+
+    #endregion
+
+
+    #region Actions
+
+    internal class SizeModelTypeEnumAction : IMappingAction<SizeModelTypeTable, SizeModelTypeDto>
+    {
+        public void Process(SizeModelTypeTable source, SizeModelTypeDto destination, ResolutionContext context)
+        {
+            destination.Status = Enumeration.FromValue<SizeModelTypeStatus>(source.Status).Name.ToUpper();
+        }
+    }
+
+    internal class SizeModelTypeItemEnumAction : IMappingAction<SizeModelTypeItemTable, SizeModelTypeItemDto>
+    {
+        public void Process(SizeModelTypeItemTable source, SizeModelTypeItemDto destination, ResolutionContext context)
+        {
+            destination.Status = Enumeration.FromValue<SizeModelTypeItemStatus>(source.Status).Name.ToUpper();
+        }
+    }
+
+    #endregion
 }

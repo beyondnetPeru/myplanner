@@ -8,3 +8,6 @@ global using Microsoft.EntityFrameworkCore;
 global using Jal.Factory;
 global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 global using Microsoft.Extensions.Diagnostics.HealthChecks;
+global using MyPlanner.Plannings.Models.Plan;
+global using MyPlanner.Plannings.Models.SizeModel;
+global using MyPlanner.Plannings.Models.SizeModelType;

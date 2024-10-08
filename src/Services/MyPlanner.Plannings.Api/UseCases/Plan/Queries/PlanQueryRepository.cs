@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.Api.Dtos.Plan;
+
 using MyPlanner.Plannings.Infrastructure.Database;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries
