@@ -41,25 +41,19 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             context.Plans.Add(table);
         }
 
-        public async void ChangeName(string planId, string name)
+        public async void Update(Plan plan)
         {
-            var table = await GetPlanTable(planId);
-
-            table.Name = name;
-        }
-
-        public async void ChangeOwner(string planId, string owner)
-        {
-            var table = await GetPlanTable(planId);
-
-            table.Owner = owner;
-        }
-
-        public async void ChangeStatus(string planId, int status)
-        {
-            var table = await GetPlanTable(planId);
-
-            table.Status = status;
+            var table = await GetPlanTable(plan.GetPropsCopy().Id.GetValue());
+         
+            table.Owner = plan.GetPropsCopy().Owner.GetValue();
+            table.Name = plan.GetPropsCopy().Name.GetValue();
+            table.Status = plan.GetPropsCopy().Status.Id;
+            table.SizeModelTypeId = plan.GetPropsCopy().SizeModelTypeId.GetValue();
+            table.Audit.CreatedBy = plan.GetPropsCopy().Audit.GetValue().CreatedBy;
+            table.Audit.CreatedAt = plan.GetPropsCopy().Audit.GetValue().CreatedAt;
+            table.Audit.UpdatedBy = plan.GetPropsCopy().Audit.GetValue().UpdatedBy;
+            table.Audit.UpdatedAt = plan.GetPropsCopy().Audit.GetValue().UpdatedAt;
+            table.Audit.TimeSpan = plan.GetPropsCopy().Audit.GetValue().TimeSpan;
         }
 
         public async Task<ICollection<PlanCategory>> GetCategories(string planId)
@@ -99,6 +93,15 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             context.PlanCategories.Remove(table);
         }
 
+        public async Task<ICollection<PlanItem>> GetItems(string planId)
+        {
+            var tables = await context.PlanItems.AsNoTracking().Where(x => x.PlanId == planId).ToListAsync();
+
+            var mappedTables = mapper.Map<ICollection<PlanItem>>(tables);
+
+            return mappedTables;
+        }
+
         private async Task<PlanItemTable> GetPlanItemTable(string planItemId)
         {
             var plan = await context.PlanItems.AsNoTracking().FirstAsync(x => x.Id == planItemId);
@@ -121,76 +124,39 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             var table = mapper.Map<PlanItemTable>(planItem);
 
             context.PlanItems.Add(table);
+
+            context.SaveChanges();
         }
 
-        public async void ChangeItemTechnicalDefinition(string planItemId, string technicalDefinition)
+        public async void UpdateItem(PlanItem planItem)
         {
-            var table = await GetPlanItemTable(planItemId);
+            var table = await GetPlanItemTable(planItem.GetPropsCopy().Id.GetValue());
 
-            table.TechnicalDefinition = technicalDefinition;
-        }
+            table.PlanId = planItem.GetPropsCopy().PlanId.GetValue();
+            table.ProductId = planItem.GetPropsCopy().ProductId.GetValue();
+            table.PlanCategoryId = planItem.GetPropsCopy().PlanCategoryId.GetValue();
+            table.BusinessFeatureName = planItem.GetPropsCopy().BusinessFeature.GetValue().Name;
+            table.BusinessFeatureDefinition = planItem.GetPropsCopy().BusinessFeature.GetValue().BusinessDefinition;
+            table.BusinessFeatureComplexityLevel = planItem.GetPropsCopy().BusinessFeature.GetValue().ComplexityLevel.Id;
+            table.BusinessFeaturePriority = planItem.GetPropsCopy().BusinessFeature.GetValue().PriorityOrder;
+            table.BusinessFeatureMoScoW = planItem.GetPropsCopy().BusinessFeature.GetValue().MoScoW.Id;            
+            table.TechnicalDefinition = planItem.GetPropsCopy().TechnicalDefinition.GetValue();
+            table.ComponentsImpacted = planItem.GetPropsCopy().ComponentsImpacted.GetValue();
+            table.TechnicalDependencies = planItem.GetPropsCopy().TechnicalDependencies.GetValue();
+            table.SizeModelTypeItemId = planItem.GetPropsCopy().SizeModelTypeItemId.GetValue();
+            table.BallParkCostSymbol = planItem.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Symbol.Id;
+            table.BallParkCostAmount = planItem.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Amount;
+            table.BallparkDependenciesCostAmount = planItem.GetPropsCopy().BallParkCosts.GetValue().BallparkDependenciesCost.GetValue().Amount;
+            table.BallParkTotalCostAmount = planItem.GetPropsCopy().BallParkCosts.GetValue().BallParkTotalCost.GetValue().Amount;
+            table.KeyAssumptions = planItem.GetPropsCopy().KeyAssumptions.GetValue();
+            table.UserId = planItem.GetPropsCopy().Audit.GetValue().CreatedBy;
+            table.Status = planItem.GetPropsCopy().Status.Id;
+            table.Audit.CreatedBy = planItem.GetPropsCopy().Audit.GetValue().CreatedBy;
+            table.Audit.CreatedAt = planItem.GetPropsCopy().Audit.GetValue().CreatedAt;
+            table.Audit.UpdatedBy = planItem.GetPropsCopy().Audit.GetValue().UpdatedBy;
+            table.Audit.UpdatedAt = planItem.GetPropsCopy().Audit.GetValue().UpdatedAt;
+            table.Audit.TimeSpan = planItem.GetPropsCopy().Audit.GetValue().TimeSpan;
 
-        public async void ChangeItemComponentsImpacted(string planItemId, string componentsImpacted)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.ComponentsImpacted = componentsImpacted;
-        }
-
-        public async void ChangeItemTechnicalDependencies(string planItemId, string technicalDependencies)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.TechnicalDependencies = technicalDependencies;
-        }
-
-        public async void ChangeItemBallParkCost(string planItemId,int symbol, double ballParkCost, double ballParkTotalCost)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.BallParkCostAmount = ballParkCost;
-            table.BallParkTotalCostAmount = ballParkTotalCost;
-            table.BallParkCostSymbol = symbol;
-            
-        }
-
-        public async void ChangeItemBallParkDependenciesCost(string planItemId, int symbol, double ballParkDependenciesCost, double ballParkTotalCost)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.BallparkDependenciesCostAmount = ballParkDependenciesCost;
-            table.BallParkTotalCostAmount = ballParkTotalCost;
-            table.BallParkCostSymbol = symbol;
-        }
-
-        public async void ChangeItemKeyAssumptions(string planItemId, string technicalDependencies)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.KeyAssumptions = technicalDependencies;
-        }
-
-        public async void ChangeItemStatus(string planItemId, int status)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.Status = status;
-        }
-
-
-        public async void ChangeItemSizeModelTypeItemId(string planItemId, string sizeModelTypeItemId)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.SizeModelTypeItemId = sizeModelTypeItemId;
-        }
-
-        public async void ChangeItemBallParkTotalCost(string planItemId, double ballParkTotalCost)
-        {
-            var table = await GetPlanItemTable(planItemId);
-
-            table.BallParkTotalCostAmount = ballParkTotalCost;
-        }
-
+        }        
     }
 }

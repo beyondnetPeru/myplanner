@@ -21,23 +21,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
         public override async Task<ResultSet> HandleCommand(AddPlanItemCommand request, CancellationToken cancellationToken)
         {
             var planItem = PlanItem.Create(IdValueObject.Create(),
-                                                IdValueObject.Create(request.PlanId),
-                                                IdValueObject.Create(request.ProductId),
-                                                IdValueObject.Create(""),
-                                                BusinessFeature.Create(request.BusinessFeatureName, request.BusinessFeatureDefinition, request.BusinessFeatureComplexityLevel, request.BusinessFeaturePriority, request.BusinessFeatureMoScoW),
-                                                TechnicalDefinition.Create(request.TechnicalDefinition),
-                                                ComponentsImpacted.Create(request.ComponentsImpacted),
-                                                TechnicalDependencies.Create(request.TechnicalDependencies),
-                                                IdValueObject.Create(request.SizeModelTypeItemId),
-                                                BallParkCost.Create(request.BallParkCostSymbol, request.BallParkCostAmount, request.BallparkDependenciesCostAmount),
-                                                KeyAssumptions.Create(request.KeyAssumptions),
-                                                UserId.Create(request.UserId));
+                                           IdValueObject.Create(request.PlanId),
+                                           IdValueObject.Create(request.ProductId),
+                                           IdValueObject.Create(request.PlanCategoryId),
+                                           BusinessFeature.Create(request.BusinessFeatureName, request.BusinessFeatureDefinition, request.BusinessFeatureComplexityLevel, request.BusinessFeaturePriority, request.BusinessFeatureMoScoW),
+                                           TechnicalDefinition.Create(request.TechnicalDefinition),
+                                           ComponentsImpacted.Create(request.ComponentsImpacted),
+                                           TechnicalDependencies.Create(request.TechnicalDependencies),
+                                           IdValueObject.Create(request.SizeModelTypeItemId),
+                                           BallParkCost.Create(request.BallParkCostSymbol, request.BallParkCostAmount, request.BallparkDependenciesCostAmount),
+                                           KeyAssumptions.Create(request.KeyAssumptions),
+                                           UserId.Create(request.UserId));
 
 
             if (!planItem.IsValid())
             {
-                return ResultSet.Error($"PlanItem is not valid. Errros:{planItem.GetBrokenRules()}");
-                
+                return ResultSet.Error($"PlanItem is not valid. Errros:{planItem.GetBrokenRules().ToString()}");                
             }
 
             var plan = await planRepository.GetByIdAsync(request.PlanId);
@@ -46,15 +45,14 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 
             if (!plan.IsValid())
             {
-                return ResultSet.Error($"Plan is not valid. Errros:{plan.GetBrokenRules()}");
-                
+                return ResultSet.Error($"Plan is not valid. Errros:{plan.GetBrokenRules().ToString()}");
             }
 
             planRepository.AddItem(planItem);
 
             await planRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
-            return ResultSet.Success("Plan created sucessfully.");
+            return ResultSet.Success();
         }
     }
 }

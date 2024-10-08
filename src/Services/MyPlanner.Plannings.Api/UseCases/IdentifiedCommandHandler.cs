@@ -1,4 +1,11 @@
-﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Extensions;
 using MyPlanner.Shared.Infrastructure.Idempotency;
@@ -64,6 +71,41 @@ namespace MyPlanner.Plannings.Api.UseCases
                         case CreatePlanCommand createPlanRequest:
                             idProperty = nameof(createPlanRequest.UserId);
                             commandId = createPlanRequest.UserId;
+                            break;
+
+                        case ActivatePlanCommand activatePlanRequest:
+                            idProperty = nameof(activatePlanRequest.UserId);
+                            commandId = activatePlanRequest.UserId;
+                            break;
+
+                        case ChangePlanNameCommand changePlanNameRequest:
+                            idProperty = nameof(changePlanNameRequest.UserId);
+                            commandId = changePlanNameRequest.UserId;
+                            break;
+
+                        case ChangePlanOwnerCommand changePlanOwnerRequest:
+                            idProperty = nameof(changePlanOwnerRequest.UserId);
+                            commandId = changePlanOwnerRequest.UserId;
+                            break;
+
+                        case ClosePlanCommand closePlanRequest:
+                            idProperty = nameof(closePlanRequest.UserId);
+                            commandId = closePlanRequest.UserId;
+                            break;
+
+                        case DeactivatePlanCommand deactivatePlanRequest:
+                            idProperty = nameof(deactivatePlanRequest.UserId);
+                            commandId = deactivatePlanRequest.UserId;
+                            break;
+
+                        case DeletePlanCommand deletePlanRequest:
+                            idProperty = nameof(deletePlanRequest.UserId);
+                            commandId = deletePlanRequest.UserId;
+                            break;
+
+                        case DraftPlanCommand draftPlanCommand:
+                            idProperty = nameof(draftPlanCommand.UserId);
+                            commandId = draftPlanCommand.UserId;
                             break;
 
                         default:

@@ -8,10 +8,13 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
         public string PlanId { get; set; }
         public string Name { get; set; }
 
-        public ChangePlanNameCommand(string planId, string name)
+        public string UserId { get; set; }
+
+        public ChangePlanNameCommand(string planId, string name, string userId)
         {
             PlanId = planId;
             Name = name;
+            UserId = userId;
         }
     }
 }

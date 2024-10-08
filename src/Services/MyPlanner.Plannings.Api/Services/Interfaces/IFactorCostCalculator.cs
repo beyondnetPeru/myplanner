@@ -2,7 +2,7 @@
 
 namespace MyPlanner.Plannings.Api.Services.Interfaces
 {
-    public interface ISizeModelTypeFactorCostCalculator
+    public interface IFactorCostCalculator
     {
         double Calculate(FactorsEnum factor,// sprints, mandays
                          string sizeModelTypeItemCode,// xs, s, m, sm, l,xl

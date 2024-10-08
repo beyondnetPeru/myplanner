@@ -11,11 +11,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
     {
         private readonly ISizeModelRepository sizeModelRepository;
         private readonly ISizeModelTypeRepository sizeModelTypeRepository;
-        private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory;
+        private readonly IFactorCostCalculatorFactory sizeModelTypeFactorCostCalculatorFactory;
 
         public CreateSizeModelCommandHandler(ISizeModelRepository sizeModelRepository,
                                              ISizeModelTypeRepository sizeModelTypeRepository,
-                                             ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostCalculatorFactory,
+                                             IFactorCostCalculatorFactory sizeModelTypeFactorCostCalculatorFactory,
                                              ILogger<CreateSizeModelCommandHandler> logger) : base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));

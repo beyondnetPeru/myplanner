@@ -1,6 +1,8 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
 {
@@ -24,11 +26,27 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
                 return ResultSet.Error($"Plan is not valid. Errors:{plan.GetBrokenRules().ToString()}");
             }
 
-            planRepository.ChangeStatus(request.PlanId, PlanStatus.Inactive.Id);
+            planRepository.Update(plan);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan deactivated successfully.");
+            return ResultSet.Success();
+        }
+    }
+
+    public class DeactivatePlanIdentifiedRequestHandler : IdentifiedCommandHandler<DeactivatePlanCommand, ResultSet>
+    {
+        public DeactivatePlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<DeactivatePlanCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

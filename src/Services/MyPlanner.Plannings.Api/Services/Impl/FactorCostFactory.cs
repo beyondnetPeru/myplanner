@@ -5,26 +5,26 @@ using MyPlanner.Plannings.Domain.SizeModels;
 namespace MyPlanner.Plannings.Api.Services.Impl
 {
 
-    public class SizeModelTypeFactorCostFactory : ISizeModelTypeFactorCostFactory
+    public class FactorCostFactory : IFactorCostCalculatorFactory
     {
         private readonly IObjectFactory objectFactory;
 
-        public SizeModelTypeFactorCostFactory(IObjectFactory objectFactory)
+        public FactorCostFactory(IObjectFactory objectFactory)
         {
             this.objectFactory = objectFactory;
         }
 
-        public ISizeModelTypeFactorCostCalculator Create(FactorsEnum factor, string sizeModelTypeCodeSelected)
+        public IFactorCostCalculator Create(FactorsEnum factor, string sizeModelTypeCodeSelected)
         {
             try
             {
                 var criteria = new FactorCostCriteria(factor.Name.ToLower().Trim(), sizeModelTypeCodeSelected.ToLower().Trim());
 
-                var factorCostCalculator = objectFactory.Create<FactorCostCriteria, ISizeModelTypeFactorCostCalculator>(criteria).FirstOrDefault();
+                var factorCostCalculator = objectFactory.Create<FactorCostCriteria, IFactorCostCalculator>(criteria).FirstOrDefault();
 
                 if (factorCostCalculator == null)
                 {
-                    return new SizeModelTypeDefaultFactorDefaultCostCalculator();
+                    return new FactorCostCalculatorDefault();
                 }
 
                 return factorCostCalculator;

@@ -9,11 +9,11 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangePlanName
         {
             app.MapPut("/plans/{planId}/name", async ([AsParameters] PlanServices service, [FromBody] ChangePlanNameDto changePlanNameDto) =>
             {
-                var request = new ChangePlanNameCommand(changePlanNameDto.PlanId, changePlanNameDto.Name);
+                var request = new ChangePlanNameCommand(changePlanNameDto.PlanId, changePlanNameDto.Name, changePlanNameDto.UserId);
 
-                await service.Mediator.Send(request);
+                var result = await service.Mediator.Send(request);
 
-                return Results.Ok(true);
+                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);  
 
             }).WithTags(Tags.Plan);
         }

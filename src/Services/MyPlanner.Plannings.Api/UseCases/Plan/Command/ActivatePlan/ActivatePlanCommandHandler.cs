@@ -1,6 +1,7 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 {
@@ -24,11 +25,27 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
             
             plan.Activate(UserId.Create(request.UserId));
 
-            planRepository.ChangeStatus(request.PlanId, PlanStatus.Active.Id);
+            planRepository.Update(plan);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan activated sucessfully.");
+            return ResultSet.Success();
+        }
+    }
+
+    public class ActivatePlanIdentifiedRequestHandler : IdentifiedCommandHandler<ActivatePlanCommand, ResultSet>
+    {
+        public ActivatePlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ActivatePlanCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

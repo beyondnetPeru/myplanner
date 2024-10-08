@@ -14,10 +14,10 @@ namespace MyPlanner.Plannings.Api.Boostrapper
         /// </summary>
         public FactorCostConfigurationSource()
         {
-            For<FactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeTShirtAndSprintFactorCostCalculator>().When(x =>
+            For<FactorCostCriteria, IFactorCostCalculator>().Create<FactorCostCalculatorTShirtAndSprint>().When(x =>
                                                             x.Factor.ToLower().Trim() == FactorsEnum.Sprints.Name.Trim().ToLowerInvariant() &
                                                             x.SizeModelTypeCodeSelected == "smt001");
-            For<FactorCostCriteria, ISizeModelTypeFactorCostCalculator>().Create<SizeModelTypeDefaultFactorDefaultCostCalculator>().When(x =>
+            For<FactorCostCriteria, IFactorCostCalculator>().Create<FactorCostCalculatorDefault>().When(x =>
                                                             x.Factor == "" &
                                                             x.SizeModelTypeCodeSelected == "");
         }

@@ -54,9 +54,9 @@ namespace MyPlanner.Plannings.Api.Extensions
             builder.Services.AddFactory(c =>
             {
                 c.AddSource<FactorCostConfigurationSource>();
-                c.AddTransient<ISizeModelTypeFactorCostFactory, SizeModelTypeFactorCostFactory>();
-                c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeTShirtAndSprintFactorCostCalculator>();
-                c.AddTransient<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorDefaultCostCalculator>();
+                c.AddTransient<IFactorCostCalculatorFactory, FactorCostFactory>();
+                c.AddTransient<IFactorCostCalculator, FactorCostCalculatorTShirtAndSprint>();
+                c.AddTransient<IFactorCostCalculator, FactorCostCalculatorDefault>();
             });
 
             builder.Services.AddTransient<IIntegrationEventLogService, IntegrationEventLogService<PlanningDbContext>>();

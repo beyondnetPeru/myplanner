@@ -2,9 +2,9 @@
 
 namespace MyPlanner.Plannings.Api.Services.Interfaces
 {
-    public interface ISizeModelTypeFactorCostFactory
+    public interface IFactorCostCalculatorFactory
     {
-        ISizeModelTypeFactorCostCalculator Create(FactorsEnum factor,
+        IFactorCostCalculator Create(FactorsEnum factor,
                          string sizeModelTypeCodeSelected);
     }
 }

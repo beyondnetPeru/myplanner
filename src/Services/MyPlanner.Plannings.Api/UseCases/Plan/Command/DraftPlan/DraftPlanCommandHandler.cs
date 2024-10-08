@@ -1,6 +1,8 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
 {
@@ -24,11 +26,27 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
                 return ResultSet.Error($"Plan is not valid. Error: {plan.GetBrokenRules().ToString()}");
             }
 
-            planRepository.ChangeStatus(request.PlanId, PlanStatus.Draft.Id);
+            planRepository.Update(plan);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan is drafted successfully.");
+            return ResultSet.Success();
+        }
+    }
+
+    public class DraftPlanIdentifiedRequestHandler : IdentifiedCommandHandler<DraftPlanCommand, ResultSet>
+    {
+        public DraftPlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<DraftPlanCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

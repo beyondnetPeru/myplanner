@@ -18,8 +18,8 @@ namespace MyPlanner.Plannings.Domain.Test
             container.AddFactory(c =>
             {
                 c.AddSource<SizeModelTypeFactorCostConfiguration>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeDefaultFactorDefaultCostCalculator>();
-                c.AddSingleton<ISizeModelTypeFactorCostCalculator, SizeModelTypeTShirtAndSprintFactorCostCalculator>();
+                c.AddSingleton<IFactorCostCalculator, FactorCostCalculatorDefault>();
+                c.AddSingleton<IFactorCostCalculator, FactorCostCalculatorTShirtAndSprint>();
             });
         }
 
@@ -30,7 +30,7 @@ namespace MyPlanner.Plannings.Domain.Test
 
             var criteria = new Criteria("sprints", "t-shirt");
 
-            var factoryModelCalculation = factory.Create<Criteria, ISizeModelTypeFactorCostCalculator>(criteria)[0];
+            var factoryModelCalculation = factory.Create<Criteria, IFactorCostCalculator>(criteria)[0];
 
             var typeOf = factoryModelCalculation.GetType().Name;
 

@@ -1,6 +1,4 @@
-﻿
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 {
     public class ActivatePlanEndpoint : ICarterModule
     {
@@ -15,7 +13,6 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
                 return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
 
             }).WithTags(Tags.Plan);
-
         }
     }
 }

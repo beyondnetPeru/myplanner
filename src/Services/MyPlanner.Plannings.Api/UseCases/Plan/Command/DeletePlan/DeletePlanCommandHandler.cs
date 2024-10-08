@@ -1,6 +1,8 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
@@ -26,7 +28,23 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan deleted successfully.");
+            return ResultSet.Success();
+        }
+    }
+
+    public class DeletePlanIdentifiedRequestHandler : IdentifiedCommandHandler<DeletePlanCommand, ResultSet>
+    {
+        public DeletePlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<DeletePlanCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

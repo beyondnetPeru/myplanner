@@ -4,7 +4,7 @@ using MyPlanner.Shared.Domain;
 
 namespace MyPlanner.Plannings.Api.Services.Impl
 {
-    public class SizeModelTypeTShirtAndSprintFactorCostCalculator : ISizeModelTypeFactorCostCalculator
+    public class FactorCostCalculatorTShirtAndSprint : IFactorCostCalculator
     {
         public double Calculate(FactorsEnum factor, string sizeModelTypeItemCode, int quantity, double profileAvgRate)
         {

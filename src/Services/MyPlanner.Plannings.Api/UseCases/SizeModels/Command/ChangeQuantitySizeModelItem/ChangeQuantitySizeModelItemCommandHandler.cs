@@ -9,11 +9,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySize
     public class ChangeQuantitySizeModelItemCommandHandler : AbstractCommandHandler<ChangeQuantitySizeModelItemCommand, ResultSet>
     {
         private readonly ISizeModelRepository sizeModelRepository;
-        private readonly ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory;
+        private readonly IFactorCostCalculatorFactory sizeModelTypeFactorCostFactory;
 
         public ChangeQuantitySizeModelItemCommandHandler(ISizeModelRepository sizeModelRepository,
                                                          ILogger<ChangeQuantitySizeModelItemCommandHandler> logger,
-                                                         ISizeModelTypeFactorCostFactory sizeModelTypeFactorCostFactory):base(logger)
+                                                         IFactorCostCalculatorFactory sizeModelTypeFactorCostFactory):base(logger)
         {
             this.sizeModelRepository = sizeModelRepository ?? throw new ArgumentNullException(nameof(sizeModelRepository));
             this.sizeModelTypeFactorCostFactory = sizeModelTypeFactorCostFactory ?? throw new ArgumentNullException(nameof(sizeModelTypeFactorCostFactory));
@@ -25,7 +25,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySize
 
             var sizeModel = await sizeModelRepository.Get(sizeModelItem.GetPropsCopy().SizeModelId.GetValue());
 
-            var totalCost = TotalCostCalculator.SetTotalCost(sizeModelTypeFactorCostFactory, sizeModelItem, sizeModel);
+            var totalCost = FactorCostCalculatorTotal.SetTotalCost(sizeModelTypeFactorCostFactory, sizeModelItem, sizeModel);
 
             sizeModelItem.ChangeQuantity(request.Quantity, totalCost, UserId.Create(request.UserId));
 

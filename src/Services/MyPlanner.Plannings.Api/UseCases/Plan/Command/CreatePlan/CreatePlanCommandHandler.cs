@@ -66,9 +66,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 
             planRepository.Create(plan);
 
-            await planRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
+            await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan created successfully.");
+            return ResultSet.Success();
         }
     }
 

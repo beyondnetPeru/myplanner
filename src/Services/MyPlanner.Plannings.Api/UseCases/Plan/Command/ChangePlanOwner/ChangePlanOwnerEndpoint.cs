@@ -1,6 +1,4 @@
-﻿
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 {
     public class ChangePlanOwnerEndpoint : ICarterModule
     {

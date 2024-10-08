@@ -1,6 +1,8 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
 {
@@ -24,11 +26,27 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
                 return ResultSet.Error($"Plan is not valid. Errors: {plan.GetBrokenRules().ToString()}");
             }
 
-            planRepository.ChangeStatus(request.PlanId, PlanStatus.Closed.Id);
+            planRepository.Update(plan);
 
             await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
 
-            return ResultSet.Success("Plan closed successfully.");
+            return ResultSet.Success();
+        }
+    }
+
+    public class ClosePlanIdentifiedRequestHandler : IdentifiedCommandHandler<ClosePlanCommand, ResultSet>
+    {
+        public ClosePlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ClosePlanCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

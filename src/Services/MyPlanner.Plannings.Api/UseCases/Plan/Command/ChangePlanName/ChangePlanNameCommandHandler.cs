@@ -1,5 +1,8 @@
-﻿using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan;
+using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
+using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
 {
@@ -16,14 +19,34 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
         {
             var plan = await planRepository.GetByIdAsync(request.PlanId);
 
-            planRepository.ChangeName(request.PlanId, request.Name);
+            plan.ChangeName(Name.Create(request.Name), UserId.Create(request.UserId));
 
             if (!plan.IsValid())
             {
                 return ResultSet.Error($"Name for plan wrong. Errors: {plan.GetBrokenRules().ToString()}");
             }
 
-            return ResultSet.Success($"Plan name updated sucessfully");
+            planRepository.Update(plan);
+
+            await planRepository.UnitOfWork.SaveEntitiesAsync(plan, cancellationToken);
+
+            return ResultSet.Success();
+        }
+    }
+
+    public class ChangePlanNameIdentifiedRequestHandler : IdentifiedCommandHandler<ChangePlanNameCommand, ResultSet>
+    {
+        public ChangePlanNameIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ChangePlanNameCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }
