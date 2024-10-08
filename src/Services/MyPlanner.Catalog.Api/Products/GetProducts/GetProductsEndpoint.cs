@@ -9,15 +9,13 @@ namespace MyPlanner.Catalog.Api.Products.GetProducts
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/companies/{companyId}/products/", async ([FromBody] GetProductsRequest getProductsRequest, [AsParameters] ProductServices services) =>
+            app.MapGet("/companies/{companyId}/products/", async (string companyId, [FromBody] GetProductsRequest getProductsRequest, [AsParameters] ProductServices services) =>
             {
-                var query = getProductsRequest.Adapt<GetProductsQuery>();
-                
+                var query = new GetProductsQuery(getProductsRequest.PageNumber, getProductsRequest.PageSize, companyId);
+
                 var result = await services.Mediator.Send(query);
 
-                var response = result.Adapt<GetProductResponse>();
-
-                return Results.Ok(response);
+                return Results.Ok(result);
             })
                 .WithTags(ENDPOINT.Tag)
                 .WithName(ENDPOINT.LIST.Name)

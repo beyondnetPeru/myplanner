@@ -23,10 +23,10 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
 
             if (product == null)
             {
-                return ResultSet.Error($"Product with id {request.Id} not found", request);
+                return ResultSet.Error($"Product with id {request.Id} not found");
             }
 
-            return ResultSet.Success("Product found", product);
+            return ResultSet.Success(product);
         }
     }
 }

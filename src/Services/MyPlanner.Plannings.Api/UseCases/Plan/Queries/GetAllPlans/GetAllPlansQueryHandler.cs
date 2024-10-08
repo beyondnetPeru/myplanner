@@ -20,7 +20,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetAllPlans
 
             var dtos = mapper.Map<IEnumerable<PlanDto>>(entities);
 
-            return ResultSet.Success("Plans found.", dtos);
+            return ResultSet.Success(dtos);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace MyPlanner.Shared.Cqrs
 {
-    public class ResultSet
+    public class ResultSet 
     {
         public bool IsError { get; set; } = false;
         public bool IsSuccess { get; private set; } = false;
@@ -14,45 +14,45 @@
             IsError = isError;
             IsSuccess = isSuccess;
             Message = message;
-            Data = data;
+            Data = data!;
         }
 
-        public static ResultSet Success(string message, object data)
+        public static ResultSet Success(string message, string data)
         {
             return new ResultSet(false, true, message, data);
         }
 
-        public static ResultSet Error(string message, object data)
+        public static ResultSet Error(string message, string data)
         {
             return new ResultSet(true, false, message, data);
         }
 
         public static ResultSet Error(string message)
         {
-            return new ResultSet(true, false, message, null);
+            return new ResultSet(true, false, message, string.Empty);
         }
 
         public static ResultSet Success(string message)
         {
-            return new ResultSet(false, true, message, null);
+            return new ResultSet(false, true, message, string.Empty);
         }
 
         public static ResultSet Success()
         {
-            return new ResultSet(false, true, string.Empty, null);
+            return new ResultSet(false, true, string.Empty, string.Empty);
         }
 
         public static ResultSet Error()
         {
-            return new ResultSet(true, false, string.Empty, null);
+            return new ResultSet(true, false, string.Empty, string.Empty);
         }
 
-        public static ResultSet Error(object data)
+        public static ResultSet Error<T>(T data)
         {
             return new ResultSet(true, false, string.Empty, data);
         }
 
-        public static ResultSet Success(object data)
+        public static ResultSet Success<T>(T data)
         {
             return new ResultSet(false, true, string.Empty, data);
         }

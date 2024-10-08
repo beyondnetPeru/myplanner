@@ -21,7 +21,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetPlan
 
             var dto = mapper.Map<PlanDto>(plan.GetPropsCopy());
 
-            return ResultSet.Success("Plan found.", dto);
+            return ResultSet.Success(dto);
         }
     }
 }

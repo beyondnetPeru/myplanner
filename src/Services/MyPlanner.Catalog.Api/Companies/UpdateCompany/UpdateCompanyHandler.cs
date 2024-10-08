@@ -40,7 +40,7 @@ namespace MyPlanner.Catalog.Api.Companies.UpdateCompany
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return ResultSet.Success("Company updated successfully");
+            return ResultSet.Success();
         }
     } 
 }

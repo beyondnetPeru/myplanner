@@ -37,7 +37,7 @@ public class CatalogInitialData : IInitialData
                 new Product()
                 {
                     Id = "5334c996-8457-4cf0-815c-ed2b77c4ff61",
-                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b53645",
+                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b536451",
                     Name = "UMS",
                     Description = "User Management System.",
                     ImageFile = "product-1.png",
@@ -47,7 +47,7 @@ public class CatalogInitialData : IInitialData
                 new Product()
                 {
                     Id = "c67d6323-e8b1-4bdf-9a75-b0d0d2e7e914",
-                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b53645",
+                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b536451",
                     Name = "MMS",
                     Description = "Master Data Management System.",
                     ImageFile = "product-2.png",
@@ -57,7 +57,7 @@ public class CatalogInitialData : IInitialData
                 new Product()
                 {
                     Id = "4f136e9f-ff8c-4c1f-9a33-d12f689bdab8",
-                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b53645",
+                    CompanyId="0f4be0bd-a612-4569-8d92-00d86b536451",
                     Name = "TMS",
                     Description = "Transportation Management System",
                     ImageFile = "product-3.png",

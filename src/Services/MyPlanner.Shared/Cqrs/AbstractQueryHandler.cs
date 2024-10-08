@@ -2,18 +2,18 @@
 
 namespace MyPlanner.Shared.Cqrs
 {
-    public abstract class AbstractQueryHandler<TQuery, TResponse> : IQueryHandler<TQuery, ResultSet>
-            where TQuery : IQuery<TResponse>
-            where TResponse : ResultSet
+    public abstract class AbstractQueryHandler<TQuery, TResult> : IQueryHandler<TQuery, TResult>
+            where TQuery : IQuery<TResult>
+            where TResult : ResultSet
     {
-        private readonly ILogger<AbstractQueryHandler<TQuery, TResponse>> logger;
+        private readonly ILogger<AbstractQueryHandler<TQuery, TResult>> logger;
 
-        public AbstractQueryHandler(ILogger<AbstractQueryHandler<TQuery, TResponse>> logger)
+        public AbstractQueryHandler(ILogger<AbstractQueryHandler<TQuery, TResult>> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<ResultSet> Handle(TQuery request, CancellationToken cancellationToken)
+        public async Task<TResult> Handle(TQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -36,6 +36,6 @@ namespace MyPlanner.Shared.Cqrs
             }
         }
 
-        public abstract Task<TResponse> HandleQuery(TQuery request, CancellationToken cancellationToken);
+        public abstract Task<TResult> HandleQuery(TQuery request, CancellationToken cancellationToken);
     }
 }

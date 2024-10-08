@@ -22,7 +22,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
                 .Where(x => x.CompanyId == request.companyId && x.CompanyId == request.companyId)
                 .ToListAsync(cancellationToken);
 
-            return ResultSet.Success("Products found", products);
+            return ResultSet.Success(products);
         }
     }
 }

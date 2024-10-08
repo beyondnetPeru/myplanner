@@ -12,24 +12,24 @@
 
         public class GET
         {
-            public const string Name = "GetProduct";
-            public const string Summary = "Get Product";
+            public const string Name = "GetProductById";
+            public const string Summary = "Get Product By ID";
             public const string Description = "Get a Product by id.";
         }
 
         public class GETCAT
         {
-            public const string Name = "GetProduct";
-            public const string Summary = "Get Product";
+            public const string Name = "GetProductByCat";
+            public const string Summary = "Get Product by Category";
             public const string Description = "Get a Product by Category.";
 
         }
 
         public class LIST
         {
-            public const string Name = "ListCompanies";
-            public const string Summary = "List Companies";
-            public const string Description = "List all companies.";
+            public const string Name = "ListProducts";
+            public const string Summary = "List Products";
+            public const string Description = "List all products.";
         }
 
         public class UPDATE

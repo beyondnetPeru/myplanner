@@ -10,7 +10,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/companies{companyId}/products/byid/{id}", async (string companyId, string id, [AsParameters] ProductServices service)  =>
+            app.MapGet("/companies/{companyId}/products/byid/{id}", async (string companyId, string id, [AsParameters] ProductServices service)  =>
             {
                 var query = new GetProductByIdQuery(companyId, id);
                 

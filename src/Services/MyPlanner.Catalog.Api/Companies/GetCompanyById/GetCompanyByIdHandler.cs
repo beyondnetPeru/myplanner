@@ -25,7 +25,7 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
                 return ResultSet.Error($"Company with id {request.Id} not found");
             }
 
-            return ResultSet.Success("Company found sucessfully", company);
+            return ResultSet.Success(company);
         }
     }
 }

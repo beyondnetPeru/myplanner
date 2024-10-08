@@ -21,7 +21,7 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetPlanItem
 
             var dto = mapper.Map<PlanDto>(query);
 
-            return ResultSet.Success("Found plan item.",dto);
+            return ResultSet.Success(dto);
         }
     }
 }

@@ -20,6 +20,6 @@ public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, Re
     {
         var products = await documentSession.Query<Product>().Where(p => p.CompanyId == query.CompanyId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
-        return ResultSet.Success("Products found", products);
+        return ResultSet.Success(products);
     }
 }
