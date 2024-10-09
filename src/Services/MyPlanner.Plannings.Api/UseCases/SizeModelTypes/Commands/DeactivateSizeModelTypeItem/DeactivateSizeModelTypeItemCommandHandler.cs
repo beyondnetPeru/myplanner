@@ -14,18 +14,18 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
 
         public override async Task<ResultSet> HandleCommand(DeactivateSizeModelTypeItemCommand request, CancellationToken cancellationToken)
         {
-            var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
+            var entity = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
 
-            sizeModelTypeItem.Deactivate();
+            entity.Deactivate();
 
-            if (!sizeModelTypeItem.IsValid())
+            if (!entity.IsValid())
             {
-                return ResultSet.Error($"Error deactivating size model type factor {request.SizeModelTypeItemId}. Errors:{sizeModelTypeItem.GetBrokenRules()}");
+                return ResultSet.Error($"Error deactivating size model type factor {request.SizeModelTypeItemId}. Errors:{entity.GetBrokenRules()}");
             }
 
-            sizeModelTypeRepository.Deactivate(request.SizeModelTypeItemId);
+            sizeModelTypeRepository.UpdateItem(entity);
 
-            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelTypeItem, cancellationToken);
+            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 
             return ResultSet.Success();
         }

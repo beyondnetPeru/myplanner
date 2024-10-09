@@ -23,7 +23,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeM
                 return ResultSet.Error($"Error activating SizeModelTypeItem: {entity.GetBrokenRules()}" );
             }
 
-            sizeModelTypeRepository.Activate(request.SizeModelTypeItemId);
+            sizeModelTypeRepository.UpdateItem(entity);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 

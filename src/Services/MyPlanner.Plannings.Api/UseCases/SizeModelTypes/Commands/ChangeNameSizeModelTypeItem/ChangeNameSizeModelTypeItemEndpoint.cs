@@ -12,7 +12,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
                                                                               string sizeModelTypeItemId,
                                                                               [FromBody] ChangeNameSizeModelTypeItemDto changeNameSizeModelTypeItemDto) =>
             {
-                var request = new ChangeNameSizeModelTypeItemCommand(sizeModelTypeItemId, changeNameSizeModelTypeItemDto.Name, changeNameSizeModelTypeItemDto.UserId);
+                var request = new ChangeNameSizeModelTypeItemCommand(sizeModelTypeId, sizeModelTypeItemId, changeNameSizeModelTypeItemDto.Name, changeNameSizeModelTypeItemDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

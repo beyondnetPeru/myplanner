@@ -11,7 +11,7 @@ namespace MyPlanner.Shared.Cqrs
 
         public AbstractCommandHandler(ILogger<AbstractCommandHandler<TCommand, TResult>> Logger)
         {
-            logger = Logger;
+            this.logger = Logger;
         }
 
         public async Task<TResult> Handle(TCommand request, CancellationToken cancellationToken)

@@ -14,18 +14,18 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeleteSizeMod
 
         public override async Task<ResultSet> HandleCommand(DeleteSizeModelTypeCommand request, CancellationToken cancellationToken)
         {
-            var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
+            var entity = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
 
-            sizeModelType.Delete();
+            entity.Delete();
 
-            if (!sizeModelType.IsValid())
+            if (!entity.IsValid())
             {
-                return ResultSet.Error($"SizeModelType cannot be deleted. Errors: {sizeModelType.GetBrokenRules().ToString()}");
+                return ResultSet.Error($"SizeModelType cannot be deleted. Errors: {entity.GetBrokenRules().ToString()}");
             }
 
             sizeModelTypeRepository.Delete(request.SizeModelTypeId);
 
-            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelType, cancellationToken);
+            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 
             return ResultSet.Success();
         }

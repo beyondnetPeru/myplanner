@@ -15,18 +15,18 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
 
         public override async Task<ResultSet> HandleCommand(ChangeNameSizeModelTypeItemCommand request, CancellationToken cancellationToken)
         {
-            var sizeModelTypeItem = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
+            var entity = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
 
-            sizeModelTypeItem.GetProps().Name.SetValue(request.Name);
+            entity.GetProps().Name.SetValue(request.Name);
 
-            if (!sizeModelTypeItem.IsValid())
+            if (!entity.IsValid())
             {
-                return ResultSet.Error($"Invalid SizeModelTypeItem: Errors {sizeModelTypeItem.GetBrokenRules().ToString()}");
+                return ResultSet.Error($"Invalid SizeModelTypeItem: Errors {entity.GetBrokenRules().ToString()}");
             }
 
-            sizeModelTypeRepository.ChangeItemName(request.SizeModelTypeItemId, request.Name);
+            sizeModelTypeRepository.UpdateItem(entity);
 
-            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(sizeModelTypeItem, cancellationToken);
+            await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 
             return ResultSet.Success();
 

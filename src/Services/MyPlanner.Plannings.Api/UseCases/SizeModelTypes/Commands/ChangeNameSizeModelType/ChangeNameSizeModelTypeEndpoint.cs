@@ -1,7 +1,4 @@
-﻿
-using MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSizeModelTypeItem;
-
-namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType
+﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelType
 {
     public class ChangeNameSizeModelTypeEndpoint : ICarterModule
     {
@@ -12,7 +9,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
                                                                               string sizeModelTypeId,
                                                                               [FromBody] ChangeNameSizeModelTypeDto changeNameSizeModelTypeDto) =>
             {
-                var request = new ChangeCodeSizeModelTypeItemCommand(sizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
+                var request = new ChangeNameSizeModelTypeCommand(sizeModelTypeId, changeNameSizeModelTypeDto.Name, changeNameSizeModelTypeDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

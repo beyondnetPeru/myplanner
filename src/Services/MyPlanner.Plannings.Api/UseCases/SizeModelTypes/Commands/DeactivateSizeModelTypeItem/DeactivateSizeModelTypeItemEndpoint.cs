@@ -8,10 +8,11 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.DeactivateSiz
         {
             app.MapPut("/sizemodeltypes/{sizeModelTypeId}/items/{sizeModelTypeItemId}/deactivate", async ([FromHeader(Name = "x-requestid")] Guid requestId,
                                                                             [AsParameters] SizeModelTypeService service,
+                                                                            string sizeModelTypeId,
                                                                             string sizeModelTypeItemId,
                                                                             [FromBody] DeactivateSizeModelTypeItemDto deactivateSizeModelTypeItemDto) =>
             {
-                var request = new DeactivateSizeModelTypeItemCommand(sizeModelTypeItemId, deactivateSizeModelTypeItemDto.UserId);
+                var request = new DeactivateSizeModelTypeItemCommand(sizeModelTypeId,sizeModelTypeItemId, deactivateSizeModelTypeItemDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

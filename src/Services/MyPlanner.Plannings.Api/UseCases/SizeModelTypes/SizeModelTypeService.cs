@@ -8,7 +8,6 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes
       IMediator mediator,
       ISizeModelTypeRepository sizeModelTypeRepository,
       ISizeModelTypeQueryRepository sizeModelTypeQueryRepository,
-
       IMapper mapper)
     {
         public IMediator Mediator { get; } = mediator;

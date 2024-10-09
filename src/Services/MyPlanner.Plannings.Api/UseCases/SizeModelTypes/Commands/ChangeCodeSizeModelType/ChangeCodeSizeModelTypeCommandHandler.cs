@@ -23,7 +23,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeCodeSiz
                 return ResultSet.Error($"SizeModelType code change has errors:{entity.GetBrokenRules()}");
             }
 
-            sizeModelTypeRepository.ChangeCode(request.SizeModelTypeId, entity.GetPropsCopy().Code.GetValue());
+            sizeModelTypeRepository.Update(entity);
 
             await sizeModelTypeRepository.UnitOfWork.SaveEntitiesAsync(entity, cancellationToken);
 

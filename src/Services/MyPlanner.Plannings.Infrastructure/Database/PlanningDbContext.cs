@@ -8,7 +8,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
 {
     public class PlanningDbContext : DbContext, IUnitOfWork
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
         private IDbContextTransaction currentTransaction;
 
         public DbSet<ErrorTable> Errors { get; set; }
@@ -21,10 +21,9 @@ namespace MyPlanner.Plannings.Infrastructure.Database
         public DbSet<SizeModelItemTable> SizeModelItems { get; set; }
         public bool HasActiveTransaction => currentTransaction != null;
 
-        public PlanningDbContext(DbContextOptions<PlanningDbContext> options) : base(options) { }
         public PlanningDbContext(DbContextOptions<PlanningDbContext> options, IMediator mediator) : base(options)
         {
-            mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             
             System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + this.GetHashCode());
         }
@@ -51,7 +50,7 @@ namespace MyPlanner.Plannings.Infrastructure.Database
 
         public async Task<bool> SaveEntitiesAsync(object entity, CancellationToken cancellationToken = default)
         {
-            await mediator.DispatchDomainEventsAsync(entity);
+            await _mediator.DispatchDomainEventsAsync(entity);
 
             _ = await base.SaveChangesAsync(cancellationToken);
 

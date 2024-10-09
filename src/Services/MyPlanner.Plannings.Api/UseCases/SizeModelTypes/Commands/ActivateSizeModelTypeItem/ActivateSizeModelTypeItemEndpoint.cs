@@ -12,7 +12,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ActivateSizeM
                                                                              string sizeModelTypeItemId,
                                                                              [FromBody] ActivateSizeModelTypeItemDto activateSizeModelTypeItemDto) =>
             {
-                var request = new ActivateSizeModelTypeItemCommand(sizeModelTypeItemId, activateSizeModelTypeItemDto.UserId);
+                var request = new ActivateSizeModelTypeItemCommand(sizeModelTypeId, sizeModelTypeItemId, activateSizeModelTypeItemDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 
