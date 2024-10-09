@@ -19,7 +19,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
         public override async Task<ResultSet> HandleQuery(GetProductsByCategoryQuery request, CancellationToken cancellationToken)
         {
             var products = await documentSession.Query<Product>()
-                .Where(x => x.CompanyId == request.companyId && x.CompanyId == request.companyId)
+                .Where(x => x.CompanyId == request.companyId && x.Category.Contains(request.Category))                
                 .ToListAsync(cancellationToken);
 
             return ResultSet.Success(products);

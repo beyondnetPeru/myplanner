@@ -19,6 +19,7 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
         public override async Task<ResultSet> HandleCommand(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             var product = await documentSession.LoadAsync<Product>(request.Id, cancellationToken);
+
             if (product == null)
             {                
                 return ResultSet.Error($"Product with id {request.Id} not found", JsonSerializer.Serialize(product));

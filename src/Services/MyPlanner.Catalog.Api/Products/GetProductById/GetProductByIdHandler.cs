@@ -1,6 +1,5 @@
 ﻿using MyPlanner.Catalog.Api.Models;
 using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
 
 namespace MyPlanner.Catalog.Api.Products.GetProductById
 {
@@ -19,14 +18,14 @@ namespace MyPlanner.Catalog.Api.Products.GetProductById
 
         public async override Task<ResultSet> HandleQuery(GetProductByIdQuery request, CancellationToken cancellationToken)
         {
-            var product = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.companyId && x.Id == request.Id, cancellationToken);
+            var response = await _documentSession.Query<Product>().FirstOrDefaultAsync(x => x.CompanyId == request.companyId && x.Id == request.Id, cancellationToken);
 
-            if (product == null)
+            if (response == null)
             {
                 return ResultSet.Error($"Product with id {request.Id} not found");
             }
 
-            return ResultSet.Success(product);
+            return ResultSet.Success(response);
         }
     }
 }

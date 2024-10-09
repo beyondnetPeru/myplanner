@@ -8,15 +8,14 @@ namespace MyPlanner.Catalog.Api.UseCases.CreateProduct
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/companies/{companyId}/products/", async ([AsParameters] ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
+            app.MapPost("/companies/{companyId}/products/", async (string companyId, [AsParameters] ProductServices services, [FromBody] CreateProductRequest createProductRequest) =>
             {
                 var command = createProductRequest.Adapt<CreateProductCommand>();
+                command.CompanyId = companyId;
 
-                var result = await services.Mediator.Send(command);
+                var response = await services.Mediator.Send(command);
 
-                var response = result.Adapt<CreateProductResponse>();
-
-                return Results.Created($"/products/{response.Id}", response);
+                return Results.Ok(response);
 
             })
                 .WithTags(ENDPOINT.Tag)

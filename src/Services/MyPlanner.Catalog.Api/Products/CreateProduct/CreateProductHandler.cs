@@ -17,7 +17,6 @@ namespace MyPlanner.Catalog.Api.Products
     {
         public CreateProductCommandValidator()
         {
-            RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.Description).NotEmpty();
@@ -44,10 +43,10 @@ namespace MyPlanner.Catalog.Api.Products
         public override async Task<ResultSet> HandleCommand(CreateProductCommand command, CancellationToken cancellationToken)
         {
 
-            var errors = _validator.Validate(command);
+            var validationErrors = _validator.Validate(command);
 
-            if (errors != null)
-                return ResultSet.Error($"Error trying create a product. Errors:{errors.ToString()}", JsonSerializer.Serialize(command));
+            if (validationErrors.Errors.Any())
+                return ResultSet.Error($"Error trying create a product. Errors: {validationErrors.Errors.ToString()}");
 
             var product = command.Adapt<Product>();
 
@@ -55,7 +54,7 @@ namespace MyPlanner.Catalog.Api.Products
 
             await _documentSession.SaveChangesAsync(cancellationToken);
 
-            return ResultSet.Success($"Product created successfully", JsonSerializer.Serialize(product));
+            return ResultSet.Success(product);
         }
     }
 }

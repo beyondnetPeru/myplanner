@@ -18,8 +18,8 @@ public class GetProductsQueryHandler : AbstractQueryHandler<GetProductsQuery, Re
 
     public override async Task<ResultSet> HandleQuery(GetProductsQuery query, CancellationToken cancellationToken)
     {
-        var products = await documentSession.Query<Product>().Where(p => p.CompanyId == query.CompanyId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
+        var response = await documentSession.Query<Product>().Where(p => p.CompanyId == query.CompanyId).ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
-        return ResultSet.Success(products);
+        return ResultSet.Success(response);
     }
 }

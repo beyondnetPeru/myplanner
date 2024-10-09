@@ -13,9 +13,7 @@ namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
             {
                 var query = new GetProductsByCategoryQuery(companyId, category);
 
-                var result = await services.Mediator.Send(query);
-
-                var response = result.Adapt<GetproductsByCategoryResponse>();
+                var response = await services.Mediator.Send(query);
 
                 return Results.Ok(response);
             })
