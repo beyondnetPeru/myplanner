@@ -13,9 +13,7 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanies
             {
                 var query = paginationRequest.Adapt<GetCompaniesQuery>();
 
-                var result = await services.Mediator.Send(query);
-
-                var response = result.Adapt<GetCompanyResponse>();
+                var response = await services.Mediator.Send(query);
 
                 return Results.Ok(response);
             })

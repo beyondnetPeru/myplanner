@@ -30,11 +30,11 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 
         public override async Task<ResultSet> HandleCommand(CreateCompanyCommad command, CancellationToken cancellationToken)
         {
-            var errors = validator.Validate(command);
+            var validationErrors = validator.Validate(command);
 
-            if (errors != null)
+            if (validationErrors.Errors.Any())
             {
-                return ResultSet.Error($"Error trying create a company. Errors:{errors.ToString()}");
+                return ResultSet.Error($"Error trying create a company. Errors:{validationErrors.Errors.ToString()}");
             }
 
             var company = new Company
@@ -46,7 +46,7 @@ namespace MyPlanner.Catalog.Api.Companies.CreateCompany
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return ResultSet.Success($"Company created successfully: {company}");
+            return ResultSet.Success(company);
         }
     }
 }

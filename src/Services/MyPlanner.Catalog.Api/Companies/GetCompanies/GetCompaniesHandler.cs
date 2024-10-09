@@ -20,7 +20,7 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanies
         {
             var companies = await documentSession.Query<Company>().ToPagedListAsync(query.PageNumber ?? 1, query.PageSize ?? 10, cancellationToken);
 
-            return ResultSet.Success($"Companies found sucessfully {companies}");
+            return ResultSet.Success(companies);
         }
     }
 }

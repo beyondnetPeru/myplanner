@@ -12,9 +12,7 @@ namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
             {
                 var query = new GetCompanyByIdQuery(id);
 
-                var result = await service.Mediator.Send(query);
-
-                var response = result.Adapt<GetCompanyByIdResponse>();
+                var response = await service.Mediator.Send(query);
 
                 return Results.Ok(response);
             })
