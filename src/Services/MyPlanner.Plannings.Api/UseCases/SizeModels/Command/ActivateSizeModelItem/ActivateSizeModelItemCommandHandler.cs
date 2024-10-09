@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModelI
                 return ResultSet.Error($"SizeModelItem cannot be activated. Errors: {sizeModelItem.GetBrokenRules()}");
             }
 
-            sizeModelRepository.ActiveItem(request.SizeModelItemId);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 

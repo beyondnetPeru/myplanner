@@ -34,7 +34,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeFactorSizeMo
                 return ResultSet.Error($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules()}");                
             }
 
-            sizeModelRepository.ChangeFactorSelected(request.SizeModelItemId, request.FactorSelected, totalCost);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 

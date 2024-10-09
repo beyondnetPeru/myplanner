@@ -44,7 +44,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelTyp
                 return ResultSet.Error($"SizeModelItem is not valid. Errors: {sizeModelItem.GetBrokenRules().ToString()}");
             }
 
-            sizeModelRepository.ChangeSizeModelTypeItem(request.SizeModelItemId, request.SizeModelItemTypeId, request.SizeModelItemTypeCode, totalCost);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 

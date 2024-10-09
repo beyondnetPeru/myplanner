@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSi
                 return ResultSet.Error($"Invalid size model item. Errors: {sizeModelItem.GetBrokenRules()}");
             }
 
-            sizeModelRepository.ChangeIsStandard(request.SizeModelItemId, request.IsStandard);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 

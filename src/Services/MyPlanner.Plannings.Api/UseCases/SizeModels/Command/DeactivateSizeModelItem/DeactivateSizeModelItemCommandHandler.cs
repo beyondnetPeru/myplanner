@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.DeactivateSizeMode
                 return ResultSet.Error($"SizeModelItem is not valid. Errors:{sizeModelItem.GetBrokenRules()}");
             }
 
-            sizeModelRepository.DeactiveItem(request.SizeModelItemId);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(this, cancellationToken);
 

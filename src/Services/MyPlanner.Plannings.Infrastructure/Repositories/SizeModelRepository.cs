@@ -1,7 +1,4 @@
-﻿using AutoMapper;
-using BeyondNet.Ddd.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using MyPlanner.Plannings.Domain.SizeModels;
+﻿using MyPlanner.Plannings.Domain.SizeModels;
 using MyPlanner.Plannings.Infrastructure.Database;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 
@@ -18,84 +15,16 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public IUnitOfWork UnitOfWork => context;
+        public IUnitOfWork UnitOfWork => context;       
 
 
-        private async Task<SizeModelTable> GetSizeModel(string sizeModelId)
+        public async Task<ICollection<SizeModel>> GetAll()
         {
-            return await context.SizeModels.FirstAsync(x => x.Id == sizeModelId);
-        }
+            var data = await context.SizeModels.ToListAsync();
 
-        private async Task<SizeModelItemTable> GetSizeModelItem(string sizeModelItemId)
-        {
-            return await context.SizeModelItems.FirstAsync(x => x.Id == sizeModelItemId);
-        }
+            var dto = mapper.Map<ICollection<SizeModel>>(data);
 
-
-        public async void Activate(string id)
-        {
-            var table = await GetSizeModel(id);
-
-            table.Status = 1;
-        }
-
-        public async void ActiveItem(string sizeModelItemId)
-        {
-            var table = await GetSizeModelItem(sizeModelItemId);
-
-            table.Status = 1;
-        }
-
-        public void Add(SizeModel sizeModel)
-        {
-            var sizeModelProps = sizeModel.GetPropsCopy();
-
-            var table = mapper.Map<SizeModelTable>(sizeModelProps);
-
-            context.SizeModels.Add(table);
-        }
-
-        public void AddItem(SizeModelItem sizeModelItem)
-        {
-            var table = mapper.Map<SizeModelItemTable>(sizeModelItem);
-
-            context.SizeModelItems.Add(table);
-        }
-
-
-        public async void ChangeName(string sizeModelId, string name)
-        {
-            var table = await GetSizeModel(sizeModelId);
-
-            table.Name = name;
-        }
-
-        public async void Deactivate(string sizeModelId)
-        {
-            var table = await GetSizeModel(sizeModelId);
-
-            table.Status = 2;
-        }
-
-        public async void DeactiveItem(string sizeModelItemId)
-        {
-            var table = await GetSizeModelItem(sizeModelItemId);
-
-            table.Status = 2;
-        }
-
-        public async void Delete(string sizeModelId)
-        {
-            var table = await GetSizeModel(sizeModelId);
-
-            table.Status = 0;
-        }
-
-        public async void DeleteItem(string sizeModelItemId)
-        {
-            var table = await GetSizeModelItem(sizeModelItemId);
-
-            table.Status = 0;
+            return dto;
         }
 
         public async Task<SizeModel> Get(string sizeModelId)
@@ -106,6 +35,51 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
             return dto;
         }
+
+        public async void Update(SizeModel sizeModel)
+        {
+            var table = await GetSizeModel(sizeModel.GetPropsCopy().Id.GetValue());
+
+            table.SizeModelTypeId = sizeModel.GetPropsCopy().SizeModelTypeId.GetValue();
+            table.SizeModelTypeCode = sizeModel.GetPropsCopy().SizeModelTypeCode.GetValue();
+            table.Name = sizeModel.GetPropsCopy().Name.GetValue();
+            table.Status = sizeModel.GetPropsCopy().Status.Id;
+            table.Audit.CreatedBy = sizeModel.GetPropsCopy().Audit.GetValue().CreatedBy;
+            table.Audit.CreatedAt = sizeModel.GetPropsCopy().Audit.GetValue().CreatedAt;
+            table.Audit.UpdatedBy = sizeModel.GetPropsCopy().Audit.GetValue().UpdatedBy;
+            table.Audit.UpdatedAt = sizeModel.GetPropsCopy().Audit.GetValue().UpdatedAt;
+            table.Audit.TimeSpan = sizeModel.GetPropsCopy().Audit.GetValue().TimeSpan;
+
+            context.SizeModels.Update(table);
+        }
+        public void Add(SizeModel sizeModel)
+        {
+            var sizeModelProps = sizeModel.GetPropsCopy();
+
+            var table = mapper.Map<SizeModelTable>(sizeModelProps);
+
+            context.SizeModels.Add(table);
+        }
+
+        public async void Delete(string sizeModelId)
+        {
+            var table = await GetSizeModel(sizeModelId);
+
+            table.Status = 0;
+        }
+
+        public async Task<ICollection<SizeModelItem>> GetAllItem(string sizeModelId)
+        {
+            var data = await context.SizeModelItems
+                .Include(x => x.SizeModel)
+                .Where(x => x.SizeModelId == sizeModelId)
+                .ToListAsync();
+
+            var entity = mapper.Map<ICollection<SizeModelItem>>(data);
+
+            return entity;
+        }
+
 
         public async Task<SizeModelItem> GetItem(string sizeModelItemId)
         {
@@ -119,42 +93,56 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return entity;
         }
 
-        public async void ChangeSizeModelTypeItem(string sizeModelItemId, string sizeModelItemTypeId, string sizeModelItemTypeCode, double totalCost)
+        public void AddItem(SizeModelItem sizeModelItem)
         {
-            var item = await GetSizeModelItem(sizeModelItemId);
+            var table = mapper.Map<SizeModelItemTable>(sizeModelItem);
 
-            item.SizeModelTypeItemId = sizeModelItemTypeId;
-            item.SizeModelTypeItemCode = sizeModelItemTypeCode;
-            item.TotalCost = totalCost;
+            context.SizeModelItems.Add(table);
+        }      
+
+
+
+        public async void UpdateItem(SizeModelItem sizeModelItem)
+        {
+            var table = await GetSizeModelItem(sizeModelItem.GetPropsCopy().Id.GetValue());
+
+            table.SizeModelId = sizeModelItem.GetPropsCopy().SizeModelId.GetValue();
+            table.SizeModelTypeItemId = sizeModelItem.GetPropsCopy().SizeModelTypeItemId.GetValue();
+            table.SizeModelTypeItemCode = sizeModelItem.GetPropsCopy().SizeModelTypeItemCode.GetValue();
+            table.FactorSelected = sizeModelItem.GetPropsCopy().FactorSelected.Id;
+            table.ProfileName = sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileName.GetValue();
+            table.ProfileAvgRateSymbol = sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Symbol.Id;
+            table.ProfileAvgRateValue = sizeModelItem.GetPropsCopy().Profile.GetValue().ProfileAvgRate.GetValue().Value;
+            table.Quantity = sizeModelItem.GetPropsCopy().Quantity.GetValue();
+            table.TotalCost = sizeModelItem.GetPropsCopy().TotalCost.GetValue();
+            table.IsStandard = sizeModelItem.GetPropsCopy().IsStandard.GetValue();
+            table.Status = sizeModelItem.GetPropsCopy().Status.Id;
+            table.Audit.CreatedBy = sizeModelItem.GetPropsCopy().Audit.GetValue().CreatedBy;
+            table.Audit.CreatedAt = sizeModelItem.GetPropsCopy().Audit.GetValue().CreatedAt;
+            table.Audit.UpdatedBy = sizeModelItem.GetPropsCopy().Audit.GetValue().UpdatedBy;
+            table.Audit.UpdatedAt = sizeModelItem.GetPropsCopy().Audit.GetValue().UpdatedAt;
+            table.Audit.TimeSpan= sizeModelItem.GetPropsCopy().Audit.GetValue().TimeSpan;
+
+            context.SizeModelItems.Update(table);
         }
 
-        public async void ChangeFactorSelected(string sizeModelItemId, int factorSelected, double totalCost)
-        {
-            var item = await GetSizeModelItem(sizeModelItemId);
 
-            item.FactorSelected = factorSelected;
-            item.TotalCost = totalCost;
+        private async Task<SizeModelTable> GetSizeModel(string sizeModelId)
+        {
+            return await context.SizeModels.FirstAsync(x => x.Id == sizeModelId);
         }
 
-        public async void ChangeQuantity(string sizeModelItemId, int quantity, double totalCost)
+        private async Task<SizeModelItemTable> GetSizeModelItem(string sizeModelItemId)
         {
-            var item = await GetSizeModelItem(sizeModelItemId);
-
-            item.Quantity = quantity;
-            item.TotalCost = totalCost;
+            return await context.SizeModelItems.FirstAsync(x => x.Id == sizeModelItemId);
         }
 
-        public async void ChangeTotalCost(string sizeModelItemId, double totalCost)
+     
+        public async Task DeleteItem(string sizeModelId, string sizeModelItemId)
         {
-            var item = await GetSizeModelItem(sizeModelItemId);
-            item.TotalCost = totalCost;
-        }
+            var table = await GetSizeModelItem(sizeModelItemId);
 
-        public async void ChangeIsStandard(string sizeModelItemId, bool isStandard)
-        {
-            var item = await GetSizeModelItem(sizeModelItemId);
-
-            item.IsStandard = isStandard;
+            table.Status = 0;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel
                 return ResultSet.Error($"SizeModel with id {request.SizeModelId} is not valid. Errors: {sizeModel.GetBrokenRules()}");
             }
 
-            sizeModelRepository.Activate(sizeModel.GetPropsCopy().Id.GetValue());
+            sizeModelRepository.Update(sizeModel);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 

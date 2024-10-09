@@ -34,7 +34,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeQuantitySize
                 return ResultSet.Error($"Invalid size model item. Errors: {sizeModelItem.GetBrokenRules()}");                
             }
 
-            sizeModelRepository.ChangeQuantity(request.SizeModelItemId, request.Quantity, totalCost);
+            sizeModelRepository.UpdateItem(sizeModelItem);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModelItem, cancellationToken);
 

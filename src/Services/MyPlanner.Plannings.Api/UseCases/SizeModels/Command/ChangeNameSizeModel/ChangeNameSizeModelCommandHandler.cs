@@ -24,7 +24,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeSizeModelNam
                 return ResultSet.Error($"SizeModel name cannot be changed. Errors:{sizeModel.GetBrokenRules()}");
             }
 
-            sizeModelRepository.ChangeName(request.SizeModelId, request.Name);
+            sizeModelRepository.Update(sizeModel);
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
