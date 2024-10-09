@@ -29,7 +29,7 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
 
             await documentSession.SaveChangesAsync(cancellationToken);
 
-            return ResultSet.Success($"Product with id {request.Id} deleted successfully");
+            return ResultSet.Success();
         }
     }
 }

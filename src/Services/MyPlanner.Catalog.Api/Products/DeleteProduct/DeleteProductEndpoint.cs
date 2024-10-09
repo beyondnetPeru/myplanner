@@ -13,12 +13,9 @@ namespace MyPlanner.Catalog.Api.Products.DeleteProduct
             {
                 var command = new DeleteProductCommand(companyId, id);
 
-                var result = await services.Mediator.Send(command);
-
-                var response = result.Adapt<DeleteProductResponse>();
+                var response = await services.Mediator.Send(command);
 
                 return response.IsSuccess ? Results.Ok(response) : Results.NotFound(response);
-
             })
                 .WithTags(ENDPOINT.Tag)
                 .WithName(ENDPOINT.DELETE.Name)
