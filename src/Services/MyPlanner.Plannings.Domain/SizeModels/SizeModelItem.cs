@@ -8,7 +8,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public IdValueObject SizeModelId { get; private set; }// T-Shirt
         public IdValueObject SizeModelTypeItemId { get; private set; } // X, XS, S, M, L, XL, XXL, XXXL
         public SizeModelTypeItemCode SizeModelTypeItemCode { get; private set; } // X, XS, S, M, L, XL, XXL, XXXL
-        public FactorsEnum FactorSelected { get; private set; }
+        public FactorsEnum FactorSelected { get; set; }
         public SizeModelProfile Profile { get; private set; } // SM - $3000, SRE - $5000
         public SizeModelTypeQuantity Quantity { get; private set; } //1, 2, ..., 30
         public SizeModelTotalCost TotalCost { get; set; } = SizeModelTotalCost.DefaultValue(); // 0.00
@@ -123,7 +123,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void ChangeFactorSelected(FactorsEnum factorSelected, UserId userId, double totalCost)
         {
-            GetProps().FactorSelected.SetValue<FactorsEnum>(factorSelected.Id);
+            GetProps().FactorSelected = factorSelected;
             GetProps().TotalCost.SetValue(totalCost);
             GetProps().Audit.Update(userId.GetValue());
         }
@@ -157,7 +157,6 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
             GetProps().Status = SizeModelItemStatus.Active;
             GetProps().Audit.Update(userId.GetValue());
-
         }
 
         public void Deactivate(UserId userId)
