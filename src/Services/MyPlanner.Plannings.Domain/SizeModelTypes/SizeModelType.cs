@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Shared.Domain.ValueObjects;
-using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
+﻿using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Domain.SizeModelTypes
 {
@@ -12,7 +8,7 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
         public SizeModelTypeCode Code { get; private set; }
         public Name Name { get; private set; }
         public ICollection<SizeModelTypeItem> Items { get; private set; } = new List<SizeModelTypeItem>();
-        public SizeModelTypeStatus Status { get; private set; }
+        public SizeModelTypeStatus Status { get; set; }
 
         public SizeModelTypeProps(IdValueObject id, SizeModelTypeCode code, Name name)
         {
@@ -99,7 +95,10 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            GetProps().Items.Remove(item);
+            foreach (var item1 in GetProps().Items)
+            {
+                item1.GetProps().Status = SizeModelTypeItemStatus.Delete;
+            };
         }
 
         public void Deactivate()
@@ -116,7 +115,7 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Inactive.Id);
+            GetProps().Status = SizeModelTypeStatus.Inactive;
 
         }
 
@@ -128,7 +127,7 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Active.Id);
+            GetProps().Status = SizeModelTypeStatus.Active;
         }
 
         public void Delete()
@@ -147,11 +146,11 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
 
             foreach (var item in GetProps().Items)
             {
-                item.GetProps().Status.SetValue<SizeModelTypeItemStatus>(SizeModelTypeItemStatus.Delete.Id);
+                item.GetProps().Status= SizeModelTypeItemStatus.Delete;
             }
 
 
-            GetProps().Status.SetValue<SizeModelTypeStatus>(SizeModelTypeStatus.Delete.Id);
+            GetProps().Status = SizeModelTypeStatus.Delete;
         }
 
     }

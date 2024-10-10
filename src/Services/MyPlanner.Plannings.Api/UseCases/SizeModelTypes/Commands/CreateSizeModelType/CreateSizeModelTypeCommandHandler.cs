@@ -37,6 +37,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeMod
                 foreach (var item in request.Items)
                 {
                     var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
+                                                            IdValueObject.Create(entity.GetPropsCopy().Id.ToString()!),
                                                             SizeModelTypeItemCode.Create(item.Code),
                                                             Name.Create(item.Name),
                                                             entity);

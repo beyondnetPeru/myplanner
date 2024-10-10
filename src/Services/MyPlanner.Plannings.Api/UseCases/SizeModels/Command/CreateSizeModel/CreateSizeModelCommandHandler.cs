@@ -27,12 +27,15 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
         {
             var sizeModelType = await sizeModelTypeRepository.GetById(request.SizeModelTypeId);
 
-            var sizeModel = SizeModel.Create(IdValueObject.Create(), sizeModelType.GetPropsCopy().Id, sizeModelType.GetPropsCopy().Code, Name.Create(request.Name), UserId.Create(request.UserId));
-
+            var sizeModel = SizeModel.Create(IdValueObject.Create(), 
+                                             IdValueObject.Create(request.SizeModelTypeId),
+                                             sizeModelType.GetPropsCopy().Code,
+                                             Name.Create(request.Name), 
+                                             UserId.Create(request.UserId));
 
             if (!sizeModel.IsValid())
             {
-                return ResultSet.Error($"SizeModel is not valid: {sizeModel.GetBrokenRules()}");
+                return ResultSet.Error($"SizeModel is not valid: {sizeModel.GetBrokenRules().ToString()}");
             }
 
             if (request.Items.Any())
@@ -57,7 +60,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.CreateSizeModel
 
                     if (!sizeModelItem.IsValid())
                     {
-                        return ResultSet.Error($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules()}");
+                        return ResultSet.Error($"SizeModelItem is not valid: {sizeModelItem.GetBrokenRules().ToString()}");
                     }
 
                     sizeModel.AddItem(sizeModelItem, UserId.Create(request.UserId));

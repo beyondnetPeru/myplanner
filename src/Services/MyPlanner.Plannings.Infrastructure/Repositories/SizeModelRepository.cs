@@ -50,7 +50,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Audit.UpdatedAt = sizeModel.GetPropsCopy().Audit.GetValue().UpdatedAt;
             table.Audit.TimeSpan = sizeModel.GetPropsCopy().Audit.GetValue().TimeSpan;
 
-            context.SizeModels.Update(table);
         }
         public void Add(SizeModel sizeModel)
         {
@@ -123,7 +122,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Audit.UpdatedAt = sizeModelItem.GetPropsCopy().Audit.GetValue().UpdatedAt;
             table.Audit.TimeSpan= sizeModelItem.GetPropsCopy().Audit.GetValue().TimeSpan;
 
-            context.SizeModelItems.Update(table);
         }
 
 

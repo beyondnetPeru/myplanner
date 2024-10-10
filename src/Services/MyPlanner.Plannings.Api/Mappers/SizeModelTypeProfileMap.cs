@@ -64,6 +64,7 @@ namespace MyPlanner.Plannings.Api.Mappers
             CreateMap<SizeModelTypeItemTable, SizeModelTypeItem>()
          .ConstructUsing(src => SizeModelTypeItem.Load(
                  src.Id,
+                 src.SizeModelTypeId,
                  src.Code,
                  src.Name,
                  null,
@@ -83,7 +84,7 @@ namespace MyPlanner.Plannings.Api.Mappers
 
             CreateMap<SizeModelTypeItemTable, SizeModelTypeItemProps>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.SizeModelType, opt => opt.MapFrom(src => src.SizeModelType))
+                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(src => src.SizeModelTypeId))
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status));
@@ -130,6 +131,7 @@ namespace MyPlanner.Plannings.Api.Mappers
             source.Items.ToList().ForEach(item =>
             {
                 var factor = SizeModelTypeItem.Create(IdValueObject.Create(),
+                                                        null,   
                                                         SizeModelTypeItemCode.Create(item.Code),
                                                         Name.Create(item.Name),
                                                         null);

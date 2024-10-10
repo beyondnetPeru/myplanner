@@ -54,13 +54,13 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             return table;
         }
 
-        private async Task<SizeModelTypeItemTable> FindSizeModelTypeItemByIdAsync(string sizeModelTypeId, string sizeModelTypeItemId)
+        private async Task<SizeModelTypeItemTable> FindSizeModelTypeItemByIdAsync(string sizeModelTypeItemId)
         {
-            var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeItemId && x.SizeModelTypeId == sizeModelTypeId);
+            var table = await context.SizeModelTypeItems.FirstOrDefaultAsync(x => x.Id == sizeModelTypeItemId);
 
             if (table == null)
             {
-                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeTable)}\" ({sizeModelTypeId}) was not found.");
+                throw new KeyNotFoundException($"Entity \"{nameof(SizeModelTypeItemTable)}\" ({sizeModelTypeItemId}) was not found.");
             }
 
             return table;
@@ -118,7 +118,9 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         public async void UpdateItem(SizeModelTypeItem modelTypeItem)
         {
-            var table = await FindSizeModelTypeItemByIdAsync(modelTypeItem.GetPropsCopy().SizeModelType.GetPropsCopy().Id.GetValue(), modelTypeItem.GetPropsCopy().Id.GetValue());
+            var sizeModelTypeItemId = modelTypeItem.GetPropsCopy().Id.GetValue();
+
+            var table = await FindSizeModelTypeItemByIdAsync(sizeModelTypeItemId);
 
             if (table == null)
             {
@@ -128,7 +130,7 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Name = modelTypeItem.GetPropsCopy().Name.GetValue();
             table.Code = modelTypeItem.GetPropsCopy().Code.GetValue();
             table.Status = modelTypeItem.GetPropsCopy().Status.Id;
-            table.SizeModelTypeId = modelTypeItem.GetPropsCopy().SizeModelType.GetPropsCopy().Id.GetValue();            
+            table.SizeModelTypeId = modelTypeItem.GetPropsCopy().SizeModelTypeId.GetValue();            
         }
     }
 }

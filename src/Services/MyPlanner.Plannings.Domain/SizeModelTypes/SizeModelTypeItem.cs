@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Plannings.Domain.SizeModels;
 using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Domain.SizeModelTypes
@@ -10,27 +6,26 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
     public class SizeModelTypeItemProps : IProps
     {
         public IdValueObject Id { get; private set; }
+        public IdValueObject SizeModelTypeId { get; private set; }
         public SizeModelTypeItemCode Code { get; private set; }
         public Name Name { get; private set; }
-        public SizeModelType SizeModelType { get; private set; }
+        public SizeModelTypeItemStatus Status { get; set; }
 
-        public SizeModelTypeItemStatus Status { get; private set; }
-
-        public SizeModelTypeItemProps(IdValueObject id, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType)
+        public SizeModelTypeItemProps(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType)
         {
             Id = id;
+            SizeModelTypeId = sizeModelTypeId;
             Code = code;
-            Name = name;
-            SizeModelType = sizeModelType;
+            Name = name;            
             Status = SizeModelTypeItemStatus.Active;
         }
 
-        public SizeModelTypeItemProps(IdValueObject id, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType, SizeModelTypeItemStatus sizeModelTypeFactorStatus)
+        public SizeModelTypeItemProps(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType, SizeModelTypeItemStatus sizeModelTypeFactorStatus)
         {
             Id = id;
+            SizeModelTypeId = sizeModelTypeId;
             Code = code;
             Name = name;
-            SizeModelType = sizeModelType;
             Status = sizeModelTypeFactorStatus;
         }
 
@@ -46,14 +41,15 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
         {
         }
 
-        public static SizeModelTypeItem Create(IdValueObject id, SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType)
+        public static SizeModelTypeItem Create(IdValueObject id, IdValueObject sizeModelTypeId,  SizeModelTypeItemCode code, Name name, SizeModelType sizeModelType)
         {
-            return new SizeModelTypeItem(new SizeModelTypeItemProps(id, code, name, sizeModelType));
+            return new SizeModelTypeItem(new SizeModelTypeItemProps(id, sizeModelTypeId, code, name, sizeModelType));
         }
 
-        public static SizeModelTypeItem Load(string id, string code, string name, SizeModelType sizeModelType, int status)
+        public static SizeModelTypeItem Load(string id, string sizeModelTypeId, string code, string name, SizeModelType sizeModelType, int status)
         {
             return new SizeModelTypeItem(new SizeModelTypeItemProps(IdValueObject.Create(id),
+                IdValueObject.Create(sizeModelTypeId),
                 SizeModelTypeItemCode.Create(code),
                 Name.Create(name),
                 sizeModelType,

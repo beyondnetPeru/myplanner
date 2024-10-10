@@ -9,7 +9,7 @@
         public IdValueObject SizeModelTypeId { get; private set; }
         public ICollection<PlanItem> Items{ get; private set; }
         public Audit Audit { get; private set; }
-        public PlanStatus Status { get; private set; } = PlanStatus.Draft;
+        public PlanStatus Status { get; set; } = PlanStatus.Draft;
 
         public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
@@ -152,7 +152,7 @@
             }
 
             GetProps().Items.ToList().ForEach(x => x.Draft(userId));
-            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Draft.Id);
+            GetProps().Status = PlanStatus.Draft;
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -171,7 +171,7 @@
             }
 
             GetProps().Items.ToList().ForEach(x => x.Activate(userId));
-            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Active.Id);
+            GetProps().Status = PlanStatus.Active;
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -190,7 +190,7 @@
             }
 
             GetProps().Items.ToList().ForEach(x => x.Deactivate(userId));
-            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Inactive.Id);
+            GetProps().Status = PlanStatus.Inactive;
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -203,7 +203,7 @@
             }
 
             GetProps().Items.ToList().ForEach(x => x.Close(userId));
-            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Closed.Id);
+            GetProps().Status = PlanStatus.Closed;
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -216,7 +216,7 @@
             }
 
             GetPropsCopy().Items.ToList().ForEach(x => x.Delete(userId));
-            GetProps().Status.SetValue<PlanStatus>(PlanStatus.Deleted.Id);
+            GetProps().Status = PlanStatus.Deleted;
             GetProps().Audit.Update(userId.GetValue());
         }
     }

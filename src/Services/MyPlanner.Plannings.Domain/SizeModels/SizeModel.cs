@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
 {
@@ -14,7 +10,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public Name Name { get; private set; } // TShirt size for Squads
         public ICollection<SizeModelItem> Items { get; private set; }
         public Audit Audit { get; set; }
-        public SizeModelStatus Status { get; private set; } = SizeModelStatus.Active;
+        public SizeModelStatus Status { get; set; } = SizeModelStatus.Active;
 
         public SizeModelProps(IdValueObject id, IdValueObject sizeModelTypeId, SizeModelTypeCode sizeModelTypeCode, Name name, UserId userId)
         {
@@ -73,8 +69,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void AddItem(SizeModelItem sizeModelItem, UserId userId)
         {
-            GetProps().Items.Add(sizeModelItem);
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Items.Add(sizeModelItem);
+            this.GetProps().Audit.Update(userId.GetValue());
         }
 
         public void RemoveItem(SizeModelItem sizeModelItem, UserId userId)
@@ -85,31 +81,31 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Items.Remove(sizeModelItem);
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Items.Remove(sizeModelItem);
+            this.GetProps().Audit.Update(userId.GetValue());
         }
 
         public void ChangeName(Name name, UserId userId)
         {
-            GetProps().Name.SetValue(name.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Name.SetValue(name.GetValue());
+            this.GetProps().Audit.Update(userId.GetValue());
         }
 
         public void Activate(UserId userId)
         {
-            if (GetProps().Status == SizeModelStatus.Active)
+            if (this.GetProps().Status == SizeModelStatus.Active)
             {
                 AddBrokenRule("SizeModel", "SizeModel is already active");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelStatus>(SizeModelStatus.Active.Id);
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Status = SizeModelStatus.Active;
+            this.GetProps().Audit.Update(userId.GetValue());
         }
 
         public void Deactivate(UserId userId)
         {
-            var count = GetProps().Items.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
+            var count = this.GetProps().Items.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
 
             if (count > 0)
             {
@@ -117,13 +113,13 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelStatus>(SizeModelStatus.Deactivated.Id);
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Status = SizeModelStatus.Deactivated;
+            this.GetProps().Audit.Update(userId.GetValue());
         }
 
         public void Delete(UserId userId)
         {
-            if (GetProps().Status == SizeModelStatus.Deleted)
+            if (this.GetProps().Status == SizeModelStatus.Deleted)
             {
                 AddBrokenRule("SizeModel", "SizeModel is already deleted");
                 return;
@@ -138,8 +134,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 }
             }
 
-            GetProps().Status.SetValue<SizeModelStatus>(SizeModelStatus.Deleted.Id);
-            GetProps().Audit.Update(userId.GetValue());
+            this.GetProps().Status = SizeModelStatus.Deleted;
+            this.GetProps().Audit.Update(userId.GetValue());
         }
     }
 

@@ -28,7 +28,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ActivateSizeModel
 
             await sizeModelRepository.UnitOfWork.SaveEntitiesAsync(sizeModel, cancellationToken);
 
-            return ResultSet.Success("SizeModel activated successfully");
+            return ResultSet.Success();
 
         }
     }

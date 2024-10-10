@@ -1,8 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Interfaces;
-using BeyondNet.Ddd.ValueObjects;
-using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
 
 namespace MyPlanner.Plannings.Domain.SizeModels
 {
@@ -18,7 +14,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
         public SizeModelTotalCost TotalCost { get; set; } = SizeModelTotalCost.DefaultValue(); // 0.00
         public SizeModelItemIsStandard IsStandard { get; set; }
         public Audit Audit { get; private set; }
-        public SizeModelItemStatus Status { get; private set; }
+        public SizeModelItemStatus Status { get; set; }
 
         public SizeModelItemProps(IdValueObject id,
                                  IdValueObject sizeModelId,
@@ -159,7 +155,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Active.Id);
+            GetProps().Status = SizeModelItemStatus.Active;
             GetProps().Audit.Update(userId.GetValue());
 
         }
@@ -172,7 +168,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Deactivated.Id);
+            GetProps().Status = SizeModelItemStatus.Deactivated;
             GetProps().Audit.Update(userId.GetValue());
         }
 
@@ -184,7 +180,7 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelItemStatus.Deleted.Id);
+            GetProps().Status = SizeModelItemStatus.Deleted;
             GetProps().Audit.Update(userId.GetValue());
         }
 
