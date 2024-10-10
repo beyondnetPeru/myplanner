@@ -1,18 +1,23 @@
 ﻿namespace MyPlanner.Plannings.Models.Plan
 {
     public class PlanItemDto
-    {
-        public string Id { get; set; } = default!;
-        public string BusinessFeature { get; set; } = default!;
-        public string TechnicalDefinition { get; set; } = default!; 
+    { 
+        public string ProductId { get; set; } = default!;
+        public string PlanCategoryName { get; set; } = default!;
+        public string BusinessFeatureName { get; set; } = default!;
+        public string BusinessFeatureDefinition { get; set; } = default!;
+        public int BusinessFeatureComplexityLevel { get; set; } = default!;
+        public int BusinessFeaturePriority { get; set; } = default!;
+        public int BusinessFeatureMoScoW { get; set; } = default!;
+        public string TechnicalDefinition { get; set; } = default!;
         public string ComponentsImpacted { get; set; } = default!;
         public string TechnicalDependencies { get; set; } = default!;
-        public string SizeModelTypeFactorCode { get; set; } = default!;
-        public string SizeModelTypeValueSelected { get; set; } = default!;
-        public double BallParkCost { get; set; } = default!;
-        public double BallParkDependenciesCost { get; set; } = default!;
-        public double BallParkTotalCost { get; set; } = default!;
+        public string SizeModelTypeItemId { get; set; } = default!;
+        public int BallParkCostSymbol { get; set; } = default!;
+        public double BallParkCostAmount { get; set; } = 0.00;
+        public double BallparkDependenciesCostAmount { get; set; } = 0.00;
+        public double BallParkTotalCostAmount { get; set; } = 0.00;
         public string KeyAssumptions { get; set; } = default!;
-        public string Status { get; set; } = default!;
+        public string UserId { get; set; } = default!;
     }
 }

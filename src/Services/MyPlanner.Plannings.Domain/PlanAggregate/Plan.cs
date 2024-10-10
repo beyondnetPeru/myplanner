@@ -85,7 +85,7 @@
 
         public void AddCategory(PlanCategory category, UserId userId)
         {
-            if (GetProps().Categories.Contains(category))
+            if (GetProps().Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
             {
                 AddBrokenRule("Category", "Category already exists in the plan.");
                 return;
@@ -103,7 +103,7 @@
 
         public void RemoveCategory(PlanCategory category, UserId userId)
         {
-            if (!GetPropsCopy().Categories.Contains(category))
+            if (!GetProps().Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
             {
                 AddBrokenRule("Category", "Category does not exist in the plan.");
                 return;
@@ -115,23 +115,12 @@
 
         public void AddPlanItem(PlanItem planItem, UserId userId)
         {
-            if (GetPropsCopy().Items.Where(x => x.GetPropsCopy().Id.GetValue() == planItem.GetPropsCopy().Id.GetValue()).Any())
-            {
-                AddBrokenRule("Plan Item", "Plan Item exists in the plan.");
-                return;
-            }
-
             GetProps().Items.Add(planItem);
             GetProps().Audit.Update(userId.GetValue());
         }
 
         public void RemovePlanItem(PlanItem planItem, UserId userId)
-        {
-            if (!GetPropsCopy().Items.Where(x => x.GetPropsCopy().Id.GetValue() == planItem.GetPropsCopy().Id.GetValue()).Any())
-            {
-                AddBrokenRule("Plan Item", "Plan Item does not exist in the plan.");
-                return;
-            }
+        {        
 
             GetProps().Items.Remove(planItem);
             GetProps().Audit.Update(userId.GetValue());

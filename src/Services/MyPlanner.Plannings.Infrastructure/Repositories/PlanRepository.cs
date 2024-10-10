@@ -149,7 +149,6 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.BallparkDependenciesCostAmount = planItem.GetPropsCopy().BallParkCosts.GetValue().BallparkDependenciesCost.GetValue().Amount;
             table.BallParkTotalCostAmount = planItem.GetPropsCopy().BallParkCosts.GetValue().BallParkTotalCost.GetValue().Amount;
             table.KeyAssumptions = planItem.GetPropsCopy().KeyAssumptions.GetValue();
-            table.UserId = planItem.GetPropsCopy().Audit.GetValue().CreatedBy;
             table.Status = planItem.GetPropsCopy().Status.Id;
             table.Audit.CreatedBy = planItem.GetPropsCopy().Audit.GetValue().CreatedBy;
             table.Audit.CreatedAt = planItem.GetPropsCopy().Audit.GetValue().CreatedAt;

@@ -27,7 +27,6 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public double BallparkDependenciesCostAmount { get; set; } = 0.00;
         public double BallParkTotalCostAmount { get; set; } = 0.00;
         public string KeyAssumptions { get; set; } = default!;
-        public string UserId { get; set; } = default!;
         public AuditTable Audit { get; set; } = default!;
         public int Status { get; set; } = default!;
     }

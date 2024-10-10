@@ -1,9 +1,9 @@
-﻿
-using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Plannings.Infrastructure.Database.Tables;
 using MyPlanner.Shared.Domain.ValueObjects;
 using MyPlanner.Shared.Infrastructure.Database;
+using MyPlanner.Shared.Mappers.Converters;
 
 namespace MyPlanner.Plannings.Api.Mappers
 {
@@ -12,21 +12,33 @@ namespace MyPlanner.Plannings.Api.Mappers
     {
         public PlanProfileMap()
         {
-            CreateMap<int, PlanStatus>().ConvertUsing<EnumerationConverter<PlanStatus>>();
-            CreateMap<int, PlanItemStatus>().ConvertUsing<EnumerationConverter<PlanItemStatus>>();
-            CreateMap<Audit, AuditTable>().ConvertUsing(new AuditToAuditTableConvert());
 
+            CreateMap<int, PlanStatus>().ConvertUsing<EnumerationConverter<PlanStatus>>();
+            CreateMap<int, PlanItemStatus>().ConvertUsing<EnumerationConverter<PlanItemStatus>>();            
+            CreateMap<AuditDto, Audit>().ConvertUsing(new AuditDtoToEntityConvert());
+            CreateMap<Audit, AuditDto>().ConvertUsing(new AuditToAuditDtoConvert());
+            
             CreateMap<CreatePlanDto, CreatePlanCommand>()
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom<PlanCategoriesDtoToCommandResolver>())
                 .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsDtoToCommandResolver>());
 
             CreateMap<CreatePlanCommand, PlanProps>()
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom<PlanCategoriesCommandToEntityResolver>())
-                .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsCommandToEntityResolver>());
+                .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsCommandToEntityResolver>());            
 
+            CreateMap<Plan, PlanTable>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.GetPropsCopy().Id.GetValue()))
+                .ForMember(dest => dest.Owner, opt => opt.MapFrom(p => p.GetPropsCopy().Owner.GetValue()))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(p => p.GetPropsCopy().Name.GetValue()))
+                .ForMember(dest => dest.Categories, opt => opt.MapFrom<PlanCategoriesEntityToTableResolver>())
+                .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsEntityToTableResolver>())
+                .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(p => p.GetPropsCopy().SizeModelTypeId.GetValue()))
+                .ForMember(dest => dest.Audit, opt => opt.MapFrom(p => p.GetPropsCopy().Audit))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(p => p.GetPropsCopy().Status.Id));
 
             CreateMap<PlanTable, PlanDto>();
-            CreateMap<Plan, PlanTable>();
+            CreateMap<PlanCategoryTable, PlanCategoryDto>();
+            CreateMap<PlanItemTable, PlanItemDto>();
         }
     }
 
@@ -58,6 +70,70 @@ namespace MyPlanner.Plannings.Api.Mappers
                 var planCategoryEnity = PlanCategory.Create(IdValueObject.Create(), destination.Id, Name.Create(category.Name));
 
                 items.Add(planCategoryEnity);
+            }
+
+            return items;
+        }
+    }
+
+    internal class PlanCategoriesEntityToTableResolver : IValueResolver<Plan, PlanTable, ICollection<PlanCategoryTable>>
+    {
+        public ICollection<PlanCategoryTable> Resolve(Plan source, PlanTable destination, ICollection<PlanCategoryTable> destMember, ResolutionContext context)
+        {
+            var items = new List<PlanCategoryTable>();
+
+            foreach (var category in source.GetPropsCopy().Categories)
+            {
+                var planCategoryEnity = new PlanCategoryTable() { Id = category.GetPropsCopy().Id.GetValue(), PlanId = source.GetPropsCopy().Id.GetValue(), Name = category.GetPropsCopy().Name.GetValue() };
+
+                items.Add(planCategoryEnity);
+            }
+
+            return items;
+        }
+    }
+
+    internal class PlanItemsEntityToTableResolver : IValueResolver<Plan, PlanTable, ICollection<PlanItemTable>>
+    {
+        public ICollection<PlanItemTable> Resolve(Plan source, PlanTable destination, ICollection<PlanItemTable> destMember, ResolutionContext context)
+        {
+            var items = new List<PlanItemTable>();
+
+
+            foreach (var item in source.GetPropsCopy().Items)
+            {
+                var planItem = new PlanItemTable()
+                {
+                    Id = item.GetPropsCopy().Id.GetValue(),
+                    PlanId = source.GetPropsCopy().Id.GetValue(),
+                    ProductId = item.GetPropsCopy().ProductId.GetValue(),
+                    PlanCategoryId = item.GetPropsCopy().PlanCategoryId.GetValue(),
+                    BusinessFeatureName = item.GetPropsCopy().BusinessFeature.GetValue().Name,
+                    BusinessFeatureDefinition = item.GetPropsCopy().BusinessFeature.GetValue().BusinessDefinition,
+                    BusinessFeatureComplexityLevel = item.GetPropsCopy().BusinessFeature.GetValue().ComplexityLevel.Id,
+                    BusinessFeaturePriority = item.GetPropsCopy().BusinessFeature.GetValue().PriorityOrder,
+                    BusinessFeatureMoScoW = item.GetPropsCopy().BusinessFeature.GetValue().MoScoW.Id,
+                    TechnicalDefinition = item.GetPropsCopy().TechnicalDefinition.GetValue(),
+                    ComponentsImpacted = item.GetPropsCopy().ComponentsImpacted.GetValue(),
+                    TechnicalDependencies = item.GetPropsCopy().TechnicalDependencies.GetValue(),
+                    SizeModelTypeItemId = item.GetPropsCopy().SizeModelTypeItemId.GetValue(),
+                    BallParkCostSymbol = item.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Symbol.Id,
+                    BallParkCostAmount = item.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Amount,
+                    BallparkDependenciesCostAmount = item.GetPropsCopy().BallParkCosts.GetValue().BallparkDependenciesCost.GetValue().Amount,
+                    BallParkTotalCostAmount = item.GetPropsCopy().BallParkCosts.GetValue().BallParkTotalCost.GetValue().Amount,
+                    KeyAssumptions = item.GetPropsCopy().KeyAssumptions.GetValue(),
+                    Audit = new AuditTable()
+                    {
+                        CreatedBy = item.GetPropsCopy().Audit.GetValue().CreatedBy,
+                        CreatedAt = item.GetPropsCopy().Audit.GetValue().CreatedAt,
+                        UpdatedBy = item.GetPropsCopy().Audit.GetValue().UpdatedBy,
+                        UpdatedAt = item.GetPropsCopy().Audit.GetValue().UpdatedAt,
+                        TimeSpan = item.GetPropsCopy().Audit.GetValue().TimeSpan
+                    },
+                    Status = item.GetPropsCopy().Status.Id
+                };
+
+                items.Add(planItem);
             }
 
             return items;

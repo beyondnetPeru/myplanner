@@ -13,7 +13,6 @@ namespace MyPlanner.Plannings.Infrastructure.Database.Tables
         public string SizeModelTypeId { get; set; } = default!;
         public SizeModelTypeTable SizeModelType { get; set; } = default!;
         public ICollection<PlanItemTable> Items { get; set; } = default!;
-        public string UserId { get; set; } = default!;
         public AuditTable Audit { get; set; } = default!;
         public int Status { get; set; }
     }
