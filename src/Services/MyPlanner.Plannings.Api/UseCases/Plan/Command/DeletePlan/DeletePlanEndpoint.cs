@@ -1,4 +1,4 @@
-﻿
+﻿using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
@@ -6,14 +6,35 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/plans/{planId}", async ([AsParameters] PlanServices service, [FromBody] DeletePlanDto planDto) =>
+            app.MapPut("/plans/{planId}/delete", async (
+                [FromHeader(Name = "x-requestid")] Guid requestId,
+                [AsParameters] PlanServices service, string planId, [FromBody] DeletePlanDto deletePlanDto) =>
             {
-                var request = new DeletePlanCommand(planDto.PlanId, planDto.UserId);
+                if (requestId == Guid.Empty)
+                {
+                    service.Logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", deletePlanDto);
+                    return TypedResults.BadRequest("RequestId is missing.");
+                }
 
-                var result = await service.Mediator.Send(request);
+                using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
+                {
+                    var command = new DeletePlanCommand(planId, deletePlanDto.UserId);
 
-                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
+                    var request = new IdentifiedCommand<DeletePlanCommand, ResultSet>(command, requestId);
 
+                    var result = await service.Mediator.Send(request);
+
+                    if (result.IsSuccess)
+                    {
+                        service.Logger.LogInformation("DeletePlanCommand succeeded - RequestId: {RequestId}", requestId);
+                        return Results.Ok(result);
+                    }
+                    else
+                    {
+                        service.Logger.LogWarning("DeletePlanCommand failed - RequestId: {RequestId}", requestId);
+                        return Results.BadRequest(result);
+                    }
+                }
             }).WithTags(Tags.Plan);
         }
     }

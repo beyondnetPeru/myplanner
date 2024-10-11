@@ -1,19 +1,41 @@
-﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
+﻿using MyPlanner.Shared.Cqrs;
+
+namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 {
     public class ChangePlanOwnerEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/plans/{planId}/changeowner", async ([AsParameters] PlanServices service, [FromBody] ChangePlanOwnerDto changePlanOwnerDto) =>
+            app.MapPut("/plans/{planId}/changeowner", async (
+                [FromHeader(Name = "x-requestid")] Guid requestId,
+                [AsParameters] PlanServices service, string planId, [FromBody] ChangePlanOwnerDto changePlanOwnerDto) =>
             {
-                var request = new ChangePlanOwnerCommand(changePlanOwnerDto.Id, changePlanOwnerDto.Owner, changePlanOwnerDto.UserId);
+                if (requestId == Guid.Empty)
+                {
+                    service.Logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", changePlanOwnerDto);
+                    return TypedResults.BadRequest("RequestId is missing.");
+                }
 
-                var result = await service.Mediator.Send(request);
+                using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
+                { 
+                    var command = new ChangePlanOwnerCommand(planId, changePlanOwnerDto.Owner, changePlanOwnerDto.UserId);
 
-                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
+                    var request = new IdentifiedCommand<ChangePlanOwnerCommand, ResultSet>(command, requestId);
 
+                    var result = await service.Mediator.Send(request);
+
+                    if (result.IsSuccess)
+                    {
+                        service.Logger.LogInformation("ChangePlanOwnerCommand succeeded - RequestId: {RequestId}", requestId);
+                        return Results.Ok(result);
+                    }
+                    else
+                    {
+                        service.Logger.LogWarning("ChangePlanOwnerCommand failed - RequestId: {RequestId}", requestId);
+                        return Results.BadRequest(result);
+                    }
+                }
             }).WithTags(Tags.Plan);
-
         }
     }
 }
