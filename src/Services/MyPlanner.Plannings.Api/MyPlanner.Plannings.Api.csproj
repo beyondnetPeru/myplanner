@@ -45,10 +45,6 @@
 		<ProjectReference Include="..\MyPlanner.Shared\MyPlanner.Shared.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="UseCases\Plan\Command\RemovePlanItem\" />
-	</ItemGroup>
-
 	<ProjectExtensions>
 		<VisualStudio>
 			<UserProperties appsettings_1development_1json__JsonSchema="https://json.schemastore.org/asconfig-schema.json" />
