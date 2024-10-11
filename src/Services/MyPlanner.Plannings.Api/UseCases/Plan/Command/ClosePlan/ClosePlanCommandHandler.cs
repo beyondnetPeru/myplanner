@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName;
-using MyPlanner.Plannings.Domain.PlanAggregate;
+﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 using MyPlanner.Shared.Infrastructure.Idempotency;

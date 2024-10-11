@@ -2,11 +2,9 @@
 {
     public class DeactivatePlanDto : AbstractUserDto
     {
-        public string PlanId { get; set; }
-
-        public DeactivatePlanDto(string planId, string userId) : base(userId)
+        public DeactivatePlanDto(string userId) : base(userId)
         {
-            PlanId = planId;
+   
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using Mapster;
-
-using MyPlanner.Shared.Cqrs;
+﻿using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {

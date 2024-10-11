@@ -1,4 +1,4 @@
-﻿
+﻿using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
 {
@@ -6,14 +6,36 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/plans/{planId}/deactivate", async ([AsParameters] PlanServices service, [FromBody] DeactivatePlanDto planDto) =>
+            app.MapPut("/plans/{planId}/deactivate", async (
+                [FromHeader(Name = "x-requestid")] Guid requestId, 
+                [AsParameters] PlanServices service, 
+                string planId, [FromBody] DeactivatePlanDto deactivatePlanDto) =>
             {
-                var request = new DeactivatePlanCommand(planDto.PlanId, planDto.UserId);
+                if (requestId == Guid.Empty)
+                {
+                    service.Logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", deactivatePlanDto);
+                    return TypedResults.BadRequest("RequestId is missing.");
+                }
 
-                var result = await service.Mediator.Send(request);
+                using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
+                {
+                    var command = new DeactivatePlanCommand(planId, deactivatePlanDto.UserId);
 
-                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
+                    var request = new IdentifiedCommand<DeactivatePlanCommand, ResultSet>(command, requestId);
 
+                    var result = await service.Mediator.Send(request);
+
+                    if (result.IsSuccess)
+                    {
+                        service.Logger.LogInformation("DeactivatePlanCommand succeeded - RequestId: {RequestId}", requestId);
+                        return Results.Ok(result);
+                    }
+                    else
+                    {
+                        service.Logger.LogWarning("DeactivatePlanCommand failed - RequestId: {RequestId}", requestId);
+                        return Results.BadRequest(result);
+                    }
+                }
             }).WithTags(Tags.Plan);
         }
     }

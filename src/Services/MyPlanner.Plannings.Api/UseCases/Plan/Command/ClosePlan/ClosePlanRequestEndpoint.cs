@@ -1,4 +1,4 @@
-﻿
+﻿using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
 {
@@ -6,14 +6,37 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/plans/{planId}/close", async ([AsParameters] PlanServices service, [FromBody] ClosePlanDto planDto) =>
+            app.MapPut("/plans/{planId}/close", async (
+                [FromHeader(Name = "x-requestid")] Guid requestId,
+                [AsParameters] PlanServices service,
+                string planId, 
+                [FromBody] ClosePlanDto closePlanDto) =>
             {
-                var request = new ClosePlanCommand(planDto.PlanId, planDto.UserId);
+                if (requestId == Guid.Empty)
+                {
+                    service.Logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", closePlanDto);
+                    return TypedResults.BadRequest("RequestId is missing.");
+                }
+                
+                using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
+                {
+                    var command = new ClosePlanCommand(planId, closePlanDto.UserId);
 
-                var result = await service.Mediator.Send(request);
+                    var request = new IdentifiedCommand<ClosePlanCommand, ResultSet>(command, requestId);
 
-                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
+                    var result = await service.Mediator.Send(request);
 
+                    if (result.IsSuccess)
+                    {
+                        service.Logger.LogInformation("ClosePlanCommand succeeded - RequestId: {RequestId}", requestId);
+                        return Results.Ok(result);
+                    }
+                    else
+                    {
+                        service.Logger.LogWarning("ClosePlanCommand failed - RequestId: {RequestId}", requestId);
+                        return Results.BadRequest(result);
+                    }
+                }
             }).WithTags(Tags.Plan);
         }
     }
