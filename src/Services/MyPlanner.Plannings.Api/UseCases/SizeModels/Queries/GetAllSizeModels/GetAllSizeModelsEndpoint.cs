@@ -4,7 +4,7 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/sizemodels", async ([AsParameters] SizeModelService service, int page = 0, int recordsPerPage = 10) =>
+            app.MapGet("/sizemodels", async ([AsParameters] SizeModelService service, int page = 1, int recordsPerPage = 5) =>
             {
                 var pagination = new PaginationQuery(page, recordsPerPage);
 

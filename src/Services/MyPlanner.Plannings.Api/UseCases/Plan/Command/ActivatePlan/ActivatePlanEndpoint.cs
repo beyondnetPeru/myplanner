@@ -4,9 +4,9 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPut("/plans/{planId}/activate", async ([AsParameters] PlanServices service, [FromBody] ActivatePlanDto planDto) =>
+            app.MapPut("/plans/{planId}/activate", async ([AsParameters] PlanServices service, string planId, [FromBody] ActivatePlanDto planDto) =>
             {
-                var request = new ActivatePlanCommand(planDto.PlanId, planDto.UserId);
+                var request = new ActivatePlanCommand(planId, planDto.UserId);
 
                 var result = await service.Mediator.Send(request);
 

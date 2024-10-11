@@ -1,36 +1,21 @@
 ﻿namespace MyPlanner.Shared.Models.Pagination
 {
+    
+
     public class PaginationQuery
     {
         public int Page { get; private set; }
-        public int RecordsPerPageMax { get; private set; }
+        public int RecordsPerPage { get; private set; }
 
-        private int recordsPerPage = 10;
+        public int Skip { get; private set; }
+        public int Take { get; private set; }
 
-        public PaginationQuery(int page = 1, int recordsPerPageMax = 50)
+        public PaginationQuery(int page = 1, int recordsPerPage = 5)
         {
-            Page = page;
-            RecordsPerPageMax = recordsPerPageMax;
+            this.Skip = (page - 1) * recordsPerPage;
+            this.Take = recordsPerPage;
         }
 
-        public int RecordsPerPage
-        {
-            get
-            {
-                return recordsPerPage;
-            }
-            set
-            {
-                if (value > RecordsPerPageMax)
-                {
-                    recordsPerPage = RecordsPerPageMax;
-                }
-                else
-                {
-                    recordsPerPage = value;
-                }
-            }
-        }
-    }
+     }
 }
 

@@ -36,6 +36,54 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.Audit, opt => opt.MapFrom(p => p.GetPropsCopy().Audit))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(p => p.GetPropsCopy().Status.Id));
 
+            CreateMap<PlanTable, Plan>()
+                .ConstructUsing(dest => Plan.Load(new PlanProps(
+                    IdValueObject.Create(dest.Id),
+                    IdValueObject.Create(dest.SizeModelTypeId),
+                    dest.Categories.Select(p => PlanCategory.Create(IdValueObject.Create(p.Id), IdValueObject.Create(p.PlanId), Name.Create(p.Name))).ToList(),
+                    Name.Create(dest.Name),
+                    Owner.Create(dest.Owner),
+                    dest.Items.Select(
+                        p => PlanItem.Load(
+                            p.Id,
+                            p.PlanId,
+                            p.ProductId,
+                            p.PlanCategoryId,
+                            BusinessFeature.Create(p.BusinessFeatureName, 
+                                                   p.BusinessFeatureDefinition, 
+                                                   Enumeration.FromValue<ComplexityLevelEnum>(p.BusinessFeatureComplexityLevel), 
+                                                   p.BusinessFeaturePriority, 
+                                                   Enumeration.FromValue<MoScoWEnum>(p.BusinessFeatureMoScoW)),
+                            TechnicalDefinition.Create(p.TechnicalDefinition),
+                            ComponentsImpacted.Create(p.ComponentsImpacted),
+                            TechnicalDependencies.Create(p.TechnicalDependencies),
+                            p.SizeModelTypeItemId,
+                            BallParkCost.Create(Enumeration.FromValue<CurrencySymbolEnum>(p.BallParkCostSymbol), p.BallParkCostAmount, p.BallparkDependenciesCostAmount),
+                            KeyAssumptions.Create(p.KeyAssumptions),                            
+                            Audit.Load(new AuditProps()
+                            {
+                                CreatedBy = p.Audit.CreatedBy,
+                                CreatedAt = p.Audit.CreatedAt,
+                                UpdatedBy = p.Audit.UpdatedBy,
+                                UpdatedAt = p.Audit.UpdatedAt,
+                                TimeSpan = p.Audit.TimeSpan
+                            }),
+                            p.Status,
+                            p.Audit.CreatedBy
+                        )).ToList()
+                    ,
+                    Audit.Load(new AuditProps()
+                    {
+                        CreatedBy = dest.Audit.CreatedBy,
+                        CreatedAt = dest.Audit.CreatedAt,
+                        UpdatedBy = dest.Audit.UpdatedBy,
+                        UpdatedAt = dest.Audit.UpdatedAt,
+                        TimeSpan = dest.Audit.TimeSpan
+                    }),
+                    Enumeration.FromValue<PlanStatus>(dest.Status)
+                )));
+
+
             CreateMap<PlanTable, PlanDto>();
             CreateMap<PlanCategoryTable, PlanCategoryDto>();
             CreateMap<PlanItemTable, PlanItemDto>();
@@ -87,6 +135,27 @@ namespace MyPlanner.Plannings.Api.Mappers
                 var planCategoryEnity = new PlanCategoryTable() { Id = category.GetPropsCopy().Id.GetValue(), PlanId = source.GetPropsCopy().Id.GetValue(), Name = category.GetPropsCopy().Name.GetValue() };
 
                 items.Add(planCategoryEnity);
+            }
+
+            return items;
+        }
+    }
+
+    internal class PlanCategoriesTableToEntityResolver : IValueResolver<PlanTable, PlanProps, ICollection<PlanCategory>>
+    {
+        public ICollection<PlanCategory> Resolve(PlanTable source, PlanProps destination, ICollection<PlanCategory> destMember, ResolutionContext context)
+        {
+            var items = new List<PlanCategory>();
+
+            foreach (var category in source.Categories)
+            {
+                var planCategoryProp = new PlanCategoryProps(IdValueObject.Create(category.Id),
+                                                destination.Id,
+                                                Name.Create(category.Name));
+
+                var planCategory = PlanCategory.Create(planCategoryProp.Id, planCategoryProp.PlanId, planCategoryProp.Name);
+
+                items.Add(planCategory);
             }
 
             return items;
@@ -209,6 +278,44 @@ namespace MyPlanner.Plannings.Api.Mappers
         }
     }
 
+    internal class PlanItemsTableToEntityResolver : IValueResolver<PlanTable, PlanProps, ICollection<PlanItem>>
+    {
+        public ICollection<PlanItem> Resolve(PlanTable source, PlanProps destination, ICollection<PlanItem> destMember, ResolutionContext context)
+        {
+            var items = new List<PlanItem>();
+
+
+            foreach (var item in source.Items)
+            {
+                items.Add(PlanItem.Load(item.Id, item.PlanId,
+                                        item.ProductId,
+                                        item.PlanCategoryId,
+                                        BusinessFeature.Create(item.BusinessFeatureName,
+                                                               item.BusinessFeatureDefinition,
+                                                               Enumeration.FromValue<ComplexityLevelEnum>(item.BusinessFeatureComplexityLevel),
+                                                               item.BusinessFeaturePriority,
+                                                               Enumeration.FromValue<MoScoWEnum>(item.BusinessFeatureMoScoW)),
+                                        TechnicalDefinition.Create(item.TechnicalDefinition),
+                                        ComponentsImpacted.Create(item.ComponentsImpacted),
+                                        TechnicalDependencies.Create(item.TechnicalDependencies),
+                                        item.SizeModelTypeItemId,
+                                        BallParkCost.Create(Enumeration.FromValue<CurrencySymbolEnum>(item.BallParkCostSymbol), item.BallParkCostAmount, item.BallparkDependenciesCostAmount),
+                                        KeyAssumptions.Create(item.KeyAssumptions),
+                                        Audit.Load(new AuditProps()
+                                        {
+                                            CreatedBy = item.Audit.CreatedBy,
+                                            CreatedAt = item.Audit.CreatedAt,
+                                            UpdatedBy = item.Audit.UpdatedBy,
+                                            UpdatedAt = item.Audit.UpdatedAt,
+                                            TimeSpan = item.Audit.TimeSpan
+                                        }),
+                                        item.Status,
+                                        item.Audit.CreatedBy));
+            }
+
+            return items;
+        }
+    }
 
     #endregion
 }

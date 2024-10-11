@@ -4,9 +4,9 @@
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/plans", async ([AsParameters] PlanServices service, [FromBody] PaginationDto paginationDto) =>
+            app.MapGet("/plans", async ([AsParameters] PlanServices service, int page = 1, int recordsPerPage = 5) =>
             {
-                var pagination = new PaginationQuery(paginationDto.Page, paginationDto.RecordsPerPageMax);
+                var pagination = new PaginationQuery(page, recordsPerPage);
 
                 var query = new GetAllPlansQuery(pagination);
 

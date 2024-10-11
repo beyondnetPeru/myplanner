@@ -19,7 +19,11 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
 
         private async Task<PlanTable> GetPlanTable(string planId)
         {
-            var plan = await context.Plans.FindAsync(planId);
+            var plan = await context.Plans
+                                .Include(x => x.Categories)
+                                .Include(x => x.Items)
+                                .Include(x => x.SizeModelType)
+                                .Where(p => p.Id == planId).FirstOrDefaultAsync();
 
             if (plan == null)
                 throw new Exception("Plan not found");
@@ -31,7 +35,10 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
         {
             var table = await GetPlanTable(planId);
 
-            return mapper.Map<Plan>(table);
+            var plan = mapper.Map<Plan>(table);
+
+            return plan;
+            
         }
 
         public void Create(Plan plan)

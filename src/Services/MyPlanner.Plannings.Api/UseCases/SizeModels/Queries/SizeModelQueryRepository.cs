@@ -29,8 +29,8 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries
             var data = await context.SizeModels
                 .Include(x => x.Items)
                 .ThenInclude(x => x.SizeModelTypeItem)
-                .Skip(pagination.Page)
-                .Take(pagination.RecordsPerPage)
+                .Skip(pagination.Skip)
+                .Take(pagination.Take)
                 .ToListAsync();
 
             var dto = mapper.Map<IEnumerable<SizeModelDto>>(data);

@@ -47,7 +47,10 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries
             var plans = await context.Plans
                                 .Include(p => p.SizeModelType)
                                 .Include(p => p.Categories)
-                                .Include(p => p.Items).ToListAsync();
+                                .Include(p => p.Items)
+                                .Skip(pagination.Skip)
+                                .Take(pagination.Take)
+                                .ToListAsync();
 
             var dtos = mapper.Map<IEnumerable<PlanDto>>(plans);
 
