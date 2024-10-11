@@ -3,7 +3,7 @@ using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeChangeSizeModelTypeItem
 {
-    public class ChangeChangeSizeModelTypeItemEndpoint : ICarterModule
+    public class ChangeSizeModelTypeItemEndpoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
@@ -19,9 +19,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeChangeSizeModelTyp
 
                 using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
                 {
-                    var command = new ChangeChangeSizeModelTypeItemCommand(planId, planItemId, changeChangeSizeModelTypeItemDto.UserId);
+                    var command = new ChangeSizeModelTypeItemCommand(planId, planItemId, changeChangeSizeModelTypeItemDto.UserId);
 
-                    var request = new IdentifiedCommand<ChangeChangeSizeModelTypeItemCommand, ResultSet>(command, requestId);
+                    var request = new IdentifiedCommand<ChangeSizeModelTypeItemCommand, ResultSet>(command, requestId);
 
                     var result = await service.Mediator.Send(request);
 

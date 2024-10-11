@@ -2,6 +2,7 @@
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 {
@@ -55,6 +56,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
             await planRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
 
             return ResultSet.Success();
+        }
+    }
+
+    public class AddPlanIdentifiedRequestHandler : IdentifiedCommandHandler<AddPlanItemCommand, ResultSet>
+    {
+        public AddPlanIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<AddPlanItemCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

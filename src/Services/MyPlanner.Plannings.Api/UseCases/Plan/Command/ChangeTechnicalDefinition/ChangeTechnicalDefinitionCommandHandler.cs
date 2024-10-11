@@ -1,7 +1,9 @@
-﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeComponentsImpacted;
+using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem;
 using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinition
 {
@@ -30,6 +32,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitio
             await planRepository.UnitOfWork.SaveEntitiesAsync(planItem, cancellationToken);
 
             return ResultSet.Success();
+        }
+    }
+
+    public class ChangeTechnicalDefinitionsIdentifiedRequestHandler : IdentifiedCommandHandler<ChangeTechnicalDefinitionCommand, ResultSet>
+    {
+        public ChangeTechnicalDefinitionsIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ChangeTechnicalDefinitionCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

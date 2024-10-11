@@ -1,6 +1,7 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeComponentsImpacted
 {
@@ -29,6 +30,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeComponentsImpacted
             await planRepository.UnitOfWork.SaveEntitiesAsync(planItem, cancellationToken);
 
             return ResultSet.Success();
+        }
+    }
+
+    public class ChangeComponentsImpactedIdentifiedRequestHandler : IdentifiedCommandHandler<ChangeComponentsImpactedCommand, ResultSet>
+    {
+        public ChangeComponentsImpactedIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ChangeComponentsImpactedCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }

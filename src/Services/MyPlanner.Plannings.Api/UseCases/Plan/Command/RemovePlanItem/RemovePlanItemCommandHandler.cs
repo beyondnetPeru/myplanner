@@ -1,6 +1,7 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.RemovePlanItem
 {
@@ -16,12 +17,12 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.RemovePlanItem
         public async override Task<ResultSet> HandleCommand(RemovePlanItemCommand request, CancellationToken cancellationToken)
         {
             var planItem = await planRepository.GetItemById(request.PlanItemId);
-            
+
             planItem.Delete(UserId.Create(request.UserId));
 
             if (!planItem.IsValid())
             {
-               return ResultSet.Error($"Error removing plan item. Errors: {planItem.GetBrokenRules().ToString()}");
+                return ResultSet.Error($"Error removing plan item. Errors: {planItem.GetBrokenRules().ToString()}");
             }
 
             planRepository.UpdateItem(planItem);
@@ -30,5 +31,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.RemovePlanItem
 
             return ResultSet.Success();
         }
+    }
+
+    public class RemovePlanItemIdentifiedRequestHandler : IdentifiedCommandHandler<RemovePlanItemCommand, ResultSet>
+    {
+        public RemovePlanItemIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<RemovePlanItemCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
+        }
+
     }
 }

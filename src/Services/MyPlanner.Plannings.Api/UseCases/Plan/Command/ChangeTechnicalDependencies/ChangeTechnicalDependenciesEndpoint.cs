@@ -19,9 +19,9 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDependenc
 
                 using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
                 {
-                    var command = new ChangeTechnicalDependenciesCommand(planId, planItemId, changeTechnicalDependenciesDto.UserId);
+                    var command = new ClosePlanItemCommand(planId, planItemId, changeTechnicalDependenciesDto.UserId);
 
-                    var request = new IdentifiedCommand<ChangeTechnicalDependenciesCommand, ResultSet>(command, requestId);
+                    var request = new IdentifiedCommand<ClosePlanItemCommand, ResultSet>(command, requestId);
 
                     var result = await service.Mediator.Send(request);
 

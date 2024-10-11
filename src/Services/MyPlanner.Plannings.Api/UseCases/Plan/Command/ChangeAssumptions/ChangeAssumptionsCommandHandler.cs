@@ -1,6 +1,7 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
+using MyPlanner.Shared.Infrastructure.Idempotency;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeAssumptions
 {
@@ -29,6 +30,22 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeAssumptions
             await planRepository.UnitOfWork.SaveEntitiesAsync(planItem, cancellationToken);
 
             return ResultSet.Success();
+        }
+    }
+
+    public class ChangeAssumptionsIdentifiedRequestHandler : IdentifiedCommandHandler<ChangeAssumptionsCommand, ResultSet>
+    {
+        public ChangeAssumptionsIdentifiedRequestHandler(
+            IMediator mediator,
+            IRequestManager requestManager,
+            ILogger<IdentifiedCommandHandler<ChangeAssumptionsCommand, ResultSet>> logger)
+            : base(mediator, requestManager, logger)
+        {
+        }
+
+        protected override ResultSet CreateResultForDuplicateRequest()
+        {
+            return ResultSet.Success(); // Ignore duplicate requests for processing order.
         }
     }
 }
