@@ -163,6 +163,15 @@ namespace MyPlanner.Plannings.Infrastructure.Repositories
             table.Audit.UpdatedAt = planItem.GetPropsCopy().Audit.GetValue().UpdatedAt;
             table.Audit.TimeSpan = planItem.GetPropsCopy().Audit.GetValue().TimeSpan;
 
-        }        
+        }
+
+        public async Task<PlanCategory> GetCategoryByName(string planId, string categoryName)
+        {
+            var table = await context.PlanCategories.AsNoTracking().FirstAsync(x => x.PlanId == planId && x.Name == categoryName);
+
+            var tableMapped = mapper.Map<PlanCategory>(table);
+
+            return tableMapped;
+        }
     }
 }

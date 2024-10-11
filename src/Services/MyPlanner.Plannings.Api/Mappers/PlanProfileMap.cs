@@ -24,7 +24,13 @@ namespace MyPlanner.Plannings.Api.Mappers
 
             CreateMap<CreatePlanCommand, PlanProps>()
                 .ForMember(dest => dest.Categories, opt => opt.MapFrom<PlanCategoriesCommandToEntityResolver>())
-                .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsCommandToEntityResolver>());            
+                .ForMember(dest => dest.Items, opt => opt.MapFrom<PlanItemsCommandToEntityResolver>());     
+            
+            CreateMap<PlanCategory, PlanCategoryTable>()
+                .ConstructUsing(p => new PlanCategoryTable() { Id = p.GetPropsCopy().Id.GetValue(), PlanId = p.GetPropsCopy().PlanId.GetValue(), Name = p.GetPropsCopy().Name.GetValue() });
+
+            CreateMap<PlanCategoryTable, PlanCategory>()
+                .ConstructUsing(p => PlanCategory.Create(IdValueObject.Create(p.Id), IdValueObject.Create(p.PlanId), Name.Create(p.Name)));
 
             CreateMap<Plan, PlanTable>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.GetPropsCopy().Id.GetValue()))
@@ -35,6 +41,29 @@ namespace MyPlanner.Plannings.Api.Mappers
                 .ForMember(dest => dest.SizeModelTypeId, opt => opt.MapFrom(p => p.GetPropsCopy().SizeModelTypeId.GetValue()))
                 .ForMember(dest => dest.Audit, opt => opt.MapFrom(p => p.GetPropsCopy().Audit))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(p => p.GetPropsCopy().Status.Id));
+
+            CreateMap<PlanItem, PlanItemTable>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(p => p.GetPropsCopy().Id.GetValue()))
+                .ForMember(dest => dest.PlanId, opt => opt.MapFrom(p => p.GetPropsCopy().PlanId.GetValue()))
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(p => p.GetPropsCopy().ProductId.GetValue()))
+                .ForMember(dest => dest.PlanCategoryId, opt => opt.MapFrom(p => p.GetPropsCopy().PlanCategoryId.GetValue()))
+                .ForMember(dest => dest.BusinessFeatureName, opt => opt.MapFrom(p => p.GetPropsCopy().BusinessFeature.GetValue().Name))
+                .ForMember(dest => dest.BusinessFeatureDefinition, opt => opt.MapFrom(p => p.GetPropsCopy().BusinessFeature.GetValue().BusinessDefinition))
+                .ForMember(dest => dest.BusinessFeatureComplexityLevel, opt => opt.MapFrom(p => p.GetPropsCopy().BusinessFeature.GetValue().ComplexityLevel.Id))
+                .ForMember(dest => dest.BusinessFeaturePriority, opt => opt.MapFrom(p => p.GetPropsCopy().BusinessFeature.GetValue().PriorityOrder))
+                .ForMember(dest => dest.BusinessFeatureMoScoW, opt => opt.MapFrom(p => p.GetPropsCopy().BusinessFeature.GetValue().MoScoW.Id))
+                .ForMember(dest => dest.TechnicalDefinition, opt => opt.MapFrom(p => p.GetPropsCopy().TechnicalDefinition.GetValue()))
+                .ForMember(dest => dest.ComponentsImpacted, opt => opt.MapFrom(p => p.GetPropsCopy().ComponentsImpacted.GetValue()))
+                .ForMember(dest => dest.TechnicalDependencies, opt => opt.MapFrom(p => p.GetPropsCopy().TechnicalDependencies.GetValue()))
+                .ForMember(dest => dest.SizeModelTypeItemId, opt => opt.MapFrom(p => p.GetPropsCopy().SizeModelTypeItemId.GetValue()))
+                .ForMember(dest => dest.BallParkCostSymbol, opt => opt.MapFrom(p => p.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Symbol.Id))
+                .ForMember(dest => dest.BallParkCostAmount, opt => opt.MapFrom(p => p.GetPropsCopy().BallParkCosts.GetValue().BallParkCost.GetValue().Amount))
+                .ForMember(dest => dest.BallparkDependenciesCostAmount, opt => opt.MapFrom(p => p.GetPropsCopy().BallParkCosts.GetValue().BallparkDependenciesCost.GetValue().Amount))
+                .ForMember(dest => dest.BallParkTotalCostAmount, opt => opt.MapFrom(p => p.GetPropsCopy().BallParkCosts.GetValue().BallParkTotalCost.GetValue().Amount))
+                .ForMember(dest => dest.KeyAssumptions, opt => opt.MapFrom(p => p.GetPropsCopy().KeyAssumptions.GetValue()))
+                .ForMember(dest => dest.Audit, opt => opt.MapFrom(p => p.GetPropsCopy().Audit))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(p => p.GetPropsCopy().Status.Id));
+
 
             CreateMap<PlanTable, Plan>()
                 .ConstructUsing(dest => Plan.Load(new PlanProps(
@@ -83,7 +112,7 @@ namespace MyPlanner.Plannings.Api.Mappers
                     Enumeration.FromValue<PlanStatus>(dest.Status)
                 )));
 
-
+            CreateMap<AddPlanItemDto, AddPlanItemCommand>();
             CreateMap<PlanTable, PlanDto>();
             CreateMap<PlanCategoryTable, PlanCategoryDto>();
             CreateMap<PlanItemTable, PlanItemDto>();

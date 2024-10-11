@@ -1,5 +1,5 @@
-﻿
-using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
+using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 {
@@ -7,14 +7,37 @@ namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/plans/{planId}/items", async ([AsParameters] PlanServices service, [FromBody] AddPlanItemDto planItem) =>
+            app.MapPost("/plans/{planId}/items", async (
+                [FromHeader(Name = "x-requestid")] Guid requestId,
+                [AsParameters] PlanServices service, string planId, [FromBody] AddPlanItemDto addPlanItemDto) =>
             {
-                var request = service.Mapper.Map<AddPlanItemCommand>(planItem);
 
-                var result = await service.Mediator.Send(request);
+                if (requestId == Guid.Empty)
+                {
+                    service.Logger.LogWarning("Invalid IntegrationEvent - RequestId is missing - {@IntegrationEvent}", addPlanItemDto);
+                    return TypedResults.BadRequest("RequestId is missing.");
+                }
 
-                return result.IsSuccess ? Results.Ok(result) : Results.BadRequest(result);
+                using (service.Logger.BeginScope(new List<KeyValuePair<string, object>> { new("IdentifiedCommandId", requestId) }))
+                {
+                    var command = service.Mapper.Map<AddPlanItemCommand>(addPlanItemDto);
+                    command.PlanId = planId;
 
+                    var request = new IdentifiedCommand<AddPlanItemCommand, ResultSet>(command, requestId);
+
+                    var result = await service.Mediator.Send(request);
+
+                    if (result.IsSuccess)
+                    {
+                        service.Logger.LogInformation("AddPlanItemCommand succeeded - RequestId: {RequestId}", requestId);
+                        return Results.Ok(result);
+                    }
+                    else
+                    {
+                        service.Logger.LogWarning("AddPlanItemCommand failed - RequestId: {RequestId}", requestId);
+                        return Results.BadRequest(result);
+                    }
+                }
             }).WithTags(Tags.Plan);
         }
     }
