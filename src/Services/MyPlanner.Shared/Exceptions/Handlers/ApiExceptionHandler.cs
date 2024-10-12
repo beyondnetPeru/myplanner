@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+using MyPlanner.Shared.Domain;
 
 namespace MyPlanner.Shared.Exceptions.Handlers
 {
@@ -19,6 +18,12 @@ namespace MyPlanner.Shared.Exceptions.Handlers
 
             (string Detail, string Title, int StatusCode) details = exception switch
             {
+                DomainException =>
+                (
+                    exception.Message,
+                    exception.GetType().Name,
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError
+                ),                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
                 InternalServerException =>
                 (
                     exception.Message,
