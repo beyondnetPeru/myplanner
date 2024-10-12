@@ -1,8 +1,14 @@
-﻿namespace MyPlanner.Plannings.Domain.PlanAggregate
+﻿using BeyondNet.Ddd.Impl;
+using MyPlanner.Plannings.Domain.PlanAggregate.DomainEvents;
+using MyPlanner.Shared.Domain.ValueObjects;
+using System.Numerics;
+
+namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
     public class PlanProps : IProps
     {
         public IdValueObject Id { get; private set; }
+        public PlanCode Code { get; private set; }
         public ICollection<PlanCategory> Categories { get; private set; }
         public Name Name { get; private set; }
         public Owner Owner { get; private set; }
@@ -11,9 +17,10 @@
         public Audit Audit { get; private set; }
         public PlanStatus Status { get; set; } = PlanStatus.Draft;
 
-        public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
+        public PlanProps(IdValueObject id, PlanCode code, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
             Id = id;
+            Code = code;
             Categories = new List<PlanCategory>();
             SizeModelTypeId = sizeModelTypeId;            
             Name = name;
@@ -23,9 +30,10 @@
             Status = PlanStatus.Draft;
         }
 
-        public PlanProps(IdValueObject id, IdValueObject sizeModelTypeId, ICollection<PlanCategory> categories, Name name, Owner owner, ICollection<PlanItem> planItems, Audit audit, PlanStatus status)
+        public PlanProps(IdValueObject id,PlanCode code, IdValueObject sizeModelTypeId, ICollection<PlanCategory> categories, Name name, Owner owner, ICollection<PlanItem> planItems, Audit audit, PlanStatus status)
         {
             Id = id;
+            Code = code;
             Categories = categories;
             SizeModelTypeId = sizeModelTypeId;
             Name = name;
@@ -46,16 +54,24 @@
     {
         private Plan(PlanProps props) : base(props)
         {
+            if (this.IsNew)
+            {
+                var domainEvent = new PlanCreatedDomainEvent(props.Id.GetValue(), props.Code.GetValue(), props.Name.GetValue(), Props.Owner.GetValue(), Props.Audit.GetValue().CreatedAt);
+                AddDomainEvent(domainEvent);
+            }
         }
 
-        public static Plan Create(IdValueObject id, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
+        public static Plan Create(IdValueObject id, PlanCode code, IdValueObject sizeModelTypeId, Name name, Owner owner, UserId userId)
         {
-            return new Plan(new PlanProps(id, sizeModelTypeId, name, owner, userId));
+            return new Plan(new PlanProps(id, code, sizeModelTypeId, name, owner, userId));
         }
 
         public static Plan Load(PlanProps props)
         {
-            return new Plan(new PlanProps(props.Id, props.SizeModelTypeId, props.Categories, props.Name, props.Owner, props.Items, props.Audit, props.Status));
+            var plan = new Plan(new PlanProps(props.Id, props.Code,  props.SizeModelTypeId, props.Categories, props.Name, props.Owner, props.Items, props.Audit, props.Status));
+            
+            
+            return plan;
         }
 
         public string GetCategoryIdByName(string name)
