@@ -73,57 +73,57 @@
 
         public void ChangeName(Name name, UserId userId)
         {
-            GetProps().Name.SetValue(name.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Name.SetValue(name.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeOwner(Owner owner, UserId userId)
         {
-            GetProps().Owner.SetValue(owner.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Owner.SetValue(owner.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void AddCategory(PlanCategory category, UserId userId)
         {
-            if (GetProps().Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
+            if (Props.Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
             {
                 AddBrokenRule("Category", "Category already exists in the plan.");
                 return;
             }
 
-            GetProps().Categories.Add(category);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Categories.Add(category);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeSizeModelTypeId(IdValueObject sizeModelTypeId, UserId userId)
         {
-            GetProps().SizeModelTypeId.SetValue(sizeModelTypeId.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.SizeModelTypeId.SetValue(sizeModelTypeId.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void RemoveCategory(PlanCategory category, UserId userId)
         {
-            if (!GetProps().Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
+            if (!Props.Categories.Any(x => x.GetPropsCopy().Name.GetValue().ToLowerInvariant() == category.GetPropsCopy().Name.GetValue().ToLowerInvariant()))
             {
                 AddBrokenRule("Category", "Category does not exist in the plan.");
                 return;
             }
 
-            GetProps().Categories.Remove(category);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Categories.Remove(category);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void AddPlanItem(PlanItem planItem, UserId userId)
         {
-            GetProps().Items.Add(planItem);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.Add(planItem);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void RemovePlanItem(PlanItem planItem, UserId userId)
         {        
 
-            GetProps().Items.Remove(planItem);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.Remove(planItem);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Draft(UserId userId)
@@ -140,9 +140,9 @@
                 return;
             }
 
-            GetProps().Items.ToList().ForEach(x => x.Draft(userId));
-            GetProps().Status = PlanStatus.Draft;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.ToList().ForEach(x => x.Draft(userId));
+            Props.Status = PlanStatus.Draft;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Activate(UserId userId)
@@ -159,9 +159,9 @@
                 return;
             }
 
-            GetProps().Items.ToList().ForEach(x => x.Activate(userId));
-            GetProps().Status = PlanStatus.Active;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.ToList().ForEach(x => x.Activate(userId));
+            Props.Status = PlanStatus.Active;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Deactivate(UserId userId)
@@ -178,9 +178,9 @@
                 return;
             }
 
-            GetProps().Items.ToList().ForEach(x => x.Deactivate(userId));
-            GetProps().Status = PlanStatus.Inactive;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.ToList().ForEach(x => x.Deactivate(userId));
+            Props.Status = PlanStatus.Inactive;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Close(UserId userId)
@@ -191,9 +191,9 @@
                 return;
             }
 
-            GetProps().Items.ToList().ForEach(x => x.Close(userId));
-            GetProps().Status = PlanStatus.Closed;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Items.ToList().ForEach(x => x.Close(userId));
+            Props.Status = PlanStatus.Closed;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Delete(string PlanId, UserId userId)
@@ -205,8 +205,8 @@
             }
 
             GetPropsCopy().Items.ToList().ForEach(x => x.Delete(userId));
-            GetProps().Status = PlanStatus.Deleted;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanStatus.Deleted;
+            Props.Audit.Update(userId.GetValue());
         }
     }
 }

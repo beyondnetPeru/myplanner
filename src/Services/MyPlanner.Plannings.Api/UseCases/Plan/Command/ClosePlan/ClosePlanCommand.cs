@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
 {
     public class ClosePlanCommand : ICommand<ResultSet>
     {

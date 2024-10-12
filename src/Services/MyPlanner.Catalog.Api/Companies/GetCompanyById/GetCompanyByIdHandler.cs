@@ -1,5 +1,6 @@
-﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs;
+﻿using BeyondNet.Cqrs.Impl;
+using BeyondNet.Cqrs.Interfaces;
+using MyPlanner.Catalog.Api.Models;
 
 namespace MyPlanner.Catalog.Api.Companies.GetCompanyById
 {

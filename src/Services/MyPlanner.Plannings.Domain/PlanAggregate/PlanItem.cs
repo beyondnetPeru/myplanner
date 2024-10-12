@@ -143,40 +143,40 @@
 
         public void ChangeSizeModelTypeItemId(IdValueObject sizeModelTypeItemId, UserId userId)
         {
-            GetProps().SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeTechnicalDefinition(TechnicalDefinition technicalDefinition, UserId userId)
         {
-            GetProps().TechnicalDefinition.SetValue(technicalDefinition.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.TechnicalDefinition.SetValue(technicalDefinition.GetValue());
+            Props.Audit.Update(userId.GetValue());
 
         }
 
         public void ChangeComponentsImpacted(ComponentsImpacted componentsImpacted, UserId userId)
         {
-            GetProps().ComponentsImpacted.SetValue(componentsImpacted.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.ComponentsImpacted.SetValue(componentsImpacted.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeTechnicalDependencies(TechnicalDependencies technicalDependencies, UserId userId)
         {
-            GetProps().TechnicalDependencies.SetValue(technicalDependencies.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.TechnicalDependencies.SetValue(technicalDependencies.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
 
         public void ChangeBallParkCosts(BallParkCost ballParkCost, UserId userId)
         {
-            GetProps().BallParkCosts.SetValue(ballParkCost.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.BallParkCosts.SetValue(ballParkCost.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeKeyAssumptions(KeyAssumptions keyAssumptions, UserId userId)
         {
-            GetProps().KeyAssumptions.SetValue(keyAssumptions.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.KeyAssumptions.SetValue(keyAssumptions.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Draft(UserId userId)
@@ -193,8 +193,8 @@
                 return;
             }
 
-            GetProps().Status = PlanItemStatus.Draft;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanItemStatus.Draft;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Activate(UserId userId)
@@ -211,8 +211,8 @@
                 return;
             }
 
-            GetProps().Status = PlanItemStatus.Active;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanItemStatus.Active;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Deactivate(UserId userId)
@@ -229,8 +229,8 @@
                 return;
             }
 
-            GetProps().Status = PlanItemStatus.Inactive;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanItemStatus.Inactive;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Close(UserId userId)
@@ -241,8 +241,8 @@
                 return;
             }
 
-            GetProps().Status = PlanItemStatus.Closed;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanItemStatus.Closed;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Delete(UserId userId)
@@ -253,8 +253,8 @@
                 return;
             }
 
-            GetProps().Status = PlanItemStatus.Deleted;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = PlanItemStatus.Deleted;
+            Props.Audit.Update(userId.GetValue());
         }
     }
 

@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlanItem
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlanItem
 {
     public class ActivatePlanItemCommand : ICommand<ResultSet>
     {

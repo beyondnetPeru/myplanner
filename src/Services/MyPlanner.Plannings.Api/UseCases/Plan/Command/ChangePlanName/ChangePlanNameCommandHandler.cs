@@ -1,5 +1,4 @@
 ﻿using MyPlanner.Plannings.Domain.PlanAggregate;
-using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 

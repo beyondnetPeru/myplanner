@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
     public class DeletePlanCommand : ICommand<ResultSet>
     {

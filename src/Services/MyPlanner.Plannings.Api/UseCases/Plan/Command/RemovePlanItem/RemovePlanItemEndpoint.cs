@@ -1,7 +1,4 @@
-﻿
-using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.RemovePlanItem
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.RemovePlanItem
 {
     public class RemovePlanItemEndpoint : ICarterModule
     {

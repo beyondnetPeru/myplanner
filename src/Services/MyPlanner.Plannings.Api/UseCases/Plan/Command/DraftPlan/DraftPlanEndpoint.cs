@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan
 {
     public class DraftPlanEndpoint : ICarterModule
     {

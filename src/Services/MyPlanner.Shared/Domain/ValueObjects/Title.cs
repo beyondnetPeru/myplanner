@@ -1,8 +1,6 @@
-﻿using BeyondNet.Ddd.ValueObjects;
-
-namespace MyPlanner.Projects.Domain.ValueObjects
+﻿namespace MyPlanner.Projects.Domain.ValueObjects
 {
-    public class Title : StringRequiredValueObject
+    public class Title : StringValueObject
     {
         public Title(string value) : base(value)
         {

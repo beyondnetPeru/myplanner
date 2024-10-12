@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem
 {
     public class ChangeTechnicalDefinitionCommand : ICommand<ResultSet>
     {

@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeFactor
+﻿namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Queries.GetSizeModelTypeFactor
 {
     public class GetSizeModelTypeItemQuery : IQuery<ResultSet>
     {

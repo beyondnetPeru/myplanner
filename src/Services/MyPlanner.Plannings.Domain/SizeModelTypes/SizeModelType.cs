@@ -61,43 +61,43 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
 
         public void ChangeCode(SizeModelTypeCode value)
         {
-            GetProps().Code.SetValue(value.GetValue());
+            Props.Code.SetValue(value.GetValue());
         }
 
         public void ChangeName(Name value)
         {
-            GetProps().Name.SetValue(value.GetValue());
+            Props.Name.SetValue(value.GetValue());
         }
 
         public void AddItem(SizeModelTypeItem item)
         {
-            if (GetProps().Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code
+            if (Props.Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code
             && x.GetPropsCopy().Status == SizeModelTypeItemStatus.Active))
             {
                 AddBrokenRule("Item", "Item already exists in the list");
                 return;
             }
 
-            GetProps().Items.Add(item);
+            Props.Items.Add(item);
         }
 
         public void DeleteItem(SizeModelTypeItem item)
         {
-            if (GetProps().Status == SizeModelTypeStatus.Active)
+            if (Props.Status == SizeModelTypeStatus.Active)
             {
                 AddBrokenRule("Status", "Size Model Type is Active. Cannot remove Item");
                 return;
             }
 
-            if (!GetProps().Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code))
+            if (!Props.Items.Any(x => x.GetPropsCopy().Code == item.GetPropsCopy().Code))
             {
                 AddBrokenRule("Item", "Item does not exist in the list");
                 return;
             }
 
-            foreach (var item1 in GetProps().Items)
+            foreach (var item1 in Props.Items)
             {
-                item1.GetProps().Status = SizeModelTypeItemStatus.Delete;
+                item1.Props.Status = SizeModelTypeItemStatus.Delete;
             };
         }
 
@@ -115,7 +115,7 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            GetProps().Status = SizeModelTypeStatus.Inactive;
+            Props.Status = SizeModelTypeStatus.Inactive;
 
         }
 
@@ -127,7 +127,7 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            GetProps().Status = SizeModelTypeStatus.Active;
+            Props.Status = SizeModelTypeStatus.Active;
         }
 
         public void Delete()
@@ -144,13 +144,13 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
                 return;
             }
 
-            foreach (var item in GetProps().Items)
+            foreach (var item in Props.Items)
             {
-                item.GetProps().Status= SizeModelTypeItemStatus.Delete;
+                item.Props.Status= SizeModelTypeItemStatus.Delete;
             }
 
 
-            GetProps().Status = SizeModelTypeStatus.Delete;
+            Props.Status = SizeModelTypeStatus.Delete;
         }
 
     }

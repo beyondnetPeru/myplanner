@@ -1,5 +1,4 @@
 ﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
-using MyPlanner.Shared.Cqrs;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.AddPlanItem
 {

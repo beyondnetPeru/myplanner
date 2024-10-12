@@ -6,7 +6,7 @@ using MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan;
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan;
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan;
 using MyPlanner.Plannings.Api.UseCases.Plan.Command.DraftPlan;
-using MyPlanner.Shared.Cqrs;
+
 using MyPlanner.Shared.Extensions;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 

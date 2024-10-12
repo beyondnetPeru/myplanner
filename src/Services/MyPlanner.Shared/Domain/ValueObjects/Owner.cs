@@ -1,8 +1,6 @@
-﻿using BeyondNet.Ddd.ValueObjects;
-
-namespace MyPlanner.Shared.Domain.ValueObjects
+﻿namespace MyPlanner.Shared.Domain.ValueObjects
 {
-    public class Owner : StringRequiredValueObject
+    public class Owner : StringValueObject
     {
         protected Owner(string value) : base(value)
         {

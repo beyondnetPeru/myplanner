@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ActivatePlan
 {
     public class ActivatePlanEndpoint : ICarterModule
     {

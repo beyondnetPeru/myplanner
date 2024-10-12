@@ -1,6 +1,4 @@
-﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlanItem;
-using MyPlanner.Plannings.Domain.PlanAggregate;
-using MyPlanner.Shared.Cqrs;
+﻿using MyPlanner.Plannings.Domain.PlanAggregate;
 using MyPlanner.Shared.Domain.ValueObjects;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 

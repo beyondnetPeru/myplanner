@@ -31,7 +31,7 @@
 
         public void ChangeName(Name name)
         {
-            GetProps().Name.SetValue(name.GetValue());
+            Props.Name.SetValue(name.GetValue());
         }
     }   
 }

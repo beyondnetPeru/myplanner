@@ -1,4 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
+﻿
 
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Queries.GetSizeModel

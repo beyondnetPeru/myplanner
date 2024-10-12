@@ -1,7 +1,4 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.ValueObjects.Validators;
-
-namespace MyPlanner.Shared.Domain.ValueObjects
+﻿namespace MyPlanner.Shared.Domain.ValueObjects
 {
     public class UserId : ValueObject<string>
     {
@@ -23,8 +20,6 @@ namespace MyPlanner.Shared.Domain.ValueObjects
         public override void AddValidators()
         {
             base.AddValidators();
-
-            AddValidator(new StringRequiredValidator(this));
         }
 
         public static UserId Default()

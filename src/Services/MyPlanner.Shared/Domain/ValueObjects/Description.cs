@@ -1,7 +1,7 @@
 ﻿
 namespace MyPlanner.Shared.Domain.ValueObjects
 {
-    public class Description : StringRequiredValueObject
+    public class Description : StringValueObject
     {
         private Description(string value) : base(value)
         {

@@ -1,5 +1,4 @@
-﻿using MyPlanner.Plannings.Domain.SizeModels;
-using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
+﻿using static MyPlanner.Plannings.Domain.SizeModelTypes.SizeModelTypeItem;
 
 namespace MyPlanner.Plannings.Domain.SizeModelTypes
 {
@@ -58,51 +57,51 @@ namespace MyPlanner.Plannings.Domain.SizeModelTypes
 
         public void ChangeName(Name name)
         {
-            GetProps().Name.SetValue(name.GetValue());
+            Props.Name.SetValue(name.GetValue());
         }
 
         public void ChangeCode(SizeModelTypeItemCode code)
         {
-            GetProps().Code.SetValue(code.GetValue());
+            Props.Code.SetValue(code.GetValue());
         }
 
         public void Activate()
         {
-            if (GetProps().Status == SizeModelTypeItemStatus.Active)
+            if (Props.Status == SizeModelTypeItemStatus.Active)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is already active.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelItemStatus>(SizeModelTypeItemStatus.Active.Id);
+            Props.Status = SizeModelTypeItemStatus.Active;
         }
 
         public void Deactivate()
         {
-            if (GetProps().Status == SizeModelTypeItemStatus.Inactive)
+            if (Props.Status == SizeModelTypeItemStatus.Inactive)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is already inactive.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelTypeItemStatus>(SizeModelTypeItemStatus.Inactive.Id);
+            Props.Status = SizeModelTypeItemStatus.Inactive;
         }
 
         public void Delete()
         {
-            if (GetProps().Status == SizeModelTypeItemStatus.Delete)
+            if (Props.Status == SizeModelTypeItemStatus.Delete)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is already deleted.");
                 return;
             }
 
-            if (GetProps().Status == SizeModelTypeItemStatus.Active)
+            if (Props.Status == SizeModelTypeItemStatus.Active)
             {
                 AddBrokenRule("Status", "Size Model Type Factor is active. Cannot delete.");
                 return;
             }
 
-            GetProps().Status.SetValue<SizeModelTypeItemStatus>(SizeModelTypeItemStatus.Delete.Id);
+            Props.Status = SizeModelTypeItemStatus.Delete;
         }
 
         public class SizeModelTypeItemStatus : Enumeration

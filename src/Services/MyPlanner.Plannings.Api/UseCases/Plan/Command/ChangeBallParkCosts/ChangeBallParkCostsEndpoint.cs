@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Planning.Models.Plan;
-using MyPlanner.Shared.Cqrs;
+
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeBallParkCosts
 {

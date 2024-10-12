@@ -9,6 +9,7 @@
 	<ItemGroup>
 		<PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
 		<PackageReference Include="Azure.Identity" Version="1.12.0" />
+		<PackageReference Include="BeyondNet.Cqrs" Version="1.0.0" />
 		<PackageReference Include="BeyondNet.Ddd.AutoMapper" Version="1.0.0" />
 		<PackageReference Include="Carter" Version="7.0.0" />
 		<PackageReference Include="Jal.Factory" Version="2.1.1" />

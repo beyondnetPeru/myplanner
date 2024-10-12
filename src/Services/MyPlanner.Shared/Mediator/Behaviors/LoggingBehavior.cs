@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using MyPlanner.Shared.Extensions;
+﻿using MyPlanner.Shared.Extensions;
 
 namespace MyPlanner.Shared.Mediator.Behaviors
 {

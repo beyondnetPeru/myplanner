@@ -1,6 +1,6 @@
 ﻿
 using MyPlanner.Plannings.Domain.PlanAggregate;
-using MyPlanner.Shared.Cqrs;
+
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Queries.GetPlanItem
 {

@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeletePlan
 {
     public class DeletePlanEndpoint : ICarterModule
     {

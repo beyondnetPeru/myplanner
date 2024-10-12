@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlan
 {
     public class DeactivatePlanEndpoint : ICarterModule
     {

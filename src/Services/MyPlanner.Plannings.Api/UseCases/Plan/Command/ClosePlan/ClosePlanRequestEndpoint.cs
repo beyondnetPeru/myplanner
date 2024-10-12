@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ClosePlan
 {
     public class ClosePlanRequestEndpoint : ICarterModule
     {

@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Shared.Cqrs;
+
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSizeModelTypeItem
 {
@@ -17,7 +17,7 @@ namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.ChangeNameSiz
         {
             var entity = await sizeModelTypeRepository.GetItemById(request.SizeModelTypeItemId);
 
-            entity.GetProps().Name.SetValue(request.Name);
+            entity.Props.Name.SetValue(request.Name);
 
             if (!entity.IsValid())
             {

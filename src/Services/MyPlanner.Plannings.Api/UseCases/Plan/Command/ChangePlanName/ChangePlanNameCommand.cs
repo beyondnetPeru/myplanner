@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeName
 {
     public class ChangePlanNameCommand : ICommand<ResultSet>
     {

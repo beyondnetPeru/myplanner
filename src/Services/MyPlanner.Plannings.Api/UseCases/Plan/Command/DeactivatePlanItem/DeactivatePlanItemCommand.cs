@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlanItem
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.DeactivatePlanItem
 {
     public class DeactivatePlanItemCommand : ICommand<ResultSet>
     {

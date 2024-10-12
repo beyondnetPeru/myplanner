@@ -1,6 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-using MyPlanner.Shared.Domain.ValueObjects;
+﻿using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.CreatePlan
 {

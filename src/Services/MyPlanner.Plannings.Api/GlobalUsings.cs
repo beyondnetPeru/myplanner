@@ -1,5 +1,7 @@
 ﻿global using Carter;
 global using AutoMapper;
+global using BeyondNet.Cqrs.Impl;
+global using BeyondNet.Cqrs.Interfaces;
 global using BeyondNet.Ddd.ValueObjects;
 global using BeyondNet.Ddd;
 global using BeyondNet.Ddd.AutoMapper.Impl;

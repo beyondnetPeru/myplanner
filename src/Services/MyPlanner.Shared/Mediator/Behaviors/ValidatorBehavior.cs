@@ -1,13 +1,11 @@
 ﻿using FluentValidation;
-using Microsoft.Extensions.Logging;
-using MyPlanner.Shared.Cqrs.Interfaces;
 using MyPlanner.Shared.Domain;
 using MyPlanner.Shared.Extensions;
 
 namespace MyPlanner.Shared.Mediator.Behaviors
 {
     //TODO: Implement the ValidatorBehavior class for DDD Library
-    public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : ICommand<TResponse>
+    public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger;
         private readonly IEnumerable<IValidator<TRequest>> _validators;

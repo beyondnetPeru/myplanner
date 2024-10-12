@@ -1,8 +1,6 @@
-﻿using BeyondNet.Ddd.ValueObjects;
-
-namespace MyPlanner.Plannings.Domain.PlanAggregate
+﻿namespace MyPlanner.Plannings.Domain.PlanAggregate
 {
-    public class ProfileName : StringRequiredValueObject
+    public class ProfileName : StringValueObject
     {
         private ProfileName(string value) : base(value)
         {

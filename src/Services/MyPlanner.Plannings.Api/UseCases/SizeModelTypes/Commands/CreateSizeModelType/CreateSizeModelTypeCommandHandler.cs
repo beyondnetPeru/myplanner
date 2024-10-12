@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModelTypes;
-using MyPlanner.Shared.Cqrs;
+
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModelTypes.Commands.CreateSizeModelType

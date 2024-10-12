@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Catalog.Api.Models;
-using MyPlanner.Shared.Cqrs;
+
 
 namespace MyPlanner.Catalog.Api.Products.GetProductsByCategory
 {

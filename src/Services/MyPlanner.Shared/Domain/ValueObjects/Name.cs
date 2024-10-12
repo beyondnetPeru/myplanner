@@ -1,11 +1,9 @@
-﻿using BeyondNet.Ddd;
-using BeyondNet.Ddd.Rules;
+﻿using BeyondNet.Ddd.Rules;
 using BeyondNet.Ddd.Rules.Impl;
-using BeyondNet.Ddd.ValueObjects;
 
 namespace MyPlanner.Shared.Domain.ValueObjects
 {
-    public class Name : StringRequiredValueObject
+    public class Name : StringValueObject
     {
         protected Name(string value) : base(value)
         {

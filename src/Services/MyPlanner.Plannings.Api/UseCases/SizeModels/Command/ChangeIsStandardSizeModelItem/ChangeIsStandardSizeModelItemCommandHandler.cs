@@ -1,5 +1,5 @@
 ﻿using MyPlanner.Plannings.Domain.SizeModels;
-using MyPlanner.Shared.Cqrs;
+
 using MyPlanner.Shared.Domain.ValueObjects;
 
 namespace MyPlanner.Plannings.Api.UseCases.SizeModels.Command.ChangeIsStandardSizeModelItem

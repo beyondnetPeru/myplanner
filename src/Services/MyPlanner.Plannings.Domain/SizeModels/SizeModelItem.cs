@@ -116,35 +116,35 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void ChangeSizeModelTypeItem(IdValueObject sizeModelTypeItemId, SizeModelTypeItemCode sizeModelTypeItemCode, UserId userId)
         {
-            GetProps().SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
-            GetProps().SizeModelTypeItemCode.SetValue(sizeModelTypeItemCode.GetValue());
-            GetProps().Audit.Update(userId.GetValue());
+            Props.SizeModelTypeItemId.SetValue(sizeModelTypeItemId.GetValue());
+            Props.SizeModelTypeItemCode.SetValue(sizeModelTypeItemCode.GetValue());
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeFactorSelected(FactorsEnum factorSelected, UserId userId, double totalCost)
         {
-            GetProps().FactorSelected = factorSelected;
-            GetProps().TotalCost.SetValue(totalCost);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.FactorSelected = factorSelected;
+            Props.TotalCost.SetValue(totalCost);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeQuantity(int quantity, double totalCost, UserId userId)
         {
-            GetProps().Quantity.SetValue(quantity);
-            GetProps().TotalCost.SetValue(totalCost);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Quantity.SetValue(quantity);
+            Props.TotalCost.SetValue(totalCost);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeTotalCost(double totalCost, UserId userId)
         {
-            GetProps().TotalCost.SetValue(totalCost);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.TotalCost.SetValue(totalCost);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeIsStandard(bool isStandard, UserId userId)
         {
-            GetProps().IsStandard.SetValue(isStandard);
-            GetProps().Audit.Update(userId.GetValue());
+            Props.IsStandard.SetValue(isStandard);
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Activate(UserId userId)
@@ -155,8 +155,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status = SizeModelItemStatus.Active;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = SizeModelItemStatus.Active;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Deactivate(UserId userId)
@@ -167,8 +167,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status = SizeModelItemStatus.Deactivated;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = SizeModelItemStatus.Deactivated;
+            Props.Audit.Update(userId.GetValue());
         }
 
         public void Delete(UserId userId)
@@ -179,8 +179,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            GetProps().Status = SizeModelItemStatus.Deleted;
-            GetProps().Audit.Update(userId.GetValue());
+            Props.Status = SizeModelItemStatus.Deleted;
+            Props.Audit.Update(userId.GetValue());
         }
 
     }

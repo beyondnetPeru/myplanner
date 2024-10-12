@@ -1,7 +1,5 @@
-﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeComponentsImpacted;
-using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem;
+﻿using MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeTechnicalDefinitionPlanItem;
 using MyPlanner.Plannings.Domain.PlanAggregate;
-using MyPlanner.Shared.Cqrs;
 using MyPlanner.Shared.Domain.ValueObjects;
 using MyPlanner.Shared.Infrastructure.Idempotency;
 

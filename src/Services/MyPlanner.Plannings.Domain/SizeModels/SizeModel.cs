@@ -69,8 +69,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
 
         public void AddItem(SizeModelItem sizeModelItem, UserId userId)
         {
-            this.GetProps().Items.Add(sizeModelItem);
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Items.Add(sizeModelItem);
+            this.Props.Audit.Update(userId.GetValue());
         }
 
         public void RemoveItem(SizeModelItem sizeModelItem, UserId userId)
@@ -81,31 +81,31 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            this.GetProps().Items.Remove(sizeModelItem);
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Items.Remove(sizeModelItem);
+            this.Props.Audit.Update(userId.GetValue());
         }
 
         public void ChangeName(Name name, UserId userId)
         {
-            this.GetProps().Name.SetValue(name.GetValue());
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Name.SetValue(name.GetValue());
+            this.Props.Audit.Update(userId.GetValue());
         }
 
         public void Activate(UserId userId)
         {
-            if (this.GetProps().Status == SizeModelStatus.Active)
+            if (this.Props.Status == SizeModelStatus.Active)
             {
                 AddBrokenRule("SizeModel", "SizeModel is already active");
                 return;
             }
 
-            this.GetProps().Status = SizeModelStatus.Active;
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Status = SizeModelStatus.Active;
+            this.Props.Audit.Update(userId.GetValue());
         }
 
         public void Deactivate(UserId userId)
         {
-            var count = this.GetProps().Items.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
+            var count = this.Props.Items.Where(x => x.GetPropsCopy().Status == SizeModelItemStatus.Active).Count();
 
             if (count > 0)
             {
@@ -113,13 +113,13 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 return;
             }
 
-            this.GetProps().Status = SizeModelStatus.Deactivated;
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Status = SizeModelStatus.Deactivated;
+            this.Props.Audit.Update(userId.GetValue());
         }
 
         public void Delete(UserId userId)
         {
-            if (this.GetProps().Status == SizeModelStatus.Deleted)
+            if (this.Props.Status == SizeModelStatus.Deleted)
             {
                 AddBrokenRule("SizeModel", "SizeModel is already deleted");
                 return;
@@ -134,8 +134,8 @@ namespace MyPlanner.Plannings.Domain.SizeModels
                 }
             }
 
-            this.GetProps().Status = SizeModelStatus.Deleted;
-            this.GetProps().Audit.Update(userId.GetValue());
+            this.Props.Status = SizeModelStatus.Deleted;
+            this.Props.Audit.Update(userId.GetValue());
         }
     }
 

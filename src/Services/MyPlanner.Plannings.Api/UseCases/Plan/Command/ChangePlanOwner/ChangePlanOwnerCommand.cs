@@ -1,7 +1,4 @@
-﻿using MyPlanner.Shared.Cqrs;
-using MyPlanner.Shared.Cqrs.Interfaces;
-
-namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
+﻿namespace MyPlanner.Plannings.Api.UseCases.Plan.Command.ChangeOwner
 {
     public class ChangePlanOwnerCommand : ICommand<ResultSet>
     {

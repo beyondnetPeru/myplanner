@@ -15,5 +15,4 @@ global using Microsoft.AspNetCore.Authentication;
 global using Microsoft.Extensions.Configuration;
 global using System.Collections;
 global using Microsoft.EntityFrameworkCore;
-global using System.Text.Json;
 global using Microsoft.Extensions.Logging;
