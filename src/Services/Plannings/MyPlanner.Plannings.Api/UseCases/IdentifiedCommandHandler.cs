@@ -50,6 +50,12 @@ namespace MyPlanner.Plannings.Api.UseCases
         /// </summary>
         /// <param name="message">IdentifiedCommand which contains both original command & request ID</param>
         /// <returns>Return value of inner command or default value if request same ID was found</returns>
+
+        //TODO: Refactor this method to use a switch statement to handle the different types of commands using MatchExpression or Matching in C# 9
+        // https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-9#matching
+        // https://medium.com/@nirajranasinghe/pattern-matching-in-c-fcee69929776
+        // https://antondevtips.com/blog/how-to-write-elegant-code-with-csharp-pattern-matching
+
         public async Task<R> Handle(IdentifiedCommand<T, R> message, CancellationToken cancellationToken)
         {
             var alreadyExists = await requestManager.ExistAsync(message.Id);
