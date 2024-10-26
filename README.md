@@ -1,2 +1,2 @@
-# myplanner.plannings
-MyPlanner System - My Planner module: including API, Web/Mobile Client and Infrastructure 
+# My Plannner
+The MyPlanner repository is a module designed to manage planning within the MyPlanner system. It features API services, Web/Mobile client support, and a backend infrastructure. Built primarily in C# with .NET Core, the project uses Clean Architecture, Domain-Driven Design (DDD), and Vertical Slice Architecture principles. Libraries such as Entity Framework Core and MediatR are implemented to manage database interactions and simplify event-driven architecture, promoting modularity and scalability. This setup supports seamless deployment across platforms, enhancing usability and maintainability. Further details are available in the repository here.
